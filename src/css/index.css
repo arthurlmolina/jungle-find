@@ -38,10 +38,10 @@
         align-items: center;
         height: 100%;
     }
-    .home{
+    .imagem{
         width: 800px;
         height: 600px;
-        background-image: url(/./assets/home.png);
+        background-image: url(../assets/menu.png);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

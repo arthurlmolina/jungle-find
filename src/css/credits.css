@@ -58,15 +58,74 @@
         white-space: nowrap; /*Retirar a quebra de linha*/ 
         font-family: "Press Start 2P", system-ui;
         font-weight: 100;
-        font-size: 40px;
-        top: 18%;
+        font-size: 45px;
+        top: 16%;
         left: 50%;
         transform: translate(-50%, -50%);
         text-shadow: 3px 3px 2px #00000063;
     }
 
-    .text-cred{
-        
+    .title-cred{
+        position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 18px;
+        top: 26%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
     }
 
-    
+    .art{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
+    }
+
+    .gab{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
+    }
+
+    .gui{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
+    }
+
+    .gu{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 54%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
+    }

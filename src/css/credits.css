@@ -1,1 +1,72 @@
 @charset "UTF-8";
+      
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+
+    :root{
+        --verde-floresta: #042A2B; /*fundo principal*/
+        --verde-musgo: #283c25;    
+        --verde-folha: rgb(51, 99, 64);
+        --cor-destaque: #eefaee;   /*textos*/
+    }
+
+    *{
+        margin: 0;
+        padding: 0;
+        zoom: 100%;
+    }
+    html, body{
+        overflow: hidden;
+    }
+
+    body{
+        background: linear-gradient(45deg, var(--verde-floresta), var(--verde-musgo));
+        background-size: 400% 400%;
+        animation: gradientShift 4s ease infinite;
+        width: 100vw;
+        height: 100vh;
+        
+    }
+    @keyframes gradientShift{
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .imagem{
+        width: 800px;
+        height: 600px;
+        background-image: url(../assets/menu.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        margin: auto;
+    }
+
+    .titulo{
+        position: absolute; 
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 40px;
+        top: 18%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 3px 3px 2px #00000063;
+    }
+
+    .text-cred{
+        
+    }
+
+    

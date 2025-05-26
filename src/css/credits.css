@@ -167,19 +167,23 @@
     }
     
    .button {
-    font-family: "Press Start 2P", system-ui;
-    background-color: transparent;
-    color: white;
-    font-weight: 100;
-    font-size: 12px;
-    position: absolute;
-    top: 28px;
-    left: 295px;
-    padding: 8px 12px;
-    cursor: pointer;        
-    border: none;           /* Remove a borda */
-    outline: none;          /* Remove contorno ao clicar */
-    text-shadow: 3px 3px 2px #00000063;
-    text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838);
-}
+        font-family: "Press Start 2P", system-ui;
+        background-color: transparent;
+        color: white;
+        font-weight: 100;
+        font-size: 12px;
+        position: absolute;
+        top: 28px;
+        left: 308px;
+        padding: 8px 12px; 
+        cursor: pointer;        
+        border: none;           /* Remove a borda */
+        outline: none;          /* Remove contorno ao clicar */
+        text-shadow: 3px 3px 2px #00000063;
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838);
+    }
+
+    .button:hover{
+        transform: scale(1.05);
+    }
 

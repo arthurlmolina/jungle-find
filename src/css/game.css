@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+:root{
+    --verde-floresta: #042A2B; /*fundo principal*/
+    --verde-musgo: #283c25;    
+    --verde-folha: rgb(51, 99, 64);
+    --cor-destaque: #eefaee;   /*textos*/
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html, body{
+    overflow: hidden;
+}
+
+body{
+    background: linear-gradient(45deg, var(--verde-floresta), var(--verde-musgo));
+    background-size: 400% 400%;
+    animation: gradientShift 4s ease infinite;
+    width: 100vw;
+    height: 100vh;
+    
+    /*centralizar a tela do jogo*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+@keyframes gradientShift{
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}

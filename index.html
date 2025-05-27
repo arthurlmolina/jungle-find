@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="src/css/index.css">
 </head>
 <body>
+    <audio id="audio-menu" autoplay loop>
+        <source src="src/audios/trilha-menu.mp3" type="audio/mp3">
+    </audio>
     <div class="container">
         <div class="imagem">
             <h1 class="title">Jungle Find</h1>
@@ -17,9 +20,23 @@
                 <div class="botao"><a href="controls.html">Controls</a></div>
 
                 <div class="botao"><a href="credits.html">Credits</a></div>
+
+                <div id="dica">Clique na tela para ativar o som :&#41;</div>
             </div>
         </div>
     </div>
 
+    <script>
+        let clicou=false;
+        const audio = document.getElementById('audio-menu');
+        document.addEventListener('click', function(){
+            audio.play()
+            clicou=true;
+            if (clicou){
+                document.getElementById('dica').style.display="none";
+            }
+        })
+    </script>
 </body>
+
 </html>

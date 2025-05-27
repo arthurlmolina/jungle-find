@@ -95,3 +95,14 @@
     a:hover{
         color: var(--cor-destaque);
     }
+
+    div#dica{
+        position: absolute;
+        top: 95%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        text-align: center;
+        color: white;
+        font-family: "Press Start 2P", system-ui;
+    }

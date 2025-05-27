@@ -13,6 +13,7 @@
         margin: 0;
         padding: 0;
         zoom: 100%;
+        user-select: none;
     }
     html, body{
         overflow: hidden;

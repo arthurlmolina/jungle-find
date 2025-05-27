@@ -2,13 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Jungle-Find</title>
 
     <link rel="stylesheet" href="src/css/index.css">
 </head>
 <body>
-    <audio id="audio-menu" autoplay loop>
+    <audio id="audio-menu" loop>
         <source src="src/audios/trilha-menu.mp3" type="audio/mp3">
     </audio>
     <div class="container">
@@ -27,14 +27,10 @@
     </div>
 
     <script>
-        let clicou=false;
         const audio = document.getElementById('audio-menu');
         document.addEventListener('click', function(){
             audio.play()
-            clicou=true;
-            if (clicou){
-                document.getElementById('dica').style.display="none";
-            }
+            document.getElementById('dica').style.display="none";
         })
     </script>
 </body>

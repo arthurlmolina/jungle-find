@@ -1,1 +1,185 @@
 @charset "UTF-8";
+      
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+
+    :root{
+        --verde-floresta: #042A2B; /*fundo principal*/
+        --verde-musgo: #283c25;    
+        --verde-folha: rgb(51, 99, 64);
+        --cor-destaque: #eefaee;   /*textos*/
+    }
+
+    *{
+        margin: 0;
+        padding: 0;
+        zoom: 100%;
+    }
+    html, body{
+        overflow: hidden;
+    }
+
+    body{
+        background: linear-gradient(45deg, var(--verde-floresta), var(--verde-musgo));
+        background-size: 400% 400%;
+        animation: gradientShift 4s ease infinite;
+        width: 100vw;
+        height: 100vh;
+        
+    }
+    @keyframes gradientShift{
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .imagem{
+        width: 800px;
+        height: 600px;
+        background-image: url(../assets/menu.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        margin: auto;
+    }
+
+    .titulo {
+    position: absolute; 
+    color: var(--cor-destaque);
+    white-space: nowrap; /*Retirar a quebra de linha*/ 
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 100;
+    font-size: 45px;
+    top: 16%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+}
+
+
+    .title-cred{
+        position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 18px;
+        top: 26%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .art{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .gab{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 42%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .gui{
+         position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .gu{
+        position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 54%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .text{
+        text-align: center;
+        position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 68%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .text-2{
+        text-align: center;
+        position: absolute;
+        color: var(--cor-destaque);
+        white-space: nowrap; /*Retirar a quebra de linha*/ 
+        font-family: "Press Start 2P", system-ui;
+        font-weight: 100;
+        font-size: 12px;
+        top: 82%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+    
+   .button {
+        position: absolute;
+        font-family: "Press Start 2P", system-ui;
+        background-color: transparent;
+        color: white;
+        font-weight: 100;
+        font-size: 12px;
+        top: 60px;       /*Tela zoom 100% */
+        left: 380px;     /*Tela zoom 100% */
+ 
+        /* top: 35px;      Tela zoom 110%
+        left: 320px;       Tela zoom 110% */   
+        padding: 8px 12px; 
+        cursor: pointer;        
+        border: none;        
+        outline: none;         
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
+    }
+
+    .button:hover{
+        transform: scale(1.05);
+    }
+
+    

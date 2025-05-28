@@ -35,7 +35,7 @@ export default class MainScene extends Phaser.Scene{
         this.plataformas = this.physics.add.staticGroup(); //criando um novo grupo de fisica estática, objetos que não serão afetados pela física, exemplo: chão e plataformas
 
     
-        this.plataformas.create(0,554, 'chao').setOrigin(0.1,0.5);
+        this.plataformas.create(0,554, 'chao').setOrigin(0.01,0.5).refreshBody();
 
         //configurando o tamanho do mundo do jogo 
         // (onde começa eixo x, onde começa eixo y, largura do mundo, altura do mundo)      

@@ -8,7 +8,7 @@ var config = {
     physics:{ //definindo a gravidade do jogo (tipo: arcade / simples e rapido)
         default: 'arcade',
         arcade:{ 
-            gravity: {y:300},
+            gravity: {y:1500},
             debug: true 
         }
     },

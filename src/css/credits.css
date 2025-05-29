@@ -182,4 +182,18 @@
         transform: scale(1.05);
     }
 
-    
+     /*Adiciona a animação de piscar no Creditos*/
+
+        @keyframes blink {          /*vai manipular propriedades CSS ao longo do tempo*/        
+    0%, 50%, 100% {                 /*define a opacidade, comeca com 0%, no meio 50% e no final 100%*/
+        opacity: 1;
+    }
+    25%, 75% {                      /*define que o elemento deve estar invisivel nos 25% e nos 75%*/
+        opacity: 0;
+    }
+    }
+
+    .titulo {
+    animation: blink 2s infinite; /*tempo pra piscar*/
+    }
+

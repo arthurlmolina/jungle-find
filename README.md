@@ -48,26 +48,26 @@ O Vite iniciará um servidor local. A URL padrão é http://localhost:5173.
 
 ## 👥 Integrantes
 
-*Arthur Lavagnolli Molina*
+---
 
-www.linkedin.com/in/arthurlmolina
+### 🧑‍💻 Arthur Lavagnolli Molina  
+- [LinkedIn](https://www.linkedin.com/in/arthurlmolina)  
+- [GitHub](https://github.com/arthurlmolina)
 
-github.com/arthurlmolina
+---
 
-*Gabriel Cesar Gravena*
+### 🧑‍💻 Gabriel Cesar Gravena  
+- [LinkedIn](https://www.linkedin.com/in/gabriel-cesar-gravena)  
+- [GitHub](https://github.com/Gabriel-Gravena)
 
-www.linkedin.com/in/gabriel-cesar-gravena
+---
 
-github.com/Gabriel-Gravena
+### 🧑‍💻 Guilherme Bandeira Rodrigues  
+- [LinkedIn](https://www.linkedin.com/in/guilherme1507)  
+- [GitHub](https://github.com/GuilhermeRodrigues-tech)
 
-*Guilherme Bandeira Rodrigues*
+---
 
-www.linkedin.com/in/guilherme1507
-
-github.com/GuilhermeRodrigues-tech
-
-*Gustavo dos Santos Guimarães*
-
-www.linkedin.com/in/gustavo-dos-santos-guimarães-1280a6294
-
-github.com/gustavo1610bo
+### 🧑‍💻 Gustavo dos Santos Guimarães  
+- [LinkedIn](https://www.linkedin.com/in/gustavo-dos-santos-guimarães-1280a6294)  
+- [GitHub](https://github.com/gustavo1610bo)

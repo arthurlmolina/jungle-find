@@ -12,6 +12,7 @@ export default class MainScene extends Phaser.Scene{
         this.load.image('unica', 'src/assets/plataforma-unica.png');
         this.load.image('flechas', 'src/assets/flechas.png');
         this.load.image('bau', 'src/assets/bau.png');
+        this.load.image('p-quatro','src/assets/plataforma-grande.png');
         
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
@@ -56,8 +57,8 @@ export default class MainScene extends Phaser.Scene{
         this.add.image(1394, 191, 'flechas')
 
         //adiciona a plataforma e os baus
-        this.plataformas.create(2027,413, 'dupla').setScale(0.8).refreshBody();
-        this.plataformas.create(2027,340, 'bau').setScale(0.8).refreshBody();
+        this.plataformas.create(2027,413, 'p-quatro').setScale(0.8).refreshBody();
+        this.plataformas.create(2070,340, 'bau').setScale(0.8).refreshBody();
 
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);

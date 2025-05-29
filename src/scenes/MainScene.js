@@ -8,6 +8,10 @@ export default class MainScene extends Phaser.Scene{
     preload() {
         this.load.image('fundo', 'src/assets/fundo.png');
         this.load.image('chao', 'src/assets/chao.png');
+        this.load.image('dupla', 'src/assets/plataforma-dupla.png');
+        this.load.image('unica', 'src/assets/plataforma-unica.png');
+        this.load.image('flechas', 'src/assets/flechas.png');
+        this.load.image('bau', 'src/assets/bau.png');
         
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
@@ -40,12 +44,23 @@ export default class MainScene extends Phaser.Scene{
         //configurando o tamanho do mundo do jogo 
         // (onde começa eixo x, onde começa eixo y, largura do mundo, altura do mundo)      
         this.physics.world.setBounds(0, 0, 4063, 600);
+    
+        //adicionando as plataformas para ir até a flecha
+        this.plataformas.create(1003,413, 'dupla').setScale(0.8).refreshBody();
+
+        this.plataformas.create(1211,308, 'dupla').setScale(0.8).refreshBody();
+
+        this.plataformas.create(1394,239, 'unica').setScale(0.8).refreshBody();
+        
+        //adicionando as flechas
+        this.add.image(1394, 191, 'flechas')
+
+        //adiciona a plataforma e os baus
+        this.plataformas.create(2027,413, 'dupla').setScale(0.8).refreshBody();
+        this.plataformas.create(2027,340, 'bau').setScale(0.8).refreshBody();
 
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);
-
-
-        // this.cameras.main.scrollX = 1100 - 400; //testar imagem e plataformas
 
         // Criar o arqueiro
         this.arqueiro = new Archer(this, 50, 533);

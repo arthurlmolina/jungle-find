@@ -13,6 +13,9 @@ export default class MainScene extends Phaser.Scene{
         this.load.image('flechas', 'src/assets/flechas.png');
         this.load.image('bau', 'src/assets/bau.png');
         this.load.image('p-quatro','src/assets/plataforma-grande.png');
+        //audios
+        this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
+        this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
         
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
@@ -60,6 +63,11 @@ export default class MainScene extends Phaser.Scene{
         this.plataformas.create(2027,413, 'p-quatro').setScale(0.8).refreshBody();
         this.plataformas.create(2070,340, 'bau').setScale(0.8).refreshBody();
 
+        //adicionar as trilhas do jogo
+        this.trilhaAtual = this.sound.add('trilha-inicial', {loop:true, volume:0.3});
+        this.trilhaAtual.play();
+        this.trilhaTrocada=false;
+
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);
 
@@ -73,9 +81,24 @@ export default class MainScene extends Phaser.Scene{
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
 
         this.cursors = this.input.keyboard.createCursorKeys(); //referencia as teclas de seta do teclado
+
+
     }
 
     update(){
         this.arqueiro.move(this.cursors);
+        if(this.trilhaTrocada==false && this.arqueiro.x>2970){ //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
+            this.trilhaTrocada=true;
+            this.trocarTrilha('trilha-final');
+        }
     }
+
+    //função para trocar de trilha x=2974
+    trocarTrilha(novaTrilha){
+        if(this.trilhaAtual){
+            this.trilhaAtual.stop();
+        }
+        this.trilhaAtual = this.sound.add(novaTrilha, {loop: true, volume: 0.3});
+        this.trilhaAtual.play();
+    }   
 }

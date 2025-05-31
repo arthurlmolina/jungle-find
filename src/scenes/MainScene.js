@@ -1,6 +1,8 @@
 import Archer from '../characters/Archer.js'
 
 export default class MainScene extends Phaser.Scene{ 
+    player;
+    
     constructor() {
         super('MainScene') //nome da cena, utilizar caso o jogo tenha mais de uma cena 
     }
@@ -32,6 +34,11 @@ export default class MainScene extends Phaser.Scene{
         });
 
         this.load.spritesheet('archer_jump', 'src/assets/arqueiro/Character/Jump.png', {
+            frameWidth: 100,
+            frameHeight: 100
+        });
+
+        this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
             frameWidth: 100,
             frameHeight: 100
         });
@@ -79,18 +86,21 @@ export default class MainScene extends Phaser.Scene{
         this.arqueiro = new Archer(this, 50, 533);
         this.arqueiro.setScale(2.5); //alterar o tamanho do personagem 
 
-
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
 
         this.cursors = this.input.keyboard.createCursorKeys(); //referencia as teclas de seta do teclado
 
+        this.cursors.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Adiciona a tecla SPACE para atirar
+
+
 
     }
 
     update(){
         this.arqueiro.move(this.cursors);
+
         if(this.trilhaTrocada==false && this.arqueiro.x>2970){ //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
             this.trilhaTrocada=true;
             this.trocarTrilha('trilha-final');

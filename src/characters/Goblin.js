@@ -39,35 +39,8 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         if (!anims.exists('goblin_idle')) {
             anims.create({
                 key: 'goblin_idle',
-                frames: anims.generateFrameNumbers('goblin_idle', { start: 0, end: 10 }),
+                frames: anims.generateFrameNumbers('goblin_idle', { start: 0, end: 11 }),
                 frameRate: 9,
-                repeat: -1
-            });
-        }
-
-        if (!anims.exists('goblin_walk')) {
-            anims.create({
-                key: 'goblin_walk',
-                frames: anims.generateFrameNumbers('goblin_walk', { start: 0, end: 9 }),
-                frameRate: 10,
-                repeat: -1
-            });
-        }
-
-        if (!anims.exists('goblin_shoot')) {
-            anims.create({
-                key: 'goblin_shoot',
-                frames: anims.generateFrameNumbers('goblin_shoot', { start: 0, end: 6 }),
-                frameRate: 12,
-                repeat: 0
-            });
-        }
-
-        if (!anims.exists('goblin_jump')) {
-            anims.create({
-                key: 'goblin_jump',
-                frames: anims.generateFrameNumbers('goblin_jump', { start: 0, end: 1 }),
-                frameRate: 3,
                 repeat: -1
             });
         }

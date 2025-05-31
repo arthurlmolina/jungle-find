@@ -21,14 +21,22 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
 
         // Propriedades do arqueiro
         this.speed = 200; //velocidade do arqueiro
-        this.jumpStrength = 650; //força do pulo
+        this.jump = 650; //força do pulo
         this.arrows = false; //começa sem flechas
         this.lastShot = 0;
-        this.shootCooldown = 500; // 500ms entre tiros
+        this.shootCooldown = 750; // 500ms entre tiros
         this.facing = 'right'; //começa virado para direita
         this.health = 100; //vida
+        this.isShooting = false; //controlar se estiver atirando
 
         this.createAnimations();
+
+        // Criar grupo de flechas
+        this.arrowGroup = scene.physics.add.group({
+            classType: Phaser.Physics.Arcade.Sprite,
+            maxSize: 10,
+            runChildUpdate: true
+        });
 
     }
 
@@ -55,7 +63,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
     if (!this.scene.anims.exists('archer_shoot')) {
         this.scene.anims.create({
             key: 'archer_shoot',
-            frames: this.scene.anims.generateFrameNumbers('archer_shoot', { start: 0, end: 6 }),
+            frames: this.scene.anims.generateFrameNumbers('archer_shoot', { start: 0, end: 5 }),
             frameRate: 12,
             repeat: 0
         });
@@ -70,11 +78,31 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
     });
     }
 
+    if (!this.scene.anims.exists('archer_fall')) {
+    this.scene.anims.create({
+        key: 'archer_fall',
+        frames: this.scene.anims.generateFrameNumbers('archer_fall', { start: 0, end: 1 }),
+        frameRate: 3,
+        repeat: -1
+    });
+    }
+
     this.play('archer_idle');       
     }
 
     move(cursors){
         if (!cursors) return;
+
+        // Verifica se deve atirar (tecla SPACE ou CTRL)
+        if (cursors.space && cursors.space.isDown && !this.isShooting) {
+            this.shoot();
+        }
+
+        // Se estiver atirando, não permite movimento
+        if (this.isShooting) {
+            this.setVelocityX(0);
+            return;
+        }
 
         //se apertar a seta esquerda
         if (cursors.left.isDown) {
@@ -99,14 +127,19 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
 
         //se apertar seta para cima = pular (verifica se está no chão)
         if (cursors.up.isDown && this.body.blocked.down) {
-            this.setVelocityY(-this.jumpStrength);
+            this.setVelocityY(-this.jump);
             this.anims.play('archer_jump', true);
         }
 
         // escolhe animação com base no estado
         if (!this.body.blocked.down) {
-            //se estiver no ar
-            this.anims.play('archer_jump', true);
+            if (this.body.velocity.y < 0) {
+                this.anims.play('archer_jump', true);
+            }
+            // Se está descendo (velocidade Y positiva) = caindo
+            else if (this.body.velocity.y > 0) {
+                this.anims.play('archer_fall', true);
+            }
         } else if (this.body.velocity.x !== 0) {
             //se tiver andando
             this.anims.play('archer_walk', true);
@@ -114,5 +147,35 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
             //se tiver parado
             this.anims.play('archer_idle', true);
         }
+    }
+
+    shoot(){
+        const currentTime = this.scene.time.now; // pega o tempo que atirou
+
+        // Verifica cooldown
+        if (currentTime - this.lastShot < this.shootCooldown) {
+            return;
+        }
+
+        this.isShooting = true; // atirando
+        this.lastShot = currentTime; // atualiza o tempo da ultima flecha
+
+        // Toca a animação de atirar
+        this.anims.play('archer_shoot', true);
+
+        // Cria a flecha após um pequeno delay (para sincronizar com a animação)
+        this.scene.time.delayedCall(200, () => {
+            this.createArrow();
+        });
+
+        // Reseta o estado de tiro quando a animação terminar
+        this.once('animationcomplete-archer_shoot', () => {
+            this.isShooting = false;
+        });
+        
+    }
+
+    createArrow(){
+
     }
 }

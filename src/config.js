@@ -1,5 +1,5 @@
 import MainScene from "./scenes/MainScene.js";
-
+import IntroScene from "./scenes/IntroScene.js";
 var config = {
     //configurações gerais do phaser
     type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
@@ -12,7 +12,7 @@ var config = {
             debug: false 
         }
     },
-    scene: [MainScene]
+    scene: [IntroScene, MainScene]
 
 };
 

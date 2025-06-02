@@ -13,7 +13,7 @@ export default class Goblin extends Phaser.Physics.Arcade.Sprite {
         
         //ajuste de tamanho do frame do personagem
         const bodyWidth = 20;
-        const bodyHeight = 35;
+        const bodyHeight = 48; //35
         this.body.setSize(bodyWidth, bodyHeight);
 
         // Configurações de física

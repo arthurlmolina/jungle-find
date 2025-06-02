@@ -49,7 +49,7 @@ export default class MainScene extends Phaser.Scene{
         // Carrega a sprite do Goblin (nome 'Ataque')
         this.load.spritesheet('Ataque', 'src/assets/mobs/Goblin/Ataque.png', {
             frameWidth: 150,
-            frameHeight: 100
+            frameHeight: 150
         });
     
     }
@@ -156,7 +156,7 @@ export default class MainScene extends Phaser.Scene{
 
 
         // Criar o Goblin
-        this.Goblin = new Goblin(this, 400,554 )  // 1935, 533
+        this.Goblin = new Goblin(this, 1935,340 )  // 1935, 533
         this.Goblin.setScale(2.5); //alterar o tamanho do personagem
 
         this.physics.add.collider(this.Goblin, this.plataformas);  //adiciona colisao entre o goblin e plataformas

@@ -16,6 +16,7 @@ export default class MainScene extends Phaser.Scene{
         this.load.image('bau', 'src/assets/bau.png');
         this.load.image('p-quatro','src/assets/plataforma-grande.png');
         this.load.image('porta', 'src/assets/porta.png')
+        this.load.image('dica', 'src/assets/dica.png');
         //audios
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
         this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
@@ -45,11 +46,13 @@ export default class MainScene extends Phaser.Scene{
     }
 
     create(){
+        this.podeMover = true;
+        this.dicaVisivel = false;
+
         this.background = this.add.image(0,300, 'fundo')//posicionando a imagem na posição x=0 y=300
         this.background.setOrigin(0, 0.5); //para fazer a imagem começar do inicio no ponto definida na linha acima
 
         this.plataformas = this.physics.add.staticGroup(); //criando um novo grupo de fisica estática, objetos que não serão afetados pela física, exemplo: chão e plataformas
-
     
         this.plataformas.create(0,554, 'chao').setOrigin(0.01,0.5).refreshBody();
 
@@ -69,10 +72,57 @@ export default class MainScene extends Phaser.Scene{
 
         //adiciona a plataforma e os baus
         this.plataformas.create(2027,413, 'p-quatro').setScale(0.8).refreshBody();
-        this.plataformas.create(2070,340, 'bau').setScale(0.8).refreshBody();
+
+        this.bau = this.plataformas.create(2070,340, 'bau').setScale(0.8).refreshBody();
+
+        //adiciona a dica na tela (no momento está invisível)
+        this.dica = this.add.image(400,300, 'dica').setVisible(false).setScrollFactor(0);
+        this.dica.setDepth(1);
+
+        //adiciona a tecla e na variavel 
+        this.teclaE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);      
+
+        //área de intereção com o baú
+        this.areaInteracaoBau = this.add.zone(2070, 340, 100, 100);
+        this.physics.world.enable(this.areaInteracaoBau);
+        this.areaInteracaoBau.body.setAllowGravity(false); //desativando a força da gravidade da área 
+        this.areaInteracaoBau.body.setImmovable(true);     //manter a área imovel ao personagem colidir com ela 
+
+       //mensagem para a interação com o baú 
+        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
+            fontSize:'20px'
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
+
+        this.mensagemSairInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para sair', {
+            fontSize:'20px',
+            backgroundColor: '#657117',
+            color: 'black',
+            padding: {x: 4, y: 4}
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionando a porta
         this.plataformas.create(2742, 283, 'porta')
+
+        //adicionando a porta
+        this.plataformas.create(2742, 283, 'porta')
+
+        //área de intereção com o porta
+        this.areaInteracaoPorta = this.add.zone(2742, 283, 450, 470);
+        this.physics.world.enable(this.areaInteracaoPorta);
+        this.areaInteracaoPorta.body.setAllowGravity(false); 
+        this.areaInteracaoPorta.body.setImmovable(true);     
+
+        //mensagem para a interação com a porta
+        this.mensagemInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
+            fontSize:'20px'
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
+
+        this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair', {
+            fontSize:'20px',
+            backgroundColor: '#657117',
+            color: 'black',
+            padding: {x: 4, y: 4}
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionar as trilhas do jogo
         this.trilhaAtual = this.sound.add('trilha-inicial', {loop:true, volume:0.3});
@@ -85,6 +135,7 @@ export default class MainScene extends Phaser.Scene{
         // Criar o arqueiro
         this.arqueiro = new Archer(this, 50, 533);
         this.arqueiro.setScale(2.5); //alterar o tamanho do personagem 
+        this.arqueiro.setDepth(0);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
@@ -94,19 +145,46 @@ export default class MainScene extends Phaser.Scene{
 
         this.cursors.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Adiciona a tecla SPACE para atirar
 
-
-
     }
 
     update(){
-        this.arqueiro.move(this.cursors);
+        if (this.podeMover){
+             this.arqueiro.move(this.cursors);   
+        }
 
         if(this.trilhaTrocada==false && this.arqueiro.x>2970){ //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
             this.trilhaTrocada=true;
             this.trocarTrilha('trilha-final');
         }
-    }
+        //reconhecer personagem na área de interação do baú
+        this.estaAreaBau = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoBau.getBounds());
 
+        if(this.estaAreaBau && !this.dica.visible){
+            this.mensagemInteracaoBau.setVisible(true);
+            this.mensagemSairInteracaoBau.setVisible(false);
+        } else{
+            this.mensagemInteracaoBau.setVisible(false);
+        }
+
+        if (this.estaAreaBau && this.dica.visible){
+            this.mensagemSairInteracaoBau.setVisible(true);
+        } 
+
+        if (this.estaAreaBau && Phaser.Input.Keyboard.JustDown(this.teclaE)){
+            if(!this.dica.visible){
+                this.dica.setVisible(true);
+                this.podeMover=false;
+                this.dicaVisivel=true;
+            } else{
+                this.dica.setVisible(false);
+                this.podeMover = true;
+                this.dicaVisivel=false;
+            }
+        } 
+
+        //reconhecer personagem na porta
+        this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
+    }
     //função para trocar de trilha
     trocarTrilha(novaTrilha){
         if(this.trilhaAtual){

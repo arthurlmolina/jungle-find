@@ -1,9 +1,7 @@
 import Archer from '../characters/Archer.js'
-import Goblin from '../characters/Goblin.js';   
+import Goblin from '../characters/Goblin.js';
 
-export default class MainScene extends Phaser.Scene{ 
-    player;
-    
+export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene') //nome da cena, utilizar caso o jogo tenha mais de uma cena 
     }
@@ -43,15 +41,20 @@ export default class MainScene extends Phaser.Scene{
         this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
             frameWidth: 100,
             frameHeight: 100
-        }); 
+        });
 
-        
+
         // Carrega a sprite do Goblin (nome 'Ataque')
         this.load.spritesheet('Ataque', 'src/assets/mobs/Goblin/Ataque.png', {
             frameWidth: 150,
             frameHeight: 150
         });
-    
+
+        this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
+            frameWidth: 24,
+            frameHeight: 5
+        });
+
     }
 
     create(){
@@ -68,28 +71,28 @@ export default class MainScene extends Phaser.Scene{
         //configurando o tamanho do mundo do jogo 
         // (onde começa eixo x, onde começa eixo y, largura do mundo, altura do mundo)      
         this.physics.world.setBounds(0, 0, 4063, 600);
-    
+
         //adicionando as plataformas para ir até a flecha
-        this.plataformas.create(1003,413, 'dupla').setScale(0.8).refreshBody();
+        this.plataformas.create(1003, 413, 'dupla').setScale(0.8).refreshBody();
 
-        this.plataformas.create(1211,308, 'dupla').setScale(0.8).refreshBody();
+        this.plataformas.create(1211, 308, 'dupla').setScale(0.8).refreshBody();
 
-        this.plataformas.create(1394,239, 'unica').setScale(0.8).refreshBody();
-        
+        this.plataformas.create(1394, 239, 'unica').setScale(0.8).refreshBody();
+
         //adicionando as flechas
-        this.add.image(1394, 191, 'flechas')
+        this.flechasColetaveis = this.add.image(1394, 191, 'flechas');
 
         //adiciona a plataforma e os baus
-        this.plataformas.create(2027,413, 'p-quatro').setScale(0.8).refreshBody();
+        this.plataformas.create(2027, 413, 'p-quatro').setScale(0.8).refreshBody();
 
-        this.bau = this.plataformas.create(2070,340, 'bau').setScale(0.8).refreshBody();
+        this.bau = this.plataformas.create(2070, 340, 'bau').setScale(0.8).refreshBody();
 
         //adiciona a dica na tela (no momento está invisível)
-        this.dica = this.add.image(400,300, 'dica').setVisible(false).setScrollFactor(0);
+        this.dica = this.add.image(400, 300, 'dica').setVisible(false).setScrollFactor(0);
         this.dica.setDepth(1);
 
         //adiciona a tecla e na variavel 
-        this.teclaE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);      
+        this.teclaE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         //área de intereção com o baú
         this.areaInteracaoBau = this.add.zone(2070, 340, 100, 100);
@@ -97,16 +100,16 @@ export default class MainScene extends Phaser.Scene{
         this.areaInteracaoBau.body.setAllowGravity(false); //desativando a força da gravidade da área 
         this.areaInteracaoBau.body.setImmovable(true);     //manter a área imovel ao personagem colidir com ela 
 
-       //mensagem para a interação com o baú 
+        //mensagem para a interação com o baú 
         this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
-            fontSize:'20px'
+            fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
         this.mensagemSairInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para sair', {
-            fontSize:'20px',
+            fontSize: '20px',
             backgroundColor: '#657117',
             color: 'black',
-            padding: {x: 4, y: 4}
+            padding: { x: 4, y: 4 }
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionando a porta
@@ -118,25 +121,25 @@ export default class MainScene extends Phaser.Scene{
         //área de intereção com o porta
         this.areaInteracaoPorta = this.add.zone(2742, 283, 450, 470);
         this.physics.world.enable(this.areaInteracaoPorta);
-        this.areaInteracaoPorta.body.setAllowGravity(false); 
-        this.areaInteracaoPorta.body.setImmovable(true);     
+        this.areaInteracaoPorta.body.setAllowGravity(false);
+        this.areaInteracaoPorta.body.setImmovable(true);
 
         //mensagem para a interação com a porta
         this.mensagemInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
-            fontSize:'20px'
+            fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
         this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair', {
-            fontSize:'20px',
+            fontSize: '20px',
             backgroundColor: '#657117',
             color: 'black',
-            padding: {x: 4, y: 4}
+            padding: { x: 4, y: 4 }
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionar as trilhas do jogo
-        this.trilhaAtual = this.sound.add('trilha-inicial', {loop:true, volume:0.3});
+        this.trilhaAtual = this.sound.add('trilha-inicial', { loop: true, volume: 0.3 });
         this.trilhaAtual.play();
-        this.trilhaTrocada=false;
+        this.trilhaTrocada = false;
 
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);
@@ -156,36 +159,48 @@ export default class MainScene extends Phaser.Scene{
 
 
         // Criar o Goblin
-        this.Goblin = new Goblin(this, 1935,340 )  // 1935, 533
+        this.Goblin = new Goblin(this, 1935, 340)  // 1935, 533
         this.Goblin.setScale(2.5); //alterar o tamanho do personagem
 
         this.physics.add.collider(this.Goblin, this.plataformas);  //adiciona colisao entre o goblin e plataformas
-    
+
+        //área de interação com as flechas
+        this.areaInteracaoFlechas = this.add.zone(1394, 191, 50, 50);
+        this.physics.world.enable(this.areaInteracaoFlechas);
+        this.areaInteracaoFlechas.body.setAllowGravity(false);
+        this.areaInteracaoFlechas.body.setImmovable(true);
+
+        //mensagem para interação com as flechas
+        this.mensagemInteracaoFlechas = this.add.text(400, 450, 'Pressione a tecla E para coletar flechas', {
+            fontSize: '20px'
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
+
+        this.flechasColetadas = false;
 
     }
 
-    update(){
-        if (this.podeMover){
-             this.arqueiro.move(this.cursors);   
+    update() {
+        if (this.podeMover) {
+            this.arqueiro.move(this.cursors);
         }
 
-        if(this.trilhaTrocada==false && this.arqueiro.x>2970){ //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
-            this.trilhaTrocada=true;
+        if (this.trilhaTrocada == false && this.arqueiro.x > 2970) { //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
+            this.trilhaTrocada = true;
             this.trocarTrilha('trilha-final');
         }
         //reconhecer personagem na área de interação do baú
         this.estaAreaBau = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoBau.getBounds());
 
-        if(this.estaAreaBau && !this.dica.visible){
+        if (this.estaAreaBau && !this.dica.visible) {
             this.mensagemInteracaoBau.setVisible(true);
             this.mensagemSairInteracaoBau.setVisible(false);
-        } else{
+        } else {
             this.mensagemInteracaoBau.setVisible(false);
         }
 
-        if (this.estaAreaBau && this.dica.visible){
+        if (this.estaAreaBau && this.dica.visible) {
             this.mensagemSairInteracaoBau.setVisible(true);
-        } 
+        }
 
         if (this.estaAreaBau && Phaser.Input.Keyboard.JustDown(this.teclaE)){
             if(!this.dica.visible){
@@ -201,7 +216,25 @@ export default class MainScene extends Phaser.Scene{
 
         //reconhecer personagem na porta
         this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
+
+        //reconhecer personagem na área de interação das flechas
+        this.estaAreaFlechas = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoFlechas.getBounds());
+
+        if (this.estaAreaFlechas && !this.flechasColetadas) {
+            this.mensagemInteracaoFlechas.setVisible(true);
+        } else {
+            this.mensagemInteracaoFlechas.setVisible(false);
+        }
+
+        // Interação para coletar flechas
+        if (this.estaAreaFlechas && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
+            this.arqueiro.collectArrows(); // Coleta flechas (infinitas)
+            this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
+            this.flechasColetadas = true; // Marca como coletadas
+            this.mensagemInteracaoFlechas.setVisible(false);
+        }
     }
+
     //função para trocar de trilha
     trocarTrilha(novaTrilha){
         if(this.trilhaAtual){

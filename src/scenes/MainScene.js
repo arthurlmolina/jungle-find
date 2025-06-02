@@ -101,14 +101,13 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoBau.body.setImmovable(true);     //manter a área imovel ao personagem colidir com ela 
 
         //mensagem para a interação com o baú 
-        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
+        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione  a tecla E para interagir', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para sair', {
+        this.mensagemSairInteracaoBau = this.add.text(400, 560, 'Pressione a tecla E para sair', {
             fontSize: '20px',
-            backgroundColor: '#657117',
-            color: 'black',
+            color: 'white',
             padding: { x: 4, y: 4 }
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 

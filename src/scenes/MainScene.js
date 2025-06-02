@@ -1,4 +1,5 @@
 import Archer from '../characters/Archer.js'
+import Goblin from '../characters/Goblin.js';   
 
 export default class MainScene extends Phaser.Scene{ 
     player;
@@ -41,7 +42,15 @@ export default class MainScene extends Phaser.Scene{
         this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
             frameWidth: 100,
             frameHeight: 100
+        }); 
+
+        
+        // Carrega a sprite do Goblin (nome 'Ataque')
+        this.load.spritesheet('Ataque', 'src/assets/mobs/Goblin/Ataque.png', {
+            frameWidth: 150,
+            frameHeight: 100
         });
+    
     }
 
     create(){
@@ -94,8 +103,12 @@ export default class MainScene extends Phaser.Scene{
 
         this.cursors.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Adiciona a tecla SPACE para atirar
 
+        // Criar o Goblin
+        this.Goblin = new Goblin(this, 400,554 )  // 1935, 533
+        this.Goblin.setScale(2.5); //alterar o tamanho do personagem
 
-
+        this.physics.add.collider(this.Goblin, this.plataformas);  //adiciona colisao entre o goblin e plataformas
+    
     }
 
     update(){
@@ -116,3 +129,4 @@ export default class MainScene extends Phaser.Scene{
         this.trilhaAtual.play();
     }   
 }
+

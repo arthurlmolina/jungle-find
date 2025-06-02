@@ -101,14 +101,12 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoBau.body.setImmovable(true);     //manter a área imovel ao personagem colidir com ela 
 
         //mensagem para a interação com o baú 
-        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione  a tecla E para interagir', {
+        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para abrir o baú', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoBau = this.add.text(400, 560, 'Pressione a tecla E para sair', {
-            fontSize: '20px',
-            color: 'white',
-            padding: { x: 4, y: 4 }
+        this.mensagemSairInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para fechar o baú', {
+            fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionando a porta
@@ -212,6 +210,14 @@ export default class MainScene extends Phaser.Scene {
                 this.dicaVisivel=false;
             }
         } 
+
+        if(this.dica.visible && !this.estaAreaBau){
+            if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
+                this.dica.setVisible(false);
+                this.podeMover = true;
+                this.dicaVisivel=false;
+            }
+        }
 
         //reconhecer personagem na porta
         this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());

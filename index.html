@@ -10,19 +10,25 @@
 
     <link rel="stylesheet" href="src/css/index.css">
 </head>
+<style>
+    .contorno-avancado {
+  color: white;
+  -webkit-text-stroke: 1.1px black;
+}
+</style>
 <body>
-    <audio id="audio-menu" loop>
+    <audio autoplay loop>
         <source src="src/audios/trilha-menu.mp3" type="audio/mp3">
     </audio>
     <div class="container">
         <div class="imagem">
-            <h1 class="title">Jungle Find</h1>
+            <h1 class="title contorno-avancado">Jungle Find</h1>
             <div class="botoes">
-                <div class="botao"><a href="game.html"> Start</a></div>
+                <div class="botao"><a href="game.html"> <span class="contorno-avancado">Start</span></a></div>
                 
-                <div class="botao"><a href="controls.html">Controls</a></div>
+                <div class="botao"><a href="controls.html"><span class="contorno-avancado">Controls</span></a></div>
 
-                <div class="botao"><a href="credits.html">Credits</a></div>
+                <div class="botao"><a href="credits.html"><span class="contorno-avancado">Credits</span></a></div>
                 
                 <div id="dica">Clique na tela para ativar o som :&#41;</div>
    

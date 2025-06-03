@@ -1,3 +1,5 @@
+import Arrow from './Arrow.js';
+
 export default class Archer extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y){
         super(scene, x, y, 'archer_idle');
@@ -31,13 +33,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
 
         this.createAnimations();
 
-        // Criar grupo de flechas
-        this.arrowGroup = scene.physics.add.group({
-            classType: Phaser.Physics.Arcade.Sprite,
-            maxSize: 10,
-            runChildUpdate: true
-        });
-
+        this.arrowsList = [];
     }
 
     createAnimations(){
@@ -94,7 +90,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         if (!cursors) return;
 
         // Verifica se deve atirar (tecla SPACE ou CTRL)
-        if (cursors.space && cursors.space.isDown && !this.isShooting) {
+        if (cursors.space && cursors.space.isDown && this.arrows && !this.isShooting) {
             this.shoot();
         }
 
@@ -176,6 +172,31 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
     }
 
     createArrow(){
+        // Posição de spawn da flecha baseada na direção
+        const offsetX = this.facing === 'right' ? 30 : -30;
+        const offsetY = -150; // Um pouco acima do centro do arqueiro
+        
+        const arrowX = this.x + offsetX;
+        const arrowY = this.y + offsetY;
 
+        // Cria nova flecha
+        const arrow = new Arrow(this.scene, arrowX, arrowY, this.facing);
+        this.arrowsList.push(arrow);
+
+        // Adiciona colisão da flecha com as plataformas
+        this.scene.physics.add.collider(arrow, this.scene.plataformas)
+
+        return arrow;
     }
+
+    // Método para coletar flechas 
+    collectArrows() {
+        this.arrows = true;
+    }
+
+    // Método para verificar se tem flechas
+    hasArrows() {
+        return this.arrows;
+    }
+
 }

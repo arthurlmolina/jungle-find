@@ -105,7 +105,7 @@ export default class MainScene extends Phaser.Scene {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para fechar o baú', {
+        this.mensagemSairInteracaoBau = this.add.text(400, 570, 'Pressione a tecla E para fechar o baú', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
@@ -128,9 +128,6 @@ export default class MainScene extends Phaser.Scene {
 
         this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair', {
             fontSize: '20px',
-            backgroundColor: '#657117',
-            color: 'black',
-            padding: { x: 4, y: 4 }
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
         //adicionar as trilhas do jogo
@@ -204,6 +201,7 @@ export default class MainScene extends Phaser.Scene {
                 this.dica.setVisible(true);
                 this.podeMover=false;
                 this.dicaVisivel=true;
+                this.arqueiro.body.setVelocity(0);
             } else{
                 this.dica.setVisible(false);
                 this.podeMover = true;
@@ -211,16 +209,10 @@ export default class MainScene extends Phaser.Scene {
             }
         } 
 
-        if(this.dica.visible && !this.estaAreaBau){
-            if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
-                this.dica.setVisible(false);
-                this.podeMover = true;
-                this.dicaVisivel=false;
-            }
-        }
-
         //reconhecer personagem na porta
         this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
+
+
 
         //reconhecer personagem na área de interação das flechas
         this.estaAreaFlechas = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoFlechas.getBounds());

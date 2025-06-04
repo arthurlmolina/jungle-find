@@ -1,5 +1,6 @@
 import Archer from '../characters/Archer.js'
 import Goblin from '../characters/Goblin.js';
+import Bomba from '../characters/Bomba.js'; // ADICIONADO: Import da classe Bomba
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -16,6 +17,10 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('p-quatro','src/assets/plataforma-grande.png');
         this.load.image('porta', 'src/assets/porta.png')
         this.load.image('dica', 'src/assets/dica.png');
+        this.load.image('CoracaoCheio','src/assets/vida/CoracaoCheio.png');
+        this.load.image('CoracaoMetade','src/assets/vida/CoracaoMetade.png');
+        this.load.image('CoracaoVazio','src/assets/vida/CoracaoVazio.png');
+
         //audios
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
         this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
@@ -43,11 +48,16 @@ export default class MainScene extends Phaser.Scene {
             frameHeight: 100
         });
 
-
         // Carrega a sprite do Goblin (nome 'Ataque')
         this.load.spritesheet('Ataque', 'src/assets/mobs/Goblin/Ataque.png', {
             frameWidth: 150,
             frameHeight: 150
+        });
+
+        // ADICIONADO: Carrega a sprite da Bomba 
+        this.load.spritesheet('Bomba', 'src/assets/mobs/Goblin/Bomba.png', {
+            frameWidth: 100,
+            frameHeight: 90
         });
 
         this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
@@ -151,12 +161,20 @@ export default class MainScene extends Phaser.Scene {
 
         this.cursors.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Adiciona a tecla SPACE para atirar
 
+        // ADICIONADO: Grupo para gerenciar as bombas
+        this.bombasGroup = this.physics.add.group();
 
         // Criar o Goblin
         this.Goblin = new Goblin(this, 1935, 340)  // 1935, 533
-        this.Goblin.setScale(2.5); //alterar o tamanho do personagem
+        this.Goblin.setScale(3.5); //alterar o tamanho do personagem
 
         this.physics.add.collider(this.Goblin, this.plataformas);  //adiciona colisao entre o goblin e plataformas
+
+        // ADICIONADO: Colisão das bombas com as plataformas
+        this.physics.add.collider(this.bombasGroup, this.plataformas);
+
+        // ADICIONADO: Colisão das bombas com o arqueiro (opcional - para dano)
+        this.physics.add.overlap(this.bombasGroup, this.arqueiro, this.bombaHitArqueiro, null, this);
 
         //área de interação com as flechas
         this.areaInteracaoFlechas = this.add.zone(1394, 191, 50, 50);
@@ -171,12 +189,46 @@ export default class MainScene extends Phaser.Scene {
 
         this.flechasColetadas = false;
 
+        // ADICIONADO: Timer para o Goblin jogar bombas automaticamente
+        this.time.addEvent({
+            delay: 3000, // Aumentado para 3 segundos para melhor visualização
+            callback: () => {
+                // Só joga bomba se o arqueiro estiver próximo (dentro de 500 pixels)
+                const distancia = Phaser.Math.Distance.Between(this.Goblin.x, this.Goblin.y, this.arqueiro.x, this.arqueiro.y);
+                if (distancia < 600) { // Aumentado para 600 pixels
+                    console.log('Goblin jogando bomba!'); // Debug
+                    this.Goblin.jogaBomba();
+                }
+            },
+            loop: true  
+        });
+
+        this.CoracaoCheio1 = this.add.image(50,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio2 = this.add.image(90,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio3 = this.add.image(130,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio4 = this.add.image(170,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio5 = this.add.image(210,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+       
+
     }
+
+    // ADICIONADO: Função para quando bomba acerta o arqueiro
+    bombaHitArqueiro(bomba, arqueiro) {
+        bomba.destroy(); // Remove a bomba
+        // Aqui você pode adicionar lógica de dano se quiser
+        console.log('Arqueiro foi atingido por uma bomba!');
+    }
+
+
+    
 
     update() {
         if (this.podeMover) {
             this.arqueiro.move(this.cursors);
         }
+
+        // ADICIONADO: Update do Goblin
+        this.Goblin.update();
 
         if (this.trilhaTrocada == false && this.arqueiro.x > 2970) { //trilhaTrocada adicionada pois essa função deve ser executada apenas uma vez no jogo
             this.trilhaTrocada = true;
@@ -241,4 +293,3 @@ export default class MainScene extends Phaser.Scene {
         this.trilhaAtual.play();
     }   
 }
-

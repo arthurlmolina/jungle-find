@@ -1,5 +1,6 @@
 import Archer from '../characters/Archer.js'
-import Bomba from '../characters/Bomba.js'; // ADICIONADO: Import da classe Bomba
+import Cobra from '../characters/Cobra.js'
+
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -24,6 +25,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
         this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
         
+
+        //Adiciona o Arqueiro
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
             frameHeight: 100
@@ -51,6 +54,13 @@ export default class MainScene extends Phaser.Scene {
             frameWidth: 24,
             frameHeight: 5
         });
+
+        //Adiciona a Cobra
+        this.load.spritesheet('Cobra', 'src/assets/mobs/Cobra/Worm/Idle.png',{
+            frameWidth: 90,
+            frameHeight: 80
+        });
+
 
     }
 
@@ -141,6 +151,15 @@ export default class MainScene extends Phaser.Scene {
         this.arqueiro.setDepth(0);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
+
+        
+        //Criar Cobra
+        this.Cobra = new Cobra(this, 1835, 500);
+        this.Cobra.setScale(4.2); //alterar o tamanho do personagem 
+        this.Cobra.setDepth(0);
+
+        this.physics.add.collider(this.Cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
+
 
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
 

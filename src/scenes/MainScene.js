@@ -154,8 +154,8 @@ export default class MainScene extends Phaser.Scene {
 
         
         //Criar Cobra
-        this.Cobra = new Cobra(this, 1835, 500);
-        this.Cobra.setScale(4.2); //alterar o tamanho do personagem 
+        this.Cobra = new Cobra(this, 1800, 500);
+        this.Cobra.setScale(4.8); //alterar o tamanho do personagem 
         this.Cobra.setDepth(0);
 
         this.physics.add.collider(this.Cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas

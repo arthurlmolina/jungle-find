@@ -70,7 +70,7 @@ export default class MainScene extends Phaser.Scene {
     create(){
         this.podeMover = true;
         this.dicaVisivel = false;
-
+        this.painelVisivel=false;
         this.background = this.add.image(0,300, 'fundo')//posicionando a imagem na posição x=0 y=300
         this.background.setOrigin(0, 0.5); //para fazer a imagem começar do inicio no ponto definida na linha acima
 
@@ -132,11 +132,11 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoPorta.body.setImmovable(true);
 
         //mensagem para a interação com a porta
-        this.mensagemInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para interagir', {
+        this.mensagemInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para acessar painel', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair', {
+        this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair do painel', {
             fontSize: '20px',
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
@@ -264,6 +264,17 @@ export default class MainScene extends Phaser.Scene {
         //reconhecer personagem na porta
         this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
 
+        if (this.estaAreaPorta && !painelVisivel) {
+            this.mensagemInteracaoPorta.setVisible(true);
+            this.mensagemSairInteracaoPorta.setVisible(false);
+            
+        } else {
+            this.mensagemInteracaoPorta.setVisible(false);
+        }
+
+        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)){
+
+        }
 
 
         //reconhecer personagem na área de interação das flechas
@@ -291,5 +302,34 @@ export default class MainScene extends Phaser.Scene {
         }
         this.trilhaAtual = this.sound.add(novaTrilha, {loop: true, volume: 0.3});
         this.trilhaAtual.play();
-    }   
+    }
+    
+    
+    // verificaSenha(){
+    //     const painel = document.getElementById('painel-senha');
+    //     painel.style.display="block";
+    //     const senha = document.getElementById('campo-senha');
+    //     const btn = document.getElementById('btn-porta');
+    //     const mensagem = document.getElementById('mensagem');
+
+    //     btn.addEventListener('click', function(){
+    //         const resposta = senha.value.toLowerCase();
+
+    //         if (resposta !== 'cidão'){
+    //             painel.classList.add('erro');
+    //             mensagem.textContent="ERRO@R% ERROR2032!"
+    //             setTimeout(function(){
+    //                 painel.classList.remove('erro');
+    //                 mensagem.textContent=""
+    //             }, 3000);
+    //             mensagem.textContent="ERRO@R% ERROR2032!"
+    //         } else{
+    //             painel.classList.add('acerto');
+    //             setTimeout(function(){
+
+    //             },2000);
+    //         }
+    // })
+    
+    // };
 }

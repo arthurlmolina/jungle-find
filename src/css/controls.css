@@ -47,7 +47,7 @@ html, body {
 body {
   background: linear-gradient(45deg, var(--verde-floresta), var(--verde-musgo));
   background-size: 400% 400%;
-  animation: gradientShift 4s ease infinite;
+  animation: animacaoFundo 4s ease infinite;
   width: 100vw;
   height: 100vh;
   font-family: 'Press Start 2P', cursive;
@@ -56,7 +56,7 @@ body {
   align-items: center;
 }
 
-@keyframes gradientShift {
+@keyframes animacaoFundo {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }

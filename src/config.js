@@ -6,7 +6,7 @@ var config = {
     pixelArt: true,
     roundPixels: true,
     width: 1366,
-    height: 647,
+    height: 600, 
     physics:{ //definindo a gravidade do jogo (tipo: arcade / simples e rapido)
         default: 'arcade',
         arcade:{ 

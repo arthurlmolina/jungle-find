@@ -1,5 +1,7 @@
 import Archer from '../characters/Archer.js'
 import Cobra from '../characters/Cobra.js'
+import Fireball from '../characters/Fireball.js';
+import Arrow from '../characters/Arrow.js';
 
 
 export default class MainScene extends Phaser.Scene {
@@ -54,12 +56,35 @@ export default class MainScene extends Phaser.Scene {
         });
 
         //Adiciona a Cobra
-        this.load.spritesheet('Cobra', 'src/assets/mobs/Cobra/Worm/Idle.png',{
+        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png',{
             frameWidth: 90,
             frameHeight: 80
         });
 
+        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png',{
+            frameWidth: 90,
+            frameHeight: 80
+        });
+        
+        this.load.spritesheet('worm_get_hit', 'src/assets/mobs/Cobra/Worm/Get Hit.png',{
+            frameWidth: 90,
+            frameHeight: 80
+        });
 
+        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png',{
+            frameWidth: 90,
+            frameHeight: 80
+        });
+
+        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png',{
+            frameWidth: 46,
+            frameHeight: 46
+        });
+
+        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png',{
+            frameWidth: 46,
+            frameHeight: 46
+        });
     }
 
     create(){
@@ -142,28 +167,25 @@ export default class MainScene extends Phaser.Scene {
 
         // Criar o arqueiro
         this.arqueiro = new Archer(this, 50, 533);
-        this.arqueiro.setScale(2.5); //alterar o tamanho do personagem 
-        this.arqueiro.setDepth(0);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
         
         //Criar Cobra
-        this.Cobra = new Cobra(this, 1800, 500);
-        this.Cobra.setScale(4.8); //alterar o tamanho do personagem 
-        this.Cobra.setDepth(0);
+        this.cobra = new Cobra(this, 1800, 300);
 
-        this.physics.add.collider(this.Cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
+        this.physics.add.collider(this.cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
 
 
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
+        this.cameras.main.setLerp(0.1, 0.1); //suaviza movimento da camera
 
         this.cursors = this.input.keyboard.createCursorKeys(); //referencia as teclas de seta do teclado
 
         this.cursors.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Adiciona a tecla SPACE para atirar
 
         //área de interação com as flechas
-        this.areaInteracaoFlechas = this.add.zone(1394, 191, 50, 50);
+        this.areaInteracaoFlechas = this.add.zone(1394, 191, 70, 30);
         this.physics.world.enable(this.areaInteracaoFlechas);
         this.areaInteracaoFlechas.body.setAllowGravity(false);
         this.areaInteracaoFlechas.body.setImmovable(true);
@@ -181,7 +203,49 @@ export default class MainScene extends Phaser.Scene {
         this.CoracaoCheio4 = this.add.image(170,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
        
+        this.fireballs = this.physics.add.group({
+            classType: Fireball, // O grupo criará objetos da classe Fireball
+            runChildUpdate: true,
 
+            createCallback: (fireball) => {
+                // Esta função é chamada toda vez que um NOVO objeto é criado pelo grupo.
+                // 'fireball' é a instância que acabou de ser criada e JÁ TEM um corpo de física.
+                const bodyWidth = 10;
+                const bodyHeight = 10;
+                fireball.body.setSize(bodyWidth, bodyHeight);
+            
+                const bodyOffsetX = 17;
+                const bodyOffsetY = 19;
+                fireball.body.setOffset(bodyOffsetX, bodyOffsetY);
+            }
+        });
+
+        this.physics.add.collider(this.fireballs, this.plataformas, (fireball, plataforma) => {
+            // Esta função é executada no momento exato da colisão.
+            // 'fireball' é a instância específica que colidiu.
+            fireball.emit('explode');
+        });
+
+        this.arrows = this.physics.add.group({
+            classType: Arrow, // A classe que o grupo vai usar
+            runChildUpdate: true
+        });
+
+        this.physics.add.overlap(
+            this.cobra, // O grupo de flechas
+            this.arrows,   // O grupo de inimigos (ou uma instância única 'this.worm')
+            (cobra, arrow) => {
+                // Esta função é chamada quando uma flecha acerta um worm
+            
+                // O worm toma o dano
+                cobra.takeHit();
+
+                // A flecha é desativada
+                arrow.hitTarget();
+            },
+            null,
+            this
+        );
     } 
 
     update() {
@@ -249,21 +313,24 @@ export default class MainScene extends Phaser.Scene {
         }
 
         //reconhecer personagem na área de interação das flechas
-        this.estaAreaFlechas = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoFlechas.getBounds());
+        const estaSobreposto = this.physics.world.overlap(this.arqueiro, this.areaInteracaoFlechas);
 
-        if (this.estaAreaFlechas && !this.flechasColetadas) {
+        // Mostra/esconde a mensagem baseado na sobreposição FÍSICA
+        if (estaSobreposto && !this.flechasColetadas) {
             this.mensagemInteracaoFlechas.setVisible(true);
         } else {
             this.mensagemInteracaoFlechas.setVisible(false);
         }
 
-        // Interação para coletar flechas
-        if (this.estaAreaFlechas && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
-            this.arqueiro.collectArrows(); // Coleta flechas (infinitas)
+        // Lógica de interação para coletar flechas usa a mesma verificação precisa
+        if (estaSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
+            this.arqueiro.collectArrows(); // Coleta flechas
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
             this.flechasColetadas = true; // Marca como coletadas
-            this.mensagemInteracaoFlechas.setVisible(false);
+            this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
+
+        this.cobra.update(this.arqueiro);
     } //fim update
 
 

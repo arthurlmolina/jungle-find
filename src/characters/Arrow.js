@@ -1,60 +1,23 @@
 export default class Arrow extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, direction) {
         super(scene, x, y, 'arrow');
+    }
 
-        // Adiciona a flecha na cena
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
+    launch(x, y, facing){
+        this.body.reset(x, y);
+        this.setActive(true);
+        this.setVisible(true);
 
-        this.body.setAllowGravity(true);
-        this.body.setGravityY(100);
-        this.setCollideWorldBounds(false);
-        this.body.onWorldBounds = true;
+        this.body.setAllowGravity(false);
+        this.body.setSize(20, 5); // Ajuste o tamanho da caixa de colisão da flecha
+        this.setScale(4)
 
-        this.direction = direction;
+        const speed = 800;
+        const velocityX = (facing === 'right') ? speed : -speed;
+        this.setVelocityX(velocityX);
 
-        this.createAnimations();
-
-        // Configurações da flecha
-        this.setScale(3);
-        this.speed = 600;
-        this.direction = direction;
-        this.lifeTime = 3000; // 3 segundos de vida
-
-        // Ajuste do corpo de colisão
-        this.body.setSize(20, 8);
-        this.body.setOffset(2, 2);
-
-
-        // Garante que não há gravidade aplicada
-        this.body.setGravityY(0);
-        this.body.gravity.y = 0;
-
-        // Define a velocidade baseada na direção (DEPOIS das configurações de física)
-        if (direction === 'left') {
-            this.setVelocityX(-this.speed);
-            this.setVelocityY(0); // Força velocidade Y = 0
-            this.setFlipX(true);
-        } else {
-            this.setVelocityX(this.speed);
-            this.setVelocityY(0); // Força velocidade Y = 0
-            this.setFlipX(false);
-        }
-
-        this.play('arrow');
-
-        // Timer para autodestruição
-        this.lifeTimer = scene.time.delayedCall(this.lifeTime, () => {
-            this.destroy();
-        });
-
-        // Configurações de física 
-        this.body.setAllowGravity(false); // Desabilita gravidade PRIMEIRO
-        this.setCollideWorldBounds(false);
-
-        // Garante que não há gravidade aplicada
-        this.body.setGravityY(0);
-        this.body.gravity.y = 0;
+        // Vira a imagem da flecha
+        this.setFlipX(facing === 'left');
 
     }
 
@@ -67,6 +30,13 @@ export default class Arrow extends Phaser.Physics.Arcade.Sprite {
                 repeat: -1
             });
         }
+    }
+
+        // Método chamado quando a flecha atinge algo
+    hitTarget() {
+        // Desativa a flecha para que o grupo possa reutilizá-la
+        this.setActive(false);
+        this.setVisible(false);
     }
 
 }

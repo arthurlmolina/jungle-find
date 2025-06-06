@@ -1,10 +1,12 @@
 import MainScene from "./scenes/MainScene.js";
-import IntroScene from "./scenes/IntroScene.js";
+//import IntroScene from "./scenes/IntroScene.js";
 var config = {
     //configurações gerais do phaser
     type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
-    width: 800,
-    height: 600,
+    pixelArt: true,
+    roundPixels: true,
+    width: 1366,
+    height: 647,
     physics:{ //definindo a gravidade do jogo (tipo: arcade / simples e rapido)
         default: 'arcade',
         arcade:{ 
@@ -12,7 +14,11 @@ var config = {
             debug: false 
         }
     },
-    scene: [IntroScene, MainScene]
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    scene: [MainScene]
 
 };
 

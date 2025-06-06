@@ -34,6 +34,9 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         this.createAnimations();
 
         this.arrowsList = [];
+
+        this.setScale(2.5); //alterar o tamanho do personagem 
+        this.setDepth(0);
     }
 
     createAnimations(){
@@ -160,7 +163,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         this.anims.play('archer_shoot', true);
 
         // Cria a flecha após um pequeno delay (para sincronizar com a animação)
-        this.scene.time.delayedCall(200, () => {
+        this.scene.time.delayedCall(250, () => {
             this.createArrow();
         });
 
@@ -172,21 +175,20 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
     }
 
     createArrow(){
-        // Posição de spawn da flecha baseada na direção
-        const offsetX = this.facing === 'right' ? 30 : -30;
-        const offsetY = -150; // Um pouco acima do centro do arqueiro
-        
-        const arrowX = this.x + offsetX;
-        const arrowY = this.y + offsetY;
+    // Posição de spawn da flecha
+    // O seu cálculo de Y (-150) estava muito alto, vamos ajustar para o centro do corpo
+    const offsetY = -this.body.height * 0.5; // No meio da altura do corpo de física
+    const offsetX = this.facing === 'right' ? 30 : -30;
+    const arrowX = this.x + offsetX;
+    const arrowY = this.body.y + offsetY; // Usar this.body.y como referência é mais preciso
 
-        // Cria nova flecha
-        const arrow = new Arrow(this.scene, arrowX, arrowY, this.facing);
-        this.arrowsList.push(arrow);
+    // Pede uma flecha para o grupo da cena
+    const arrow = this.scene.arrows.get();
 
-        // Adiciona colisão da flecha com as plataformas
-        this.scene.physics.add.collider(arrow, this.scene.plataformas)
-
-        return arrow;
+    if (arrow) {
+        // Dispara a flecha a partir da posição calculada
+        arrow.launch(arrowX, arrowY, this.facing);
+    }
     }
 
     // Método para coletar flechas 

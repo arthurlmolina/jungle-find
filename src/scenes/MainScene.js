@@ -66,6 +66,7 @@ export default class MainScene extends Phaser.Scene {
         this.podeMover = true;
         this.dicaVisivel = false;
         this.painelVisivel=false;
+        this.painelConcluido=false;
         this.background = this.add.image(0,300, 'fundo')//posicionando a imagem na posição x=0 y=300
         this.background.setOrigin(0, 0.5); //para fazer a imagem começar do inicio no ponto definida na linha acima
 
@@ -130,7 +131,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair do painel', {
             fontSize: '20px',
-        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(300);
 
         //adicionar as trilhas do jogo
         this.trilhaAtual = this.sound.add('trilha-inicial', { loop: true, volume: 0.3 });
@@ -221,32 +222,39 @@ export default class MainScene extends Phaser.Scene {
         } 
 
        //reconhecer personagem na porta
-        this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
+       if (!this.painelConcluido){
+            this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
 
+            if (this.estaAreaPorta && !this.painelVisivel) {
+                this.mensagemInteracaoPorta.setVisible(true);
+                this.mensagemSairInteracaoPorta.setVisible(false);
+            } else {
+                this.mensagemInteracaoPorta.setVisible(false);
+            }
 
-        if (this.estaAreaPorta && !this.painelVisivel) {
-            this.mensagemInteracaoPorta.setVisible(true);
+            if (this.estaAreaPorta && this.painelVisivel) {
+                this.mensagemSairInteracaoPorta.setVisible(true);
+            }
+
+            if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)){
+                if(!this.painelVisivel){
+                    this.arqueiro.setVelocity(0); 
+                    this.podeMover=false;
+                    this.painelVisivel=true;
+                    this.verificaSenha();
+                } else{
+                    this.podeMover = true;
+                    this.painelVisivel=false;
+                }
+            } 
+        } else{
+            this.areaInteracaoPorta.destroy()
+            this.mensagemInteracaoBau.setVisible(false);
             this.mensagemSairInteracaoPorta.setVisible(false);
-        } else {
-            this.mensagemInteracaoPorta.setVisible(false);
         }
 
-        if (this.estaAreaPorta && this.painelVisible) {
-          this.mensagemSairInteracaoPorta.setVisible(true);
-        }
 
-        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE&& !this.painelVisivel)){
-            arqueiro.setVelocity(0); 
-            podeMover=false;
-            painelVisivel=true;
-            verificaSenha();
-        }
 
-        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE) && this.painelVisivel) {
-            this.painel.style.display="none";
-            this.podeMover=true;
-            this.painelVisivel =false;
-        }
 
         //reconhecer personagem na área de interação das flechas
         this.estaAreaFlechas = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoFlechas.getBounds());
@@ -264,6 +272,7 @@ export default class MainScene extends Phaser.Scene {
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false);
         }
+
     } //fim update
 
 
@@ -277,35 +286,40 @@ export default class MainScene extends Phaser.Scene {
     }
     
     
-    // verificaSenha(){
-    //     const painel = document.getElementById('painel-senha');
-    //     painel.style.display="block";
-    //     const senha = document.getElementById('campo-senha');
-    //     const btn = document.getElementById('btn-porta');
-    //     const mensagem = document.getElementById('mensagem');
+    verificaSenha(){
+        const painel = document.getElementById('painel-senha');
+        painel.style.display="block";
+        const senha = document.getElementById('campo-senha');
+        const btn = document.getElementById('btn-porta');
+        const mensagem = document.getElementById('mensagem');
+        const efeito = document.getElementById('idEfeito');
 
-    //     btn.addEventListener('click', function(){
-    //         const resposta = senha.value.toLowerCase();
+        btn.addEventListener('click', () => {
+            const resposta = senha.value.toLowerCase();
 
-    //         if (resposta !== 'cidão'){
-    //             painel.classList.add('erro');
-    //             mensagem.textContent="ERRO@R% ERROR2032!."
-    //             setTimeout(function(){
-    //                 painel.classList.remove('erro');
-    //                 mensagem.textContent=""
-    //             }, 3000);
-    //         } else{
-    //             painel.classList.add('acerto');
-    //             mensagem.textContent="Chave autenticada com sucesso!"
-    //             setTimeout(function(){
-    //                  //teletransportando o jogador 
-    //                  painel.style.display= "none";
-    //                  this.painelpainelVisivel=false;                 
-    //                  this.areaInterecaoPorta.destroy();
-    //                  this.arqueiro.setX(2970); 
-    //                  this.arqueiro.setY(533); 
-    //             },2000);
-    //         }
-    // }) //fim evento click
-    // }
+            if (resposta !== 'cidão'){
+                efeito.classList.add('erro');
+                mensagem.classList.add('erroMensagem')
+                mensagem.textContent="ERRO@R% ERROR2032!."
+                setTimeout( () =>{
+                    efeito.classList.remove('erro');
+                    mensagem.classList.remove('erroMensagem')
+                    mensagem.textContent=""
+                }, 3000);
+            } else{
+                efeito.classList.add('acerto');
+                mensagem.classList.add('acertoMensagem')
+                mensagem.textContent="Chave autenticada com sucesso!"
+                setTimeout(() => {
+                     //teletransportando o jogador 
+                     this.podeMover=true;
+                     painel.style.display= "none"; 
+                     this.painelVisivel=false;        
+                     this.painelConcluido=true;
+                     this.arqueiro.setX(2970); 
+                     this.arqueiro.setY(533); 
+                },2000);
+            }
+    }) //fim evento click
+    }
 }

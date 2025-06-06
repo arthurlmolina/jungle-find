@@ -69,11 +69,6 @@ export default class MainScene extends Phaser.Scene {
             frameWidth: 90,
             frameHeight: 80
         });
-        
-        this.load.spritesheet('worm_get_hit', 'src/assets/mobs/Cobra/Worm/Get Hit.png',{
-            frameWidth: 90,
-            frameHeight: 80
-        });
 
         this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png',{
             frameWidth: 90,

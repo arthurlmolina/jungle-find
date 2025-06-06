@@ -119,9 +119,6 @@ export default class MainScene extends Phaser.Scene {
         //adicionando a porta
         this.plataformas.create(2742, 283, 'porta')
 
-        //adicionando a porta
-        this.plataformas.create(2742, 283, 'porta')
-
         //área de intereção com o porta
         this.areaInteracaoPorta = this.add.zone(2742, 283, 450, 470);
         this.physics.world.enable(this.areaInteracaoPorta);
@@ -174,7 +171,7 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoFlechas.body.setImmovable(true);
 
         //mensagem para interação com as flechas
-        this.mensagemInteracaoFlechas = this.add.text(400, 450, 'Pressione a tecla E para coletar flechas', {
+        this.mensagemInteracaoFlechas = this.add.text(400, 450, 'Pressione a tecla E para coletar as flechas', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
@@ -225,21 +222,33 @@ export default class MainScene extends Phaser.Scene {
             }
         } 
 
-        //reconhecer personagem na porta
+       //reconhecer personagem na porta
         this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
+
 
         if (this.estaAreaPorta && !this.painelVisivel) {
             this.mensagemInteracaoPorta.setVisible(true);
             this.mensagemSairInteracaoPorta.setVisible(false);
-            this.verificaSenha();
         } else {
             this.mensagemInteracaoPorta.setVisible(false);
         }
 
-        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)){
-
+        if (this.estaAreaPorta && this.painelVisible) {
+          this.mensagemSairInteracaoPorta.setVisible(true);
         }
 
+        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE&& !this.painelVisivel)){
+            arqueiro.setVelocity(0); 
+            podeMover=false;
+            painelVisivel=true;
+            verificaSenha();
+        }
+
+        if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE) && this.painelVisivel) {
+            this.painel.style.display="none";
+            this.podeMover=true;
+            this.painelVisivel =false;
+        }
 
         //reconhecer personagem na área de interação das flechas
         this.estaAreaFlechas = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoFlechas.getBounds());
@@ -257,7 +266,8 @@ export default class MainScene extends Phaser.Scene {
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false);
         }
-    }
+    } //fim update
+
 
     //função para trocar de trilha
     trocarTrilha(novaTrilha){
@@ -269,32 +279,35 @@ export default class MainScene extends Phaser.Scene {
     }
     
     
-    verificaSenha(){
-        const painel = document.getElementById('painel-senha');
-        painel.style.display="block";
-        const senha = document.getElementById('campo-senha');
-        const btn = document.getElementById('btn-porta');
-        const mensagem = document.getElementById('mensagem');
+    // verificaSenha(){
+    //     const painel = document.getElementById('painel-senha');
+    //     painel.style.display="block";
+    //     const senha = document.getElementById('campo-senha');
+    //     const btn = document.getElementById('btn-porta');
+    //     const mensagem = document.getElementById('mensagem');
 
-        btn.addEventListener('click', function(){
-            const resposta = senha.value.toLowerCase();
+    //     btn.addEventListener('click', function(){
+    //         const resposta = senha.value.toLowerCase();
 
-            if (resposta !== 'cidão'){
-                painel.classList.add('erro');
-                mensagem.textContent="ERRO@R% ERROR2032!"
-                setTimeout(function(){
-                    painel.classList.remove('erro');
-                    mensagem.textContent=""
-                }, 3000);
-                mensagem.textContent="ERRO@R% ERROR2032!"
-            } else{
-                painel.classList.add('acerto');
-                mensagem.textContent="Chave autenticada com sucesso!"
-                setTimeout(function(){
-
-                },2000);
-            }
-    })
-    
-    };
+    //         if (resposta !== 'cidão'){
+    //             painel.classList.add('erro');
+    //             mensagem.textContent="ERRO@R% ERROR2032!."
+    //             setTimeout(function(){
+    //                 painel.classList.remove('erro');
+    //                 mensagem.textContent=""
+    //             }, 3000);
+    //         } else{
+    //             painel.classList.add('acerto');
+    //             mensagem.textContent="Chave autenticada com sucesso!"
+    //             setTimeout(function(){
+    //                  //teletransportando o jogador 
+    //                  painel.style.display= "none";
+    //                  this.painelpainelVisivel=false;                 
+    //                  this.areaInterecaoPorta.destroy();
+    //                  this.arqueiro.setX(2970); 
+    //                  this.arqueiro.setY(533); 
+    //             },2000);
+    //         }
+    // }) //fim evento click
+    // }
 }

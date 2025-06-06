@@ -88,10 +88,10 @@ export default class MainScene extends Phaser.Scene {
 
     create(){
     //criando os efeitos sonoros
-    this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
-    this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
-    this.somErro = this.sound.add('som', { loop: false, volume: 7 });
-    this.somTeleporte = this.sound.add('somBau', { loop: false, volume: 7 });
+        this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
+        this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
+        this.somErro = this.sound.add('somErro', { loop: false, volume: 7 });
+        this.somTeleporte = this.sound.add('somBau', { loop: false, volume: 7 });
 
         this.podeMover = true;
         this.dicaVisivel = false;
@@ -292,14 +292,11 @@ export default class MainScene extends Phaser.Scene {
             }
         } 
 
-        if(this.painelVisivel && !this.painelConcluido){
-            if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
-                this.painel = document.getElementById('painel-senha');
-                painel.style.display="none"; 
-                this.podeMover=true;
-                this.mensagemSairInteracaoPorta.setVisible(false);
-            }
-        }
+        // if(this.painelSenha && Phaser.Input.Keyboard.JustDown(this.teclaE)){
+        //         this.painelSenha.style.display="none"; 
+        //         this.podeMover=true;
+        //         this.mensagemSairInteracaoPorta.setVisible(false);
+        //     }
 
        //reconhecer personagem na porta
        if (!this.painelConcluido){
@@ -329,7 +326,7 @@ export default class MainScene extends Phaser.Scene {
             } 
         } else{
             this.areaInteracaoPorta.destroy()
-            this.mensagemInteracaoBau.setVisible(false);
+            this.mensagemInteracaoPorta.setVisible(false);
             this.mensagemSairInteracaoPorta.setVisible(false);
         }
 
@@ -370,8 +367,7 @@ export default class MainScene extends Phaser.Scene {
     
     
     verificaSenha(){
-        const painel = document.getElementById('painel-senha');
-        painel.style.display="block";
+        this.painelSenha.style.display="block";
         const senha = document.getElementById('campo-senha');
         const btn = document.getElementById('btn-porta');
         const mensagem = document.getElementById('mensagem');
@@ -401,12 +397,12 @@ export default class MainScene extends Phaser.Scene {
                      //teletransportando o jogador
                      this.somTeleporte.play(); 
                      this.podeMover=true;
-                     painel.style.display= "none"; 
+                     this.painelSenha.style.display= "none"; 
                      this.painelVisivel=false;        
                      this.painelConcluido=true;
                      this.arqueiro.setX(2970); 
                      this.arqueiro.setY(533); 
-                },2000);
+                },4000);
             }
     }) //fim evento click
     }

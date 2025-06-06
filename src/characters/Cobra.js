@@ -131,9 +131,7 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        // A lógica de interrupção de ataque foi REMOVIDA daqui.
-
-        // A lógica de dano e feedback continua:
+        // lógica de dano e feedback (piscar a worm de vermelho para sinalizar o dano)
         this.isHittable = false;
         this.health--;
 
@@ -154,6 +152,8 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
 
     // Também adicione este método 'die()' para organizar o código da morte
     die() {
+        this.isAttacking = false;
+
         this.isDead = true;
         this.play('worm_death', true);
 

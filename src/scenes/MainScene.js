@@ -25,6 +25,9 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
         this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
         this.load.audio('somBau', 'src/audios/som-bau.mp3');
+        this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
+        this.load.audio('somErro', 'src/audios/som-erro.mp3');
+        this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
         
 
         //Adiciona o Arqueiro
@@ -66,11 +69,6 @@ export default class MainScene extends Phaser.Scene {
             frameWidth: 90,
             frameHeight: 80
         });
-        
-        this.load.spritesheet('worm_get_hit', 'src/assets/mobs/Cobra/Worm/Get Hit.png',{
-            frameWidth: 90,
-            frameHeight: 80
-        });
 
         this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png',{
             frameWidth: 90,
@@ -89,10 +87,17 @@ export default class MainScene extends Phaser.Scene {
     }
 
     create(){
+    //criando os efeitos sonoros
+    this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
+    this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
+    this.somErro = this.sound.add('som', { loop: false, volume: 7 });
+    this.somTeleporte = this.sound.add('somBau', { loop: false, volume: 7 });
+
         this.podeMover = true;
         this.dicaVisivel = false;
         this.painelVisivel=false;
         this.painelConcluido=false;
+        this.painelSenha = document.getElementById('painel-senha');
         this.background = this.add.image(0,300, 'fundo')//posicionando a imagem na posição x=0 y=300
         this.background.setOrigin(0, 0.5); //para fazer a imagem começar do inicio no ponto definida na linha acima
 
@@ -141,10 +146,10 @@ export default class MainScene extends Phaser.Scene {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
 
-        this.somBau = this.sound.add('somBau', { loop: false, volume: 0.5 });
+
 
         //adicionando a porta
-        this.plataformas.create(2742, 283, 'porta')
+        this.plataformas.create(2742, 283, 'porta');
 
         //área de intereção com o porta
         this.areaInteracaoPorta = this.add.zone(2742, 283, 450, 470);
@@ -162,7 +167,7 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(300);
 
         //adicionar as trilhas do jogo
-        this.trilhaAtual = this.sound.add('trilha-inicial', { loop: true, volume: 0.3 });
+        this.trilhaAtual = this.sound.add('trilha-inicial', { loop: true, volume: 1 });
         this.trilhaAtual.play();
         this.trilhaTrocada = false;
 
@@ -289,7 +294,7 @@ export default class MainScene extends Phaser.Scene {
 
         if(this.painelVisivel && !this.painelConcluido){
             if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
-                const painel = document.getElementById('painel-senha');
+                this.painel = document.getElementById('painel-senha');
                 painel.style.display="none"; 
                 this.podeMover=true;
                 this.mensagemSairInteracaoPorta.setVisible(false);
@@ -359,7 +364,7 @@ export default class MainScene extends Phaser.Scene {
         if(this.trilhaAtual){
             this.trilhaAtual.stop();
         }
-        this.trilhaAtual = this.sound.add(novaTrilha, {loop: true, volume: 0.3});
+        this.trilhaAtual = this.sound.add(novaTrilha, {loop: true, volume: 0.1});
         this.trilhaAtual.play();
     }
     
@@ -379,17 +384,22 @@ export default class MainScene extends Phaser.Scene {
                 efeito.classList.add('erro');
                 mensagem.classList.add('erroMensagem')
                 mensagem.textContent="ERRO@R% ERROR2032!."
+                this.somErro.play();
                 setTimeout( () =>{
                     efeito.classList.remove('erro');
                     mensagem.classList.remove('erroMensagem')
                     mensagem.textContent=""
                 }, 3000);
+
             } else{
+                this.somAcerto.play();
                 efeito.classList.add('acerto');
                 mensagem.classList.add('acertoMensagem')
                 mensagem.textContent="Chave autenticada com sucesso!"
+
                 setTimeout(() => {
-                     //teletransportando o jogador 
+                     //teletransportando o jogador
+                     this.somTeleporte.play(); 
                      this.podeMover=true;
                      painel.style.display= "none"; 
                      this.painelVisivel=false;        

@@ -31,7 +31,7 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
         this.lastFireTime = 0;
         this.visionRadius = 250;
         this.target = null;
-        this.health = 4;
+        this.health = 10;
         this.isDead = false;
         this.isAttacking = false;
         this.attackCooldown = false;

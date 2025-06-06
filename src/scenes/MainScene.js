@@ -24,6 +24,7 @@ export default class MainScene extends Phaser.Scene {
         //audios
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
         this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
+        this.load.audio('somBau', 'src/audios/som-bau.mp3');
         
 
         //Adiciona o Arqueiro
@@ -119,7 +120,7 @@ export default class MainScene extends Phaser.Scene {
         this.bau = this.plataformas.create(2070, 340, 'bau').setScale(0.8).refreshBody();
 
         //adiciona a dica na tela (no momento está invisível)
-        this.dica = this.add.image(400, 300, 'dica').setVisible(false).setScrollFactor(0);
+        this.dica = this.add.image(683, 300, 'dica').setVisible(false).setScrollFactor(0);
         this.dica.setDepth(1);
 
         //adiciona a tecla e na variavel 
@@ -132,13 +133,15 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoBau.body.setImmovable(true);     //manter a área imovel ao personagem colidir com ela 
 
         //mensagem para a interação com o baú 
-        this.mensagemInteracaoBau = this.add.text(400, 450, 'Pressione a tecla E para abrir o baú', {
+        this.mensagemInteracaoBau = this.add.text(683, 450, 'Pressione a tecla E para abrir o baú', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoBau = this.add.text(400, 570, 'Pressione a tecla E para fechar o baú', {
+        this.mensagemSairInteracaoBau = this.add.text(683, 570, 'Pressione a tecla E para fechar o baú', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(2);
+
+        this.somBau = this.sound.add('somBau', { loop: false, volume: 0.5 });
 
         //adicionando a porta
         this.plataformas.create(2742, 283, 'porta')
@@ -150,11 +153,11 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoPorta.body.setImmovable(true);
 
         //mensagem para a interação com a porta
-        this.mensagemInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para acessar painel', {
+        this.mensagemInteracaoPorta = this.add.text(683, 450, 'Pressione a tecla E para acessar painel', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoPorta = this.add.text(400, 450, 'Pressione a tecla E para sair do painel', {
+        this.mensagemSairInteracaoPorta = this.add.text(683, 450, 'Pressione a tecla E para sair do painel', {
             fontSize: '20px',
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(300);
 
@@ -170,13 +173,11 @@ export default class MainScene extends Phaser.Scene {
         this.arqueiro = new Archer(this, 50, 533);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
-
         
         //Criar Cobra
         this.cobra = new Cobra(this, 1800, 300);
 
         this.physics.add.collider(this.cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
-
 
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
         this.cameras.main.setLerp(0.1, 0.1); //suaviza movimento da camera
@@ -192,7 +193,7 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoFlechas.body.setImmovable(true);
 
         //mensagem para interação com as flechas
-        this.mensagemInteracaoFlechas = this.add.text(400, 450, 'Pressione a tecla E para coletar as flechas', {
+        this.mensagemInteracaoFlechas = this.add.text(683, 450, 'Pressione a tecla E para coletar as flechas', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
@@ -274,6 +275,7 @@ export default class MainScene extends Phaser.Scene {
 
         if (this.estaAreaBau && Phaser.Input.Keyboard.JustDown(this.teclaE)){
             if(!this.dica.visible){
+                this.somBau.play();
                 this.dica.setVisible(true);
                 this.podeMover=false;
                 this.dicaVisivel=true;
@@ -284,6 +286,15 @@ export default class MainScene extends Phaser.Scene {
                 this.dicaVisivel=false;
             }
         } 
+
+        if(this.painelVisivel && !this.painelConcluido){
+            if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
+                const painel = document.getElementById('painel-senha');
+                painel.style.display="none"; 
+                this.podeMover=true;
+                this.mensagemSairInteracaoPorta.setVisible(false);
+            }
+        }
 
        //reconhecer personagem na porta
        if (!this.painelConcluido){

@@ -33,8 +33,6 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
 
         this.createAnimations();
 
-        this.arrowsList = [];
-
         this.setScale(2.8); //alterar o tamanho do personagem 
         this.setDepth(0);
     }

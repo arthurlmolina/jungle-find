@@ -18,8 +18,6 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('porta', 'src/assets/porta.png')
         this.load.image('dica', 'src/assets/dica.png');
         this.load.image('CoracaoCheio','src/assets/vida/CoracaoCheio.png');
-        this.load.image('CoracaoMetade','src/assets/vida/CoracaoMetade.png');
-        this.load.image('CoracaoVazio','src/assets/vida/CoracaoVazio.png');
 
         //audios
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');

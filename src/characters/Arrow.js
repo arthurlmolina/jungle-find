@@ -10,7 +10,7 @@ export default class Arrow extends Phaser.Physics.Arcade.Sprite {
 
         this.body.setAllowGravity(false);
         this.body.setSize(20, 5); // Ajuste o tamanho da caixa de colisão da flecha
-        this.setScale(2)
+        this.setScale(3.1)
 
         const speed = 800;
         const velocityX = (facing === 'right') ? speed : -speed;

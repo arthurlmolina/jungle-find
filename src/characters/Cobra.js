@@ -35,7 +35,6 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
         this.isDead = false;
         this.isAttacking = false;
         this.attackCooldown = false;
-        this.attackTimer = null;
         this.isHittable = true;
 
         this.setCollideWorldBounds(true);
@@ -66,16 +65,7 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
             this.scene.anims.create({
                 key: 'worm_attack',
                 frames: this.scene.anims.generateFrameNumbers('worm_attack', { start: 0, end: 15 }),
-                frameRate: 10,
-                repeat: 0
-            });
-        }
-
-        if (!this.scene.anims.exists('worm_hit')) {
-            this.scene.anims.create({
-                key: 'worm_hit',
-                frames: this.scene.anims.generateFrameNumbers('worm_get_hit', { start: 0, end: 2 }),
-                frameRate: 10,
+                frameRate: 11,
                 repeat: 0
             });
         }
@@ -91,22 +81,31 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(arqueiro) {
-        if (this.isDead || this.isAttacking || !this.isHittable) return;
+        // Se estiver morto, atacando, ou se recuperando de um hit, não faz nada.
+        if (this.isDead || this.isAttacking) return;
 
         const distancia = Phaser.Math.Distance.Between(this.x, this.y, arqueiro.x, arqueiro.y);
 
+        // Lógica para iniciar o ataque
         if (distancia < 750) {
             this.isAttacking = true;
             this.play('worm_attack', true);
-            // Cria a bola de fogo após um pequeno delay (para sincronizar com a animação)
-            this.scene.time.delayedCall(1200, () => {
-                this.createFireball();
+
+            // GARANTA QUE APENAS ESTA LINHA EXISTA PARA CRIAR O TIMER.
+            // ELA CRIA O TIMER E O ARMAZENA PARA QUE POSSA SER CANCELADO.
+            this.attackTimer = this.scene.time.delayedCall(1100, () => {
+                // Verificação de segurança: só cria a bola de fogo se AINDA estiver atacando.
+                if (this.isAttacking) {
+                    this.createFireball();
+                }
             });
 
+            // Evento para quando a animação de ataque termina normalmente.
             this.once('animationcomplete-worm_attack', () => {
-                // Simula dano no arqueiro
-                this.isAttacking = false;
-                this.play('worm_idle', true);
+                if (this.isAttacking) {
+                    this.isAttacking = false;
+                    this.play('worm_idle', true);
+                }
             });
         }
     }
@@ -127,23 +126,14 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
     }
 
     takeHit() {
-        // Se não pode ser atingido ou já está morto, para tudo.
-        if (!this.isHittable || this.isDead) return;
-        
-
-        // --- A MUDANÇA PRINCIPAL ESTÁ AQUI ---
-        // O ato de ser atingido tem prioridade máxima e cancela o ataque ATUAL.
-
-        // 1. Imediatamente define que não está mais atacando.
-        this.isAttacking = false;
-
-        // 2. Cancela qualquer fireball que estava prestes a ser criada.
-        if (this.attackTimer) {
-            this.attackTimer.remove();
+        // A verificação de invencibilidade e morte continua essencial
+        if (!this.isHittable || this.isDead) {
+            return;
         }
-        // ------------------------------------
 
-        // Agora, o resto da lógica de "hit"
+        // A lógica de interrupção de ataque foi REMOVIDA daqui.
+
+        // A lógica de dano e feedback continua:
         this.isHittable = false;
         this.health--;
 
@@ -154,20 +144,9 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
 
         if (this.health <= 0) {
             this.die();
-        } else {
-            // Toca a animação de "hit", interrompendo qualquer outra que estivesse tocando.
-            this.play('worm_hit', true);
-
-            // Quando a animação de hit terminar, apenas volta para o estado 'idle'.
-            // Não precisa mais mexer com a flag 'isAttacking' aqui.
-            this.once('animationcomplete-worm_hit', () => {
-                if (!this.isDead) {
-                    this.play('worm_idle', true);
-                }
-            });
         }
 
-        // O timer de invencibilidade continua igual.
+        // O timer para se tornar vulnerável novamente continua aqui.
         this.scene.time.delayedCall(500, () => {
             this.isHittable = true;
         });

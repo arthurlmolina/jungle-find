@@ -10,90 +10,90 @@ export default class MainScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('fundo', 'src/assets/fundo.png');
-        this.load.image('chao', 'src/assets/chao.png');
-        this.load.image('dupla', 'src/assets/plataforma-dupla.png');
-        this.load.image('unica', 'src/assets/plataforma-unica.png');
-        this.load.image('flechas', 'src/assets/flechas.png');
-        this.load.image('bau', 'src/assets/bau.png');
-        this.load.image('p-quatro', 'src/assets/plataforma-grande.png');
-        this.load.image('porta', 'src/assets/porta.png')
-        this.load.image('dica', 'src/assets/dica.png');
-        this.load.image('CoracaoCheio', 'src/assets/vida/CoracaoCheio.png');
-        this.load.image('hugo', 'src/assets/hugo.png');
-        this.load.image('flecha_apagada', 'src/assets/flecha_apagada.PNG')
-        this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
+        this.load.image('fundo', '/jungle-find/src/assets/fundo.png');
+        this.load.image('chao', '/jungle-find/src/assets/chao.png');
+        this.load.image('dupla', '/jungle-find/src/assets/plataforma-dupla.png');
+        this.load.image('unica', '/jungle-find/src/assets/plataforma-unica.png');
+        this.load.image('flechas', '/jungle-find/src/assets/flechas.png');
+        this.load.image('bau', '/jungle-find/src/assets/bau.png');
+        this.load.image('p-quatro', '/jungle-find/src/assets/plataforma-grande.png');
+        this.load.image('porta', '/jungle-find/src/assets/porta.png')
+        this.load.image('dica', '/jungle-find/src/assets/dica.png');
+        this.load.image('CoracaoCheio', '/jungle-find/src/assets/vida/CoracaoCheio.png');
+        this.load.image('hugo', '/jungle-find/src/assets/hugo.png');
+        this.load.image('flecha_apagada', '/jungle-find/src/assets/flecha_apagada.PNG')
+        this.load.video('videoHugo', '/jungle-find/src/assets/cutscenes/final.mp4');
 
 
         //audios
-        this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
-        this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
-        this.load.audio('somBau', 'src/audios/som-bau.mp3');
-        this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
-        this.load.audio('somErro', 'src/audios/som-erro.mp3');
-        this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
-        this.load.audio('somFlecha', 'src/audios/flecha_saiu.mp3');
-        this.load.audio('somFlechaColisao', 'src/audios/flecha_bateu.mp3');
-        this.load.audio('somFireball', 'src/audios/audio_fireball.mp3');
-        this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
-        this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
+        this.load.audio('trilha-inicial', '/jungle-find/src/audios/trilha-jogo.mp3');
+        this.load.audio('trilha-final', '/jungle-find/src/audios/trilha-final.mp3');
+        this.load.audio('somBau', '/jungle-find/src/audios/som-bau.mp3');
+        this.load.audio('somAcerto', '/jungle-find/src/audios/som-acerto.mp3');
+        this.load.audio('somErro', '/jungle-find/src/audios/som-erro.mp3');
+        this.load.audio('somTeleporte', '/jungle-find/src/audios/som-teleporte.mp3');
+        this.load.audio('somFlecha', '/jungle-find/src/audios/flecha_saiu.mp3');
+        this.load.audio('somFlechaColisao', '/jungle-find/src/audios/flecha_bateu.mp3');
+        this.load.audio('somFireball', '/jungle-find/src/audios/audio_fireball.mp3');
+        this.load.audio('somHitArqueiro', '/jungle-find/src/audios/audio_hit.mp3');
+        this.load.audio('somPuloArqueiro', '/jungle-find/src/audios/som_pulo.mp3');
 
         //Adiciona o Arqueiro
-        this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
+        this.load.spritesheet('archer_idle', '/jungle-find/src/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
             frameHeight: 100
         });
-        this.load.spritesheet('archer_walk', 'src/assets/arqueiro/Character/Run.png', {
+        this.load.spritesheet('archer_walk', '/jungle-find/src/assets/arqueiro/Character/Run.png', {
             frameWidth: 100,
             frameHeight: 100
         });
-        this.load.spritesheet('archer_shoot', 'src/assets/arqueiro/Character/Attack.png', {
-            frameWidth: 100,
-            frameHeight: 100
-        });
-
-        this.load.spritesheet('archer_jump', 'src/assets/arqueiro/Character/Jump.png', {
+        this.load.spritesheet('archer_shoot', '/jungle-find/src/assets/arqueiro/Character/Attack.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
+        this.load.spritesheet('archer_jump', '/jungle-find/src/assets/arqueiro/Character/Jump.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('archer_death', 'src/assets/arqueiro/Character/Death.png', {
+        this.load.spritesheet('archer_fall', '/jungle-find/src/assets/arqueiro/Character/Fall.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
+        this.load.spritesheet('archer_death', '/jungle-find/src/assets/arqueiro/Character/Death.png', {
+            frameWidth: 100,
+            frameHeight: 100
+        });
+
+        this.load.spritesheet('arrow', '/jungle-find/src/assets/arqueiro/Arrow/Move.png', {
             frameWidth: 24,
             frameHeight: 5
         });
 
         //Adiciona a Cobra
-        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png', {
+        this.load.spritesheet('worm_idle', '/jungle-find/src/assets/mobs/Cobra/Worm/Idle.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png', {
+        this.load.spritesheet('worm_attack', '/jungle-find/src/assets/mobs/Cobra/Worm/Attack.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png', {
+        this.load.spritesheet('worm_death', '/jungle-find/src/assets/mobs/Cobra/Worm/Death.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png', {
+        this.load.spritesheet('fireball', '/jungle-find/src/assets/mobs/Cobra/Fire Ball/Move.png', {
             frameWidth: 46,
             frameHeight: 46
         });
 
-        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
+        this.load.spritesheet('fireball_explode', '/jungle-find/src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
             frameWidth: 46,
             frameHeight: 46
         });

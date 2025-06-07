@@ -4,7 +4,7 @@ export default class IntroScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.video('intro', 'src/assets/cutscenes/Intro.mp4');
+    this.load.video('intro', '/jungle-find/src/assets/cutscenes/Intro.mp4');
   }
 
   create() {

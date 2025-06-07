@@ -1,7 +1,7 @@
-import MainScene from "./scenes/MainScene.js";
-import EndScene from "./scenes/endScenes.js";
-import IntroScene from "./scenes/IntroScene.js";
-import GameOverScene from "./scenes/GameOverScene.js";
+import MainScene from "/jungle-find/scenes/MainScene.js";
+import EndScene from "/jungle-find/scenes/endScenes.js";
+import IntroScene from "/jungle-find/scenes/IntroScene.js";
+import GameOverScene from "/jungle-find/scenes/GameOverScene.js";
 
 var config = {
     //configurações gerais do phaser

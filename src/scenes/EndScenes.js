@@ -8,7 +8,7 @@ export default class EndScene extends Phaser.Scene {
     preload() {
         // Não precisamos carregar o vídeo aqui, pois ele já foi carregado na MainScene.
         // Se não fosse, a linha seria:
-        // this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
+        // this.load.video('videoHugo', '/jungle-find/src/assets/cutscenes/final.mp4');
     }
 
     create() {
@@ -20,7 +20,7 @@ export default class EndScene extends Phaser.Scene {
         // --- ALTERAÇÃO AQUI ---
         // Quando o vídeo terminar, redireciona o navegador para a página de créditos.
         finalVideo.on('complete', () => {
-            window.location.href = 'credits.html';
+            window.location.href = '/jungle-find/credits.html';
         });
 
     }

@@ -94,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
         //criando os efeitos sonoros
         this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
         this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
-        this.somErro = this.sound.add('somErro', { loop: false, volume: 7 });
+        this.somErro = this.sound.add('somErro', { loop: false, volume: 1 });
         this.somTeleporte = this.sound.add('somBau', { loop: false, volume: 7 });
 
         this.podeMover = true;
@@ -162,11 +162,11 @@ export default class MainScene extends Phaser.Scene {
         this.areaInteracaoPorta.body.setImmovable(true);
 
         //mensagem para a interação com a porta
-        this.mensagemInteracaoPorta = this.add.text(683, 450, 'Pressione a tecla E para acessar painel', {
+        this.mensagemInteracaoPorta = this.add.text(683, 450, 'Pressione a tecla E para acessar o painel', {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        this.mensagemSairInteracaoPorta = this.add.text(683, 450, 'Pressione a tecla E para sair do painel', {
+        this.mensagemSairInteracaoPorta = this.add.text(683, 570, 'Pressione a tecla E para sair do painel', {
             fontSize: '20px',
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(300);
 
@@ -317,12 +317,6 @@ export default class MainScene extends Phaser.Scene {
             }
         }
 
-        // if(this.painelSenha && Phaser.Input.Keyboard.JustDown(this.teclaE)){
-        //         this.painelSenha.style.display="none"; 
-        //         this.podeMover=true;
-        //         this.mensagemSairInteracaoPorta.setVisible(false);
-        //     }
-
         //reconhecer personagem na porta
         if (!this.painelConcluido) {
             this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
@@ -336,6 +330,12 @@ export default class MainScene extends Phaser.Scene {
 
             if (this.estaAreaPorta && this.painelVisivel) {
                 this.mensagemSairInteracaoPorta.setVisible(true);
+                if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
+                    this.painelSenha.style.display = "none";
+                    this.podeMover=true;
+                    this.painelVisivel = false;
+                    this.mensagemSairInteracaoPorta.setVisible(false);
+                }
             }
 
             if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
@@ -351,12 +351,8 @@ export default class MainScene extends Phaser.Scene {
             }
         } else {
             this.areaInteracaoPorta.destroy()
-            this.mensagemInteracaoPorta.setVisible(false);
             this.mensagemSairInteracaoPorta.setVisible(false);
         }
-
-
-
 
         //reconhecer personagem na área de interação das flechas
         const estaSobreposto = this.physics.world.overlap(this.arqueiro, this.areaInteracaoFlechas);

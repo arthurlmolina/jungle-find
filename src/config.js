@@ -6,7 +6,7 @@ import GameOverScene from "./scenes/GameOverScene.js";
 var config = {
     //configurações gerais do phaser
     type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
-    pixelArt: true,
+    pixelArtnp: true,
     roundPixels: true,
     width: 1366,
     height: 600,  //650

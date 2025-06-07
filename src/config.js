@@ -1,5 +1,6 @@
 import MainScene from "./scenes/MainScene.js";
-//import IntroScene from "./scenes/IntroScene.js";
+import EndScene from "./scenes/endScenes.js";
+import IntroScene from "./scenes/IntroScene.js";
 var config = {
     //configurações gerais do phaser
     type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
@@ -11,14 +12,14 @@ var config = {
         default: 'arcade',
         arcade:{ 
             gravity: {y:1500},
-            debug: false 
+            debug: true 
         }
     },
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [MainScene]
+    scene: [IntroScene, MainScene, EndScene]
 
 };
 

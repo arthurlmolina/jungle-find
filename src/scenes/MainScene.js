@@ -2,6 +2,7 @@ import Archer from '../characters/Archer.js'
 import Cobra from '../characters/Cobra.js'
 import Fireball from '../characters/Fireball.js';
 import Arrow from '../characters/Arrow.js';
+import EndScene from './endScenes.js';
 
 
 export default class MainScene extends Phaser.Scene {
@@ -16,10 +17,13 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('unica', 'src/assets/plataforma-unica.png');
         this.load.image('flechas', 'src/assets/flechas.png');
         this.load.image('bau', 'src/assets/bau.png');
-        this.load.image('p-quatro','src/assets/plataforma-grande.png');
+        this.load.image('p-quatro', 'src/assets/plataforma-grande.png');
         this.load.image('porta', 'src/assets/porta.png')
         this.load.image('dica', 'src/assets/dica.png');
-        this.load.image('CoracaoCheio','src/assets/vida/CoracaoCheio.png');
+        this.load.image('CoracaoCheio', 'src/assets/vida/CoracaoCheio.png');
+        this.load.image('hugo', 'src/assets/hugo.png');
+        this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
+
 
         //audios
         this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
@@ -28,7 +32,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
         this.load.audio('somErro', 'src/audios/som-erro.mp3');
         this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
-        
+
 
         //Adiciona o Arqueiro
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
@@ -60,34 +64,34 @@ export default class MainScene extends Phaser.Scene {
         });
 
         //Adiciona a Cobra
-        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png',{
+        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png',{
+        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png',{
+        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png',{
+        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png', {
             frameWidth: 46,
             frameHeight: 46
         });
 
-        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png',{
+        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
             frameWidth: 46,
             frameHeight: 46
         });
     }
 
-    create(){
-    //criando os efeitos sonoros
+    create() {
+        //criando os efeitos sonoros
         this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
         this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
         this.somErro = this.sound.add('somErro', { loop: false, volume: 7 });
@@ -95,15 +99,15 @@ export default class MainScene extends Phaser.Scene {
 
         this.podeMover = true;
         this.dicaVisivel = false;
-        this.painelVisivel=false;
-        this.painelConcluido=false;
+        this.painelVisivel = false;
+        this.painelConcluido = false;
         this.painelSenha = document.getElementById('painel-senha');
-        this.background = this.add.image(0,300, 'fundo')//posicionando a imagem na posição x=0 y=300
+        this.background = this.add.image(0, 300, 'fundo')//posicionando a imagem na posição x=0 y=300
         this.background.setOrigin(0, 0.5); //para fazer a imagem começar do inicio no ponto definida na linha acima
 
         this.plataformas = this.physics.add.staticGroup(); //criando um novo grupo de fisica estática, objetos que não serão afetados pela física, exemplo: chão e plataformas
-    
-        this.plataformas.create(0,554, 'chao').setOrigin(0.01,0.5).refreshBody();
+
+        this.plataformas.create(0, 554, 'chao').setOrigin(0.01, 0.5).refreshBody();
 
         //configurando o tamanho do mundo do jogo 
         // (onde começa eixo x, onde começa eixo y, largura do mundo, altura do mundo)      
@@ -178,7 +182,7 @@ export default class MainScene extends Phaser.Scene {
         this.arqueiro = new Archer(this, 50, 533);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
-        
+
         //Criar Cobra
         this.cobra = new Cobra(this, 1800, 300);
 
@@ -204,12 +208,12 @@ export default class MainScene extends Phaser.Scene {
 
         this.flechasColetadas = false;
 
-        this.CoracaoCheio1 = this.add.image(50,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio2 = this.add.image(90,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio3 = this.add.image(130,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio4 = this.add.image(170,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio5 = this.add.image(210,40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-       
+        this.CoracaoCheio1 = this.add.image(50, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio2 = this.add.image(90, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+
         this.fireballs = this.physics.add.group({
             classType: Fireball, // O grupo criará objetos da classe Fireball
             runChildUpdate: true,
@@ -220,7 +224,7 @@ export default class MainScene extends Phaser.Scene {
                 const bodyWidth = 10;
                 const bodyHeight = 10;
                 fireball.body.setSize(bodyWidth, bodyHeight);
-            
+
                 const bodyOffsetX = 17;
                 const bodyOffsetY = 19;
                 fireball.body.setOffset(bodyOffsetX, bodyOffsetY);
@@ -243,7 +247,7 @@ export default class MainScene extends Phaser.Scene {
             this.arrows,   // O grupo de inimigos (ou uma instância única 'this.worm')
             (cobra, arrow) => {
                 // Esta função é chamada quando uma flecha acerta um worm
-            
+
                 // O worm toma o dano
                 cobra.takeHit();
 
@@ -253,7 +257,20 @@ export default class MainScene extends Phaser.Scene {
             null,
             this
         );
-    } 
+
+        //Adiciona a Imagem do Hugo Jogo com a Interação
+        this.plataformas.create(4000, 461, 'hugo');
+        this.areaInteracaoHugo = this.add.zone(4000, 461, 150, 250);
+        this.physics.world.enable(this.areaInteracaoHugo);
+        this.areaInteracaoHugo.body.setAllowGravity(false);
+        this.areaInteracaoHugo.body.setImmovable(true);
+        this.mensagemInteracaoHugo = this.add.text(683, 550, 'Pressione a tecla E para liberar o Hugo', {
+            fontSize: '20px'
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
+
+        
+
+    }
 
     update() {
         if (this.podeMover) {
@@ -278,19 +295,19 @@ export default class MainScene extends Phaser.Scene {
             this.mensagemSairInteracaoBau.setVisible(true);
         }
 
-        if (this.estaAreaBau && Phaser.Input.Keyboard.JustDown(this.teclaE)){
-            if(!this.dica.visible){
+        if (this.estaAreaBau && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+            if (!this.dica.visible) {
                 this.somBau.play();
                 this.dica.setVisible(true);
-                this.podeMover=false;
-                this.dicaVisivel=true;
+                this.podeMover = false;
+                this.dicaVisivel = true;
                 this.arqueiro.body.setVelocity(0);
-            } else{
+            } else {
                 this.dica.setVisible(false);
                 this.podeMover = true;
-                this.dicaVisivel=false;
+                this.dicaVisivel = false;
             }
-        } 
+        }
 
         // if(this.painelSenha && Phaser.Input.Keyboard.JustDown(this.teclaE)){
         //         this.painelSenha.style.display="none"; 
@@ -298,8 +315,8 @@ export default class MainScene extends Phaser.Scene {
         //         this.mensagemSairInteracaoPorta.setVisible(false);
         //     }
 
-       //reconhecer personagem na porta
-       if (!this.painelConcluido){
+        //reconhecer personagem na porta
+        if (!this.painelConcluido) {
             this.estaAreaPorta = Phaser.Geom.Intersects.RectangleToRectangle(this.arqueiro.getBounds(), this.areaInteracaoPorta.getBounds());
 
             if (this.estaAreaPorta && !this.painelVisivel) {
@@ -313,18 +330,18 @@ export default class MainScene extends Phaser.Scene {
                 this.mensagemSairInteracaoPorta.setVisible(true);
             }
 
-            if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)){
-                if(!this.painelVisivel){
-                    this.arqueiro.setVelocity(0); 
-                    this.podeMover=false;
-                    this.painelVisivel=true;
+            if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+                if (!this.painelVisivel) {
+                    this.arqueiro.setVelocity(0);
+                    this.podeMover = false;
+                    this.painelVisivel = true;
                     this.verificaSenha();
-                } else{
+                } else {
                     this.podeMover = true;
-                    this.painelVisivel=false;
+                    this.painelVisivel = false;
                 }
-            } 
-        } else{
+            }
+        } else {
             this.areaInteracaoPorta.destroy()
             this.mensagemInteracaoPorta.setVisible(false);
             this.mensagemSairInteracaoPorta.setVisible(false);
@@ -353,21 +370,43 @@ export default class MainScene extends Phaser.Scene {
 
 
         this.cobra.update(this.arqueiro);
+        const HugoSobreposto = this.physics.world.overlap(this.arqueiro, this.areaInteracaoHugo);
+
+        // Mostra/esconde a mensagem baseado na sobreposição FÍSICA | Hugo
+        // Em MainScene.js, dentro da função update()
+        // SUBSTITUA a lógica de interação do Hugo por esta:
+
+        // --- Início da Interação com Hugo (Lógica Final do Jogo) ---
+
+        // Mostra ou esconde a mensagem de interação
+        this.mensagemInteracaoHugo.setVisible(HugoSobreposto);
+
+        // Se o jogador estiver na área e pressionar 'E', inicia a cena final
+        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+            // Para a trilha sonora atual antes de mudar de cena
+            this.trilhaAtual.stop();
+
+            // Inicia a cena final que criamos
+            this.scene.start('EndScene');
+        }
+        // --- Fim da Interação com Hugo ---
+
+
     } //fim update
 
 
     //função para trocar de trilha
-    trocarTrilha(novaTrilha){
-        if(this.trilhaAtual){
+    trocarTrilha(novaTrilha) {
+        if (this.trilhaAtual) {
             this.trilhaAtual.stop();
         }
-        this.trilhaAtual = this.sound.add(novaTrilha, {loop: true, volume: 0.1});
+        this.trilhaAtual = this.sound.add(novaTrilha, { loop: true, volume: 0.1 });
         this.trilhaAtual.play();
     }
-    
-    
-    verificaSenha(){
-        this.painelSenha.style.display="block";
+
+
+    verificaSenha() {
+        this.painelSenha.style.display = "block";
         const senha = document.getElementById('campo-senha');
         const btn = document.getElementById('btn-porta');
         const mensagem = document.getElementById('mensagem');
@@ -376,34 +415,34 @@ export default class MainScene extends Phaser.Scene {
         btn.addEventListener('click', () => {
             const resposta = senha.value.toLowerCase();
 
-            if (resposta !== 'cidão'){
+            if (resposta !== 'cidão') {
                 efeito.classList.add('erro');
                 mensagem.classList.add('erroMensagem')
-                mensagem.textContent="ERRO@R% ERROR2032!."
+                mensagem.textContent = "ERRO@R% ERROR2032!."
                 this.somErro.play();
-                setTimeout( () =>{
+                setTimeout(() => {
                     efeito.classList.remove('erro');
                     mensagem.classList.remove('erroMensagem')
-                    mensagem.textContent=""
+                    mensagem.textContent = ""
                 }, 3000);
 
-            } else{
+            } else {
                 this.somAcerto.play();
                 efeito.classList.add('acerto');
                 mensagem.classList.add('acertoMensagem')
-                mensagem.textContent="Chave autenticada com sucesso!"
+                mensagem.textContent = "Chave autenticada com sucesso!"
 
                 setTimeout(() => {
-                     //teletransportando o jogador
-                     this.somTeleporte.play(); 
-                     this.podeMover=true;
-                     this.painelSenha.style.display= "none"; 
-                     this.painelVisivel=false;        
-                     this.painelConcluido=true;
-                     this.arqueiro.setX(2970); 
-                     this.arqueiro.setY(533); 
-                },4000);
+                    //teletransportando o jogador
+                    this.somTeleporte.play();
+                    this.podeMover = true;
+                    this.painelSenha.style.display = "none";
+                    this.painelVisivel = false;
+                    this.painelConcluido = true;
+                    this.arqueiro.setX(2970);
+                    this.arqueiro.setY(533);
+                }, 4000);
             }
-    }) //fim evento click
+        }) //fim evento click
     }
 }

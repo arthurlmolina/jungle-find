@@ -20,7 +20,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         this.setDragX(1);
 
         // Propriedades do arqueiro
-        this.speed = 650; //velocidade do arqueiro
+        this.speed = 690; //velocidade do arqueiro
         this.jump = 650; //força do pulo
         this.arrows = false; //começa sem flechas
         this.lastShot = 0;
@@ -242,8 +242,6 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         // Para o personagem no lugar e desativa a física do corpo
         this.setVelocity(0, 0);
         this.body.enable = false;
-
-        this.scene.somGameOver.play();
 
         // Toca a animação de morte
         this.anims.play('archer_death', true);

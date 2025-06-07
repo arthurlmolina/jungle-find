@@ -37,8 +37,6 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('somFireball', 'src/audios/audio_fireball.mp3');
         this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
         this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
-        this.load.audio('somGameOver', 'src/audios/game_over.mp3');
-
 
         //Adiciona o Arqueiro
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
@@ -116,7 +114,7 @@ export default class MainScene extends Phaser.Scene {
         this.somFireball = this.sound.add('somFireball', { loop: false, volume: 0.6 });
         this.somHitArqueiro = this.sound.add('somHitArqueiro', { loop: false, volume: 6 });
         this.somPuloArqueiro = this.sound.add('somPuloArqueiro', { loop: false, volume: 4.5 });
-        this.somGameOver = this.sound.add('somGameOver', { loop: false, volume: 4.5 });
+
 
         this.podeMover = true;
         this.dicaVisivel = false;

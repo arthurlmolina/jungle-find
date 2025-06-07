@@ -86,14 +86,13 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     z-index: 100;
 }
 
 #texto-senha{
     font-family: monospace;
     font-size: 1.2em;
-    width: 450px;
+    width: 400px;
     position: absolute;
     top: 25%;
     left: 50%;

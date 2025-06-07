@@ -1,16 +1,14 @@
-import Arrow from './Arrow.js';
-
-export default class Archer extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y){
+export default class Archer extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y) {
         super(scene, x, y, 'archer_idle');
 
         //Adiciona o arqueiro e a fisica na cena
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        
+
         this.setOrigin(0.5, 1); // posicionamento do personagem na colisao (inferior esquerdo)
-        
+
         //ajuste de tamanho do frame do personagem
         const bodyWidth = 20;
         const bodyHeight = 35;
@@ -22,13 +20,14 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         this.setDragX(1);
 
         // Propriedades do arqueiro
-        this.speed = 190; //velocidade do arqueiro
+        this.speed = 690; //velocidade do arqueiro
         this.jump = 650; //força do pulo
         this.arrows = false; //começa sem flechas
         this.lastShot = 0;
         this.shootCooldown = 750; // 500ms entre tiros
         this.facing = 'right'; //começa virado para direita
-        this.health = 100; //vida
+        this.health = 5; //vida
+        this.isHittable = true;
         this.isShooting = false; //controlar se estiver atirando
 
         this.createAnimations();
@@ -37,57 +36,57 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         this.setDepth(0);
     }
 
-    createAnimations(){
-    //criação das animações
-    if (!this.scene.anims.exists('archer_idle')) {
-        this.scene.anims.create({
-            key: 'archer_idle',
-            frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 10 }),
-            frameRate: 9,
-            repeat: -1
-        });
+    createAnimations() {
+        //criação das animações
+        if (!this.scene.anims.exists('archer_idle')) {
+            this.scene.anims.create({
+                key: 'archer_idle',
+                frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 10 }),
+                frameRate: 9,
+                repeat: -1
+            });
+        }
+
+        if (!this.scene.anims.exists('archer_walk')) {
+            this.scene.anims.create({
+                key: 'archer_walk',
+                frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 9 }),
+                frameRate: 10,
+                repeat: -1
+            });
+        }
+
+        if (!this.scene.anims.exists('archer_shoot')) {
+            this.scene.anims.create({
+                key: 'archer_shoot',
+                frames: this.scene.anims.generateFrameNumbers('archer_shoot', { start: 0, end: 5 }),
+                frameRate: 12,
+                repeat: 0
+            });
+        }
+
+        if (!this.scene.anims.exists('archer_jump')) {
+            this.scene.anims.create({
+                key: 'archer_jump',
+                frames: this.scene.anims.generateFrameNumbers('archer_jump', { start: 0, end: 1 }),
+                frameRate: 3,
+                repeat: -1
+            });
+        }
+
+        if (!this.scene.anims.exists('archer_fall')) {
+            this.scene.anims.create({
+                key: 'archer_fall',
+                frames: this.scene.anims.generateFrameNumbers('archer_fall', { start: 0, end: 1 }),
+                frameRate: 3,
+                repeat: -1
+            });
+        }
+
+        this.play('archer_idle');
     }
 
-    if (!this.scene.anims.exists('archer_walk')) {
-        this.scene.anims.create({
-            key: 'archer_walk',
-            frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 9 }),
-            frameRate: 10,
-            repeat: -1
-        });
-    }
-
-    if (!this.scene.anims.exists('archer_shoot')) {
-        this.scene.anims.create({
-            key: 'archer_shoot',
-            frames: this.scene.anims.generateFrameNumbers('archer_shoot', { start: 0, end: 5 }),
-            frameRate: 12,
-            repeat: 0
-        });
-    }
-
-    if (!this.scene.anims.exists('archer_jump')) {
-    this.scene.anims.create({
-        key: 'archer_jump',
-        frames: this.scene.anims.generateFrameNumbers('archer_jump', { start: 0, end: 1 }),
-        frameRate: 3,
-        repeat: -1
-    });
-    }
-
-    if (!this.scene.anims.exists('archer_fall')) {
-    this.scene.anims.create({
-        key: 'archer_fall',
-        frames: this.scene.anims.generateFrameNumbers('archer_fall', { start: 0, end: 1 }),
-        frameRate: 3,
-        repeat: -1
-    });
-    }
-
-    this.play('archer_idle');       
-    }
-
-    move(cursors){
+    move(cursors) {
         if (!cursors) return;
 
         // Verifica se deve atirar (tecla SPACE ou CTRL)
@@ -146,7 +145,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
-    shoot(){
+    shoot() {
         const currentTime = this.scene.time.now; // pega o tempo que atirou
 
         // Verifica cooldown
@@ -169,23 +168,63 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite{
         this.once('animationcomplete-archer_shoot', () => {
             this.isShooting = false;
         });
-        
+
     }
 
-    createArrow(){
-    // Posição de spawn da flecha
-    const offsetY = 15; // No meio da altura do corpo de física
-    const offsetX = this.facing === 'right' ? 30 : -30;
-    const arrowX = this.x + offsetX;
-    const arrowY = this.body.y + offsetY; // Usar this.body.y como referência é mais preciso
+    createArrow() {
+        // Posição de spawn da flecha
+        const offsetY = 15; // No meio da altura do corpo de física
+        const offsetX = this.facing === 'right' ? 30 : -30;
+        const arrowX = this.x + offsetX;
+        const arrowY = this.body.y + offsetY; // Usar this.body.y como referência é mais preciso
 
-    // Pede uma flecha para o grupo da cena
-    const arrow = this.scene.arrows.get();
+        // Pede uma flecha para o grupo da cena
+        const arrow = this.scene.arrows.get();
 
-    if (arrow) {
-        // Dispara a flecha a partir da posição calculada
-        arrow.launch(arrowX, arrowY, this.facing);
+        if (arrow) {
+            // Dispara a flecha a partir da posição calculada
+            arrow.launch(arrowX, arrowY, this.facing);
+        }
     }
+
+    takeDamage(damage) {
+        // Se não pode ser atingido (está invencível) ou já está morto, não faz nada
+        if (!this.isHittable) {
+            return;
+        }
+
+        // Fica invencível
+        this.isHittable = false;
+        this.health -= damage; // Decrementa a vida
+
+        // Emite um evento para a cena saber que a vida mudou e precisa atualizar a UI
+        this.emit('health_changed');
+
+        // // Feedback visual de dano (pisca em vermelho)
+        // this.setTint(0xff0000);
+        // this.scene.time.delayedCall(200, () => {
+        //     this.clearTint();
+        // });
+
+        this.scene.flashScreen();
+
+        // Se a vida chegar a zero, chama o método de morte
+        if (this.health <= 0) {
+            this.die();
+        }
+
+        // Timer para voltar a ser vulnerável após um tempo
+        this.scene.time.delayedCall(1000, () => { // 1 segundo de invencibilidade
+            this.isHittable = true;
+        });
+    }
+
+    die() {
+        // Lógica de morte do jogador
+        console.log('Arqueiro morreu!');
+        this.body.enable = false; // Desativa a física
+        // Aqui você pode tocar uma animação de morte e depois reiniciar a cena
+        // Ex: this.scene.scene.restart();
     }
 
     // Método para coletar flechas 

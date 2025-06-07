@@ -1,12 +1,20 @@
 export default class Arrow extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, direction) {
         super(scene, x, y, 'arrow');
+        this.createAnimations();
+        this.lifespanTimer = null;
     }
 
-    launch(x, y, facing){
+    launch(x, y, facing) {
         this.body.reset(x, y);
         this.setActive(true);
         this.setVisible(true);
+        this.body.enable = true;
+
+        // Limpa timer antigo
+        if (this.lifespanTimer) {
+            this.lifespanTimer.remove();
+        }
 
         this.body.setAllowGravity(false);
         this.body.setSize(20, 5); // Ajuste o tamanho da caixa de colisão da flecha
@@ -18,6 +26,8 @@ export default class Arrow extends Phaser.Physics.Arcade.Sprite {
 
         // Vira a imagem da flecha
         this.setFlipX(facing === 'left');
+
+        this.play('arrow', true);
 
     }
 
@@ -32,9 +42,16 @@ export default class Arrow extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-        // Método chamado quando a flecha atinge algo
+    // Método chamado quando a flecha atinge algo
     hitTarget() {
-        // Desativa a flecha para que o grupo possa reutilizá-la
+        if (!this.active) return;
+
+        if (this.lifespanTimer) {
+            this.lifespanTimer.remove();
+        }
+
+        this.body.setVelocity(0, 0);
+        this.body.enable = false;
         this.setActive(false);
         this.setVisible(false);
     }

@@ -123,6 +123,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
         //se apertar seta para cima = pular (verifica se está no chão)
         if (cursors.up.isDown && this.body.blocked.down) {
+            this.scene.somPuloArqueiro.play();
             this.setVelocityY(-this.jump);
             this.anims.play('archer_jump', true);
         }
@@ -161,6 +162,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
         // Cria a flecha após um pequeno delay (para sincronizar com a animação)
         this.scene.time.delayedCall(250, () => {
+            this.scene.somFlecha.play();
             this.createArrow();
         });
 
@@ -193,18 +195,14 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
+        this.scene.somHitArqueiro.play();
+
         // Fica invencível
         this.isHittable = false;
         this.health -= damage; // Decrementa a vida
 
         // Emite um evento para a cena saber que a vida mudou e precisa atualizar a UI
         this.emit('health_changed');
-
-        // // Feedback visual de dano (pisca em vermelho)
-        // this.setTint(0xff0000);
-        // this.scene.time.delayedCall(200, () => {
-        //     this.clearTint();
-        // });
 
         this.scene.flashScreen();
 
@@ -214,7 +212,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Timer para voltar a ser vulnerável após um tempo
-        this.scene.time.delayedCall(1000, () => { // 1 segundo de invencibilidade
+        this.scene.time.delayedCall(500, () => { // 1 segundo de invencibilidade
             this.isHittable = true;
         });
     }

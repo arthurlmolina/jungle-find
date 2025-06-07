@@ -2,7 +2,6 @@ import Archer from '../characters/Archer.js'
 import Cobra from '../characters/Cobra.js'
 import Fireball from '../characters/Fireball.js';
 import Arrow from '../characters/Arrow.js';
-import EndScene from './endScenes.js';
 
 
 export default class MainScene extends Phaser.Scene {
@@ -20,8 +19,9 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('p-quatro', 'src/assets/plataforma-grande.png');
         this.load.image('porta', 'src/assets/porta.png')
         this.load.image('dica', 'src/assets/dica.png');
-        this.load.image('CoracaoCheio',  'src/assets/vida/CoracaoCheio.png');
+        this.load.image('CoracaoCheio', 'src/assets/vida/CoracaoCheio.png');
         this.load.image('hugo', 'src/assets/hugo.png');
+        this.load.image('flecha_apagada', 'src/assets/flecha_apagada.PNG')
         this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
 
 
@@ -32,7 +32,11 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
         this.load.audio('somErro', 'src/audios/som-erro.mp3');
         this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
-
+        this.load.audio('somFlecha', 'src/audios/flecha_saiu.mp3');
+        this.load.audio('somFlechaColisao', 'src/audios/flecha_bateu.mp3');
+        this.load.audio('somFireball', 'src/audios/audio_fireball.mp3');
+        this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
+        this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
 
         //Adiciona o Arqueiro
         this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
@@ -100,6 +104,12 @@ export default class MainScene extends Phaser.Scene {
         this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
         this.somErro = this.sound.add('somErro', { loop: false, volume: 1 });
         this.somTeleporte = this.sound.add('somBau', { loop: false, volume: 7 });
+        this.somFlecha = this.sound.add('somFlecha', { loop: false, volume: 7 });
+        this.somFlechaColisao = this.sound.add('somFlechaColisao', { loop: false, volume: 0.5 });
+        this.somFireball = this.sound.add('somFireball', { loop: false, volume: 0.6 });
+        this.somHitArqueiro = this.sound.add('somHitArqueiro', { loop: false, volume: 6 });
+        this.somPuloArqueiro = this.sound.add('somPuloArqueiro', { loop: false, volume: 4.5 });
+
 
         this.podeMover = true;
         this.dicaVisivel = false;
@@ -219,6 +229,8 @@ export default class MainScene extends Phaser.Scene {
         this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.flechaApagadaHud = this.add.image(30, 60, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+        this.flechaColetadaHud = this.add.image(30, 60, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
 
         this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5];
 
@@ -248,6 +260,15 @@ export default class MainScene extends Phaser.Scene {
         this.arrows = this.physics.add.group({
             classType: Arrow, // A classe que o grupo vai usar
             runChildUpdate: true
+        });
+
+        this.physics.add.collider(this.arrows, this.plataformas, (arrow, plataforma) => {
+            // Ao acertar uma plataforma, a flecha é desativada imediatamente.
+            this.somFlechaColisao.play(); // adiciona som da colisao da flecha
+            this.time.delayedCall(1000, () =>{
+                arrow.hitTarget();
+            })
+            
         });
 
         this.physics.add.overlap(
@@ -282,7 +303,7 @@ export default class MainScene extends Phaser.Scene {
             null, // Removemos a função de 'gatekeeper' daqui. Deixamos como null.
             this
         );
-    
+
 
         //Adiciona a Imagem do Hugo Jogo com a Interação
         this.plataformas.create(4000, 461, 'hugo');
@@ -294,7 +315,7 @@ export default class MainScene extends Phaser.Scene {
             fontSize: '20px'
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
-        
+
 
     }
 
@@ -348,9 +369,9 @@ export default class MainScene extends Phaser.Scene {
 
             if (this.estaAreaPorta && this.painelVisivel) {
                 this.mensagemSairInteracaoPorta.setVisible(true);
-                if(Phaser.Input.Keyboard.JustDown(this.teclaE)){
+                if (Phaser.Input.Keyboard.JustDown(this.teclaE)) {
                     this.painelSenha.style.display = "none";
-                    this.podeMover=true;
+                    this.podeMover = true;
                     this.painelVisivel = false;
                     this.mensagemSairInteracaoPorta.setVisible(false);
                 }
@@ -386,6 +407,8 @@ export default class MainScene extends Phaser.Scene {
         if (estaSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
             this.arqueiro.collectArrows(); // Coleta flechas
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
+            this.flechaApagadaHud.setVisible(false);
+            this.flechaColetadaHud.setVisible(true);
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
@@ -483,5 +506,6 @@ export default class MainScene extends Phaser.Scene {
 
     flashScreen() {
         this.cameras.main.flash(200, 255, 0, 0); // Duração de 200ms, cor vermelha (RGB 255, 0, 0)
+        this.cameras.main.shake(150, 0.005);
     }
 }

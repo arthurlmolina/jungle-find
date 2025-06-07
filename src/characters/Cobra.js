@@ -96,6 +96,7 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
             this.attackTimer = this.scene.time.delayedCall(1100, () => {
                 // Verificação de segurança: só cria a bola de fogo se AINDA estiver atacando.
                 if (this.isAttacking) {
+                    this.scene.somFireball.play();
                     this.createFireball();
                 }
             });

@@ -12,16 +12,15 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite {
             if (this.body.enable) {
                 this.body.setVelocity(0);
             }
-            
+
+            this.body.enable = false;
             // 2. Toca a animação de explosão
             this.play('fireball_explode', true);
             
             // 3. Ouve o evento de quando a animação de explosão TERMINAR
             this.once('animationcomplete-fireball_explode', () => {
-                // 4. Desativa o objeto, devolvendo-o para o pool para ser reutilizado
                 this.setVisible(false);
                 this.setActive(false);
-                this.body.enable = false;
             });
         });
 

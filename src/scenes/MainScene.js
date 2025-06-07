@@ -62,6 +62,11 @@ export default class MainScene extends Phaser.Scene {
             frameHeight: 100
         });
 
+        this.load.spritesheet('archer_death', 'src/assets/arqueiro/Character/Death.png', {
+            frameWidth: 100,
+            frameHeight: 100
+        });
+
         this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
             frameWidth: 24,
             frameHeight: 5
@@ -195,14 +200,29 @@ export default class MainScene extends Phaser.Scene {
         // Criar o arqueiro
         this.arqueiro = new Archer(this, 50, 533);
 
+        this.arqueiro.on('died', () => {
+            // Para a trilha sonora atual
+            this.trilhaAtual.stop();
+            
+            // Adiciona um efeito de fade out na câmera para uma transição suave
+            this.cameras.main.fadeOut(1000, 0, 0, 0, (camera, progress) => {
+                // Quando o fade out estiver completo (progress === 1), inicia a cena de Game Over
+                if (progress === 1) {
+                    this.scene.start('GameOverScene');
+                }
+            });
+        });
+
         this.arqueiro.on('health_changed', this.updateHeartsUI, this);
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
         //Criar Cobra
-        this.cobra = new Cobra(this, 1800, 300);
+        this.cobra = new Cobra(this, 1800, 614);
 
         this.physics.add.collider(this.cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
+
+        this.physics.add.collider(this.arqueiro, this.cobra);
 
         this.cameras.main.startFollow(this.arqueiro); //fazer a camera seguir o arqueiro
         this.cameras.main.setLerp(0.1, 0.1); //suaviza movimento da camera
@@ -252,8 +272,6 @@ export default class MainScene extends Phaser.Scene {
         });
 
         this.physics.add.collider(this.fireballs, this.plataformas, (fireball, plataforma) => {
-            // Esta função é executada no momento exato da colisão.
-            // 'fireball' é a instância específica que colidiu.
             fireball.emit('explode');
         });
 

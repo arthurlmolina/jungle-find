@@ -9,11 +9,10 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0.5, 1);
 
-        // DADOS DE EXEMPLO - SUBSTITUA PELOS VALORES REAIS DA SUA IMAGEM
         const frameWidth = 80;    // Largura total do quadro (frame) da sua imagem 'Cobra'
         const frameHeight = 60;   // Altura total do quadro (frame) da sua imagem 'Cobra'
         const cobraVisualWidth = 30;  // A largura real SÓ da parte desenhada da cobra
-        const cobraVisualHeight = 28; // A altura real SÓ da parte desenhada da cobra
+        const cobraVisualHeight = 30; // A altura real SÓ da parte desenhada da cobra
 
         this.body.setSize(cobraVisualWidth, cobraVisualHeight);
 
@@ -21,10 +20,6 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
         const offsetX = (frameWidth - cobraVisualWidth) / 2;
         const offsetY = (frameHeight - cobraVisualHeight) / 2; // Ajuste se a cobra não estiver verticalmente centrada
 
-        // ATENÇÃO: Se você usa setOrigin(0.5, 1), a origem Y está na base.
-        // O offset ainda é do topo, então você pode precisar de um ajuste fino aqui.
-        // O ideal é usar o debug visual para acertar.
-        // Comece com o cálculo centralizado e ajuste.
         this.body.setOffset(offsetX, frameHeight - cobraVisualHeight - 2);
 
         this.fireCooldown = 2000;
@@ -48,6 +43,8 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(0);
 
         this.setFlipX(true);
+        this.body.setImmovable(true);
+        this.body.setAllowGravity(false);
     }
 
     createAnimations() {

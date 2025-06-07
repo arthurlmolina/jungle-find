@@ -29,6 +29,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         this.health = 5; //vida
         this.isHittable = true;
         this.isShooting = false; //controlar se estiver atirando
+        this.isDead = false;
 
         this.createAnimations();
 
@@ -83,10 +84,21 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
             });
         }
 
+        if (!this.scene.anims.exists('archer_death')) {
+            this.scene.anims.create({
+                key: 'archer_death',
+                frames: this.scene.anims.generateFrameNumbers('archer_death', { start: 0, end: 9 }),
+                frameRate: 10,
+                repeat: 0
+            });
+        }
+
         this.play('archer_idle');
     }
 
     move(cursors) {
+        if (this.isDead) return;
+
         if (!cursors) return;
 
         // Verifica se deve atirar (tecla SPACE ou CTRL)
@@ -191,7 +203,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage(damage) {
         // Se não pode ser atingido (está invencível) ou já está morto, não faz nada
-        if (!this.isHittable) {
+        if (this.isDead || !this.isHittable) {
             return;
         }
 
@@ -209,20 +221,38 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         // Se a vida chegar a zero, chama o método de morte
         if (this.health <= 0) {
             this.die();
+        } else {
+            this.scene.time.delayedCall(500, () => { // 1 segundo de invencibilidade
+                this.isHittable = true;
+            });
         }
 
         // Timer para voltar a ser vulnerável após um tempo
-        this.scene.time.delayedCall(500, () => { // 1 segundo de invencibilidade
-            this.isHittable = true;
-        });
+
     }
 
     die() {
-        // Lógica de morte do jogador
-        console.log('Arqueiro morreu!');
-        this.body.enable = false; // Desativa a física
-        // Aqui você pode tocar uma animação de morte e depois reiniciar a cena
-        // Ex: this.scene.scene.restart();
+        // Impede que a função seja chamada várias vezes
+        if (this.isDead) {
+            return;
+        }
+
+        this.isDead = true;
+
+        // Para o personagem no lugar e desativa a física do corpo
+        this.setVelocity(0, 0);
+        this.body.enable = false;
+
+        // Toca a animação de morte
+        this.anims.play('archer_death', true);
+
+        // Ouve o evento que avisa quando a animação de morte TERMINOU
+        this.once('animationcomplete-archer_death', () => {
+            // SÓ DEPOIS que a animação terminar, emite o evento 'died'
+            // para a MainScene finalmente chamar a tela de Game Over.
+            this.emit('died');
+        });
+
     }
 
     // Método para coletar flechas 

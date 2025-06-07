@@ -282,7 +282,7 @@ export default class MainScene extends Phaser.Scene {
             null, // Removemos a função de 'gatekeeper' daqui. Deixamos como null.
             this
         );
-    }
+    
 
         //Adiciona a Imagem do Hugo Jogo com a Interação
         this.plataformas.create(4000, 461, 'hugo');

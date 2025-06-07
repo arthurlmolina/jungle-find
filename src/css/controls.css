@@ -81,8 +81,8 @@ body {
 }
 
 .imagem {
-  width: 800px;
-  height: 600px;
+  width: 1920px;
+  height: 670px;
   background-image: url('../assets/menu.png');
   background-size: cover;
   background-position: center;

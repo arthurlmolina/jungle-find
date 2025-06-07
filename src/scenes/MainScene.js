@@ -484,6 +484,7 @@ export default class MainScene extends Phaser.Scene {
                 efeito.classList.add('erro');
                 mensagem.classList.add('erroMensagem')
                 mensagem.textContent = "ERRO@R% ERROR2032!."
+                senha.value = "";
                 this.somErro.play();
                 setTimeout(() => {
                     efeito.classList.remove('erro');

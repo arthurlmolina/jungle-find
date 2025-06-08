@@ -497,6 +497,7 @@ export default class MainScene extends Phaser.Scene {
                 efeito.classList.add('acerto');
                 mensagem.classList.add('acertoMensagem')
                 mensagem.textContent = "Chave autenticada com sucesso!"
+                senha.value = "";
 
                 setTimeout(() => {
                     //teletransportando o jogador

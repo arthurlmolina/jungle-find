@@ -449,6 +449,7 @@ export default class MainScene extends Phaser.Scene {
             if (this.estaAreaPorta && this.painelVisivel) {
                 this.mensagemSairInteracaoPorta.setVisible(true);
                 if (Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+                    //sair do painel
                     this.painelSenha.style.display = "none";
                     this.podeMover = true;
                     this.painelVisivel = false;
@@ -458,6 +459,7 @@ export default class MainScene extends Phaser.Scene {
 
             if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
                 if (!this.painelVisivel) {
+                    //acessar painel
                     this.arqueiro.setVelocity(0);
                     this.podeMover = false;
                     this.painelVisivel = true;
@@ -468,6 +470,7 @@ export default class MainScene extends Phaser.Scene {
                 }
             }
         } else {
+            //desabilitar acesso ao painel após ser teletransportado
             this.areaInteracaoPorta.destroy()
             this.mensagemSairInteracaoPorta.setVisible(false);
         }
@@ -541,22 +544,28 @@ export default class MainScene extends Phaser.Scene {
         const mensagem = document.getElementById('mensagem');
         const efeito = document.getElementById('idEfeito');
 
-        btn.addEventListener('click', () => {
+        // remove os eventos antigos (evitando erro qunado o usuário joga novamente)
+        btn.replaceWith(btn.cloneNode(true));
+        const novoBtn = document.getElementById('btn-porta');
+
+        novoBtn.addEventListener('click', () => {
             const resposta = senha.value.toLowerCase();
 
             if (resposta !== 'cidão') {
+                //apresentar mensagem e efeitos de erro
                 efeito.classList.add('erro');
                 mensagem.classList.add('erroMensagem')
                 mensagem.textContent = "ERRO@R% ERROR2032!."
                 senha.value = "";
                 this.somErro.play();
                 setTimeout(() => {
+                    //removendo efeitos e mensagem de erro
                     efeito.classList.remove('erro');
                     mensagem.classList.remove('erroMensagem')
                     mensagem.textContent = ""
                 }, 3000);
-
             } else {
+                //apresentar mensagem e efeitos de acerto
                 this.somAcerto.play();
                 efeito.classList.add('acerto');
                 mensagem.classList.add('acertoMensagem')
@@ -564,6 +573,10 @@ export default class MainScene extends Phaser.Scene {
                 senha.value = "";
 
                 setTimeout(() => {
+                    //removendo mensagem e efeitos de acerto
+                    mensagem.textContent = "";
+                    efeito.classList.remove('acerto');
+                    mensagem.classList.remove('acertoMensagem')
                     //teletransportando o jogador
                     this.somTeleporte.play();
                     this.podeMover = true;

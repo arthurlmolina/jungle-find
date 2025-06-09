@@ -12,17 +12,6 @@
 
 </head> 
 <body>
-    <div style="
-    width: 800px;
-    height: 600px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid black;">
-
-
-
     <div id="painel-senha">
         <form action="">
             <p id="texto-senha">E o segredo a revelar, um caminho a passar, digite sua chave, para o caminho liberar...</p>
@@ -33,34 +22,6 @@
             <div id="idEfeito" class="efeito erro"></div>
         </form>
     </div>
-
-    </div>
-    <script>
-        function verificaSenha(){
-        const painel = document.getElementById('painel-senha');
-        painel.style.display="block";
-        const senha = document.getElementById('campo-senha');
-        const btn = document.getElementById('btn-porta');
-        const mensagem = document.getElementById('mensagem');
-        const efeito = document.getElementById('idEfeito');
-
-        btn.addEventListener('click', function(){
-            const resposta = senha.value.toLowerCase();
-
-            if (resposta !== 'cidão'){
-                efeito.classList.add('erro');
-                mensagem.textContent="ERRO@R% ERROR2032!."
-                setTimeout(function(){
-                    efeito.classList.remove('erro');
-                    mensagem.textContent=""
-                }, 3000);
-            } else{
-                efeito.classList.add('acerto');
-                mensagem.textContent="Chave autenticada com sucesso!"
-            }
-    }) //fim evento click
-    }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
 </body>

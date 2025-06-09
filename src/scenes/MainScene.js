@@ -111,7 +111,7 @@ export default class MainScene extends Phaser.Scene {
         });
 
         this.load.spritesheet('boss_death', 'src/assets/mobs/FinalBoss/Death.png', {
-            frameWidth: 218,
+            frameWidth: 250,
             frameHeight: 250
         });
 

@@ -12,7 +12,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.setScale(2.6); // É bom definir a escala antes de calcular os offsets visuais
 
         // --- ATRIBUTOS DO CHEFE ---
-        this.health = 50;
+        this.health = 5;
         this.speed = 120;
         this.visionRange = 800;
         this.attackRange = 180;

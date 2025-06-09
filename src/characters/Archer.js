@@ -21,7 +21,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
         // Propriedades do arqueiro
         this.speed = 290; //velocidade do arqueiro
-        this.jump = 6400; //força do pulo
+        this.jump = 640; //força do pulo
         this.arrows = false; //começa sem flechas
         this.lastShot = 0;
         this.shootCooldown = 750; // 500ms entre tiros

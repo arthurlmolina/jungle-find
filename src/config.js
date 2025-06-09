@@ -1,6 +1,6 @@
 import MainScene from "./scenes/MainScene.js";
 import EndScene from "./scenes/EndScenes.js";
-//import IntroScene from "./scenes/IntroScene.js";
+import IntroScene from "./scenes/IntroScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 
 var config = {
@@ -21,7 +21,7 @@ var config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [ MainScene, EndScene, GameOverScene]
+    scene: [IntroScene, MainScene, EndScene, GameOverScene]
 
 };
 

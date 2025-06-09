@@ -21,13 +21,13 @@ export default class IntroScene extends Phaser.Scene {
       "",
       "Ele acorda com uma única pista:"
     ];
-    this.fraseFinal = '"um bilhete parcialmente queimado com a frase:"';
+    this.fraseFinal = 'um bilhete parcialmente queimado com a frase:';
 
     this.fraseIndex = 0;
     this.charIndex = 0;
     this.escrevendoFinal = false;
-    this.tempoEntreLetras = 4;
-    this.tempoEntreFrases = 10;
+    this.tempoEntreLetras = 40;
+    this.tempoEntreFrases = 100;
 
     this.texto = this.add.text(50, 50, '', {
       fontFamily: 'monospace',
@@ -115,12 +115,32 @@ export default class IntroScene extends Phaser.Scene {
     this.texto.setVisible(false);
     this.cursor.setVisible(false);
 
-    const video = this.add.video(400, 300, 'intro');
+    const screenWidth = this.cameras.main.width;
+    const screenHeight = this.cameras.main.height;
 
-    video.setDisplaySize(1191, 670); 
+    const video = this.add.video(screenWidth / 2, screenHeight / 2, 'intro');
 
-    video.setOrigin(0.5);
     video.play(false);
+
+    video.on('ready', () => {
+      const videoWidth = video.width;
+      const videoHeight = video.height;
+
+      const screenAspectRatio = screenWidth / screenHeight;
+      const videoAspectRatio = videoWidth / videoHeight;
+
+      let newWidth, newHeight;
+
+      if (screenAspectRatio > videoAspectRatio) {
+        newWidth = screenWidth;
+        newHeight = screenWidth / videoAspectRatio;
+      } else {
+        newHeight = screenHeight;
+        newWidth = screenHeight * videoAspectRatio;
+      }
+
+      video.setDisplaySize(newWidth, newHeight);
+    });
 
     video.on('complete', () => {
       this.scene.start('MainScene');

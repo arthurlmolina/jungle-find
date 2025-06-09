@@ -195,3 +195,7 @@ p#mensagem{
     animation: piscar-btn-vermelho 1s infinite;
 }
 
+canvas{
+    margin: 0 !important;
+    padding: 0 !important;
+}

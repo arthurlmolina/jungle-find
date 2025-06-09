@@ -510,7 +510,7 @@ export default class MainScene extends Phaser.Scene {
         this.mensagemInteracaoHugo.setVisible(HugoSobreposto && this.boss.isDead);
 
         // Se o jogador estiver na área e pressionar 'E', inicia a cena final
-        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)  && this.boss.isDead) {
             this.cameras.main.shake(550, 0.025);
 
             this.time.delayedCall(400, () => {

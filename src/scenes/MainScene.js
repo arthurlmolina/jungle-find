@@ -23,6 +23,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('hugo', 'src/assets/hugo.png');
         this.load.image('flecha_apagada', 'src/assets/flecha_apagada.PNG')
         this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
+        this.load.image('infinito', 'src/assets/infinito.png')
 
 
         //audios
@@ -141,6 +142,14 @@ export default class MainScene extends Phaser.Scene {
 
         this.plataformas.create(1394, 239, 'unica').setScale(0.8).refreshBody();
 
+        //Adicionando plataforma no final do jogo para combate com o Boss
+
+       // Primeira linha de base (nível do chão ou quase)
+        this.plataformas.create(3550, 413, 'unica').setScale(0.8).refreshBody();
+        this.plataformas.create(3550, 413, 'unica').setScale(0.8).refreshBody();
+        this.plataformas.create(3600, 413, 'unica').setScale(0.8).refreshBody();
+        this.plataformas.create(3650, 413, 'unica').setScale(0.8).refreshBody();
+
         //adicionando as flechas
         this.flechasColetaveis = this.add.image(1394, 191, 'flechas');
 
@@ -245,14 +254,17 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
         this.flechasColetadas = false;
+       
 
         this.CoracaoCheio1 = this.add.image(50, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio2 = this.add.image(90, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.flechaApagadaHud = this.add.image(30, 60, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
-        this.flechaColetadaHud = this.add.image(30, 60, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+        this.flechaApagadaHud = this.add.image(1250, 10, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+        this.flechaColetadaHud = this.add.image(1250, 10, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+       // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
+        this.iconeInfinito = this.add.image(1220, 30, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
         this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5];
 
@@ -429,6 +441,7 @@ export default class MainScene extends Phaser.Scene {
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
             this.flechaApagadaHud.setVisible(false);
             this.flechaColetadaHud.setVisible(true);
+             this.iconeInfinito.setVisible(true);
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
@@ -448,11 +461,15 @@ export default class MainScene extends Phaser.Scene {
 
         // Se o jogador estiver na área e pressionar 'E', inicia a cena final
         if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
-            // Para a trilha sonora atual antes de mudar de cena
-            this.trilhaAtual.stop();
+           this.cameras.main.shake(550, 0.025);
 
-            // Inicia a cena final que criamos
-            this.scene.start('EndScene');
+            this.time.delayedCall(400, () => {
+                // Para a trilha sonora atual antes de mudar de cena
+                this.trilhaAtual.stop();
+
+                // Inicia a cena final que criamos
+                this.scene.start('EndScene');
+            })
         }
         // --- Fim da Interação com Hugo ---
 

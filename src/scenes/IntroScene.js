@@ -26,11 +26,11 @@ export default class IntroScene extends Phaser.Scene {
     this.fraseIndex = 0;
     this.charIndex = 0;
     this.escrevendoFinal = false;
-    this.tempoEntreLetras = 40;
-    this.tempoEntreFrases = 100;
+    this.tempoEntreLetras = 4;
+    this.tempoEntreFrases = 10;
 
     this.texto = this.add.text(50, 50, '', {
-      fontFamily: 'monospace',
+      fontFamily: '"Press Start P2" monospace',
       fontSize: '12px',
       color: '#ffffff',
       wordWrap: { width: 700 }

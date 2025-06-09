@@ -115,20 +115,49 @@ export default class IntroScene extends Phaser.Scene {
     this.texto.setVisible(false);
     this.cursor.setVisible(false);
 
-    const video = this.add.video(400, 300, 'intro');
+    const screenWidth = this.cameras.main.width;
+    const screenHeight = this.cameras.main.height;
 
-    video.setDisplaySize(1191, 670); 
+    // Cria o vídeo, mas AINDA NÃO define o tamanho
+    const video = this.add.video(screenWidth / 2, screenHeight / 2, 'intro');
 
-    video.setOrigin(0.5);
+    // Começa a tocar o vídeo imediatamente. Ele pode aparecer pequeno por um instante.
     video.play(false);
 
+    // ✅ A CORREÇÃO PRINCIPAL: Ouvinte de Evento 'ready'
+    // Este código SÓ SERÁ EXECUTADO quando o vídeo carregar seus metadados (incluindo dimensões).
+    video.on('ready', () => {
+      // Agora que temos certeza das dimensões, fazemos o cálculo de proporção.
+      const videoWidth = video.width;
+      const videoHeight = video.height;
+
+      const screenAspectRatio = screenWidth / screenHeight;
+      const videoAspectRatio = videoWidth / videoHeight;
+
+      let newWidth, newHeight;
+
+      if (screenAspectRatio > videoAspectRatio) {
+        newWidth = screenWidth;
+        newHeight = screenWidth / videoAspectRatio;
+      } else {
+        newHeight = screenHeight;
+        newWidth = screenHeight * videoAspectRatio;
+      }
+
+      // Aplica o tamanho calculado somente agora, que temos os dados corretos.
+      video.setDisplaySize(newWidth, newHeight);
+    });
+
+    // O restante dos seus eventos continua igual
     video.on('complete', () => {
       this.scene.start('MainScene');
     });
 
     this.input.once('pointerdown', () => {
-      video.stop();
-      this.scene.start('MainScene');
+      if (video) { // Garante que o vídeo existe antes de tentar pará-lo
+        video.stop();
+        this.scene.start('MainScene');
+      }
     });
   }
 }

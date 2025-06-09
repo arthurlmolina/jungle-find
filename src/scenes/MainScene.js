@@ -2,7 +2,7 @@ import Archer from '../characters/Archer.js'
 import Cobra from '../characters/Cobra.js'
 import Fireball from '../characters/Fireball.js';
 import Arrow from '../characters/Arrow.js';
-
+import Boss from '../characters/Boss.js';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -99,6 +99,26 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
             frameWidth: 46,
             frameHeight: 46
+        });
+
+        this.load.spritesheet('boss_run', 'src/assets/mobs/FinalBoss/Run.png', {
+            frameWidth: 250,
+            frameHeight: 250
+        });
+
+        this.load.spritesheet('boss_attack', 'src/assets/mobs/FinalBoss/Attack1.png', {
+            frameWidth: 250,
+            frameHeight: 250
+        });
+
+        this.load.spritesheet('boss_death', 'src/assets/mobs/FinalBoss/Death.png', {
+            frameWidth: 250,
+            frameHeight: 250
+        });
+
+        this.load.spritesheet('boss_idle', 'src/assets/mobs/FinalBoss/Idle.png', {
+            frameWidth: 250,
+            frameHeight: 250
         });
     }
 
@@ -214,7 +234,7 @@ export default class MainScene extends Phaser.Scene {
         this.arqueiro.on('died', () => {
             // Para a trilha sonora atual
             this.trilhaAtual.stop();
-            
+
             // Adiciona um efeito de fade out na câmera para uma transição suave
             this.cameras.main.fadeOut(1000, 0, 0, 0, (camera, progress) => {
                 // Quando o fade out estiver completo (progress === 1), inicia a cena de Game Over
@@ -297,10 +317,10 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.arrows, this.plataformas, (arrow, plataforma) => {
             // Ao acertar uma plataforma, a flecha é desativada imediatamente.
             this.somFlechaColisao.play(); // adiciona som da colisao da flecha
-            this.time.delayedCall(1000, () =>{
+            this.time.delayedCall(1000, () => {
                 arrow.hitTarget();
             })
-            
+
         });
 
         this.physics.add.overlap(
@@ -348,10 +368,25 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
 
+        // Posição 3800 parece um bom lugar para a batalha final.
+        this.boss = new Boss(this, 4600, 533, this.arqueiro);
+        // REMOVA a linha this.boss.setVisible(false);
 
+        // Adiciona as colisões necessárias para o chefe
+        this.physics.add.collider(this.boss, this.plataformas);
+        this.physics.add.collider(this.boss, this.arqueiro);
+
+        // Permite que flechas acertem o chefe
+        this.physics.add.overlap(this.boss, this.arrows, (boss, arrow) => {
+            // REMOVA a checagem 'if (boss.isActive)' se ela existir
+            boss.takeDamage(1);
+            arrow.hitTarget();
+        }, null, this);
     }
 
     update() {
+        this.boss.update();
+
         if (this.podeMover) {
             this.arqueiro.move(this.cursors);
         }

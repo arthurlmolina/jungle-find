@@ -1,5 +1,5 @@
 import MainScene from "./scenes/MainScene.js";
-import EndScene from "./scenes/endScenes.js";
+import EndScene from "./scenes/EndScenes.js";
 import IntroScene from "./scenes/IntroScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 

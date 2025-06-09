@@ -175,8 +175,7 @@
         cursor: pointer;        
         border: none;        
         outline: none;         
-        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838);
-        text-decoration: none;
+        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838); 
     }
 
     .button:hover{

@@ -1,5 +1,3 @@
-// Arquivo: EndScene.js
-import IntroScene from "./IntroScene";
 export default class EndScene extends Phaser.Scene {
     constructor() {
         super('EndScene'); // Nome único para a cena final

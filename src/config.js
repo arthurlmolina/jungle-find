@@ -1,3 +1,6 @@
+import './css/game.css';
+import Phaser from 'phaser';
+
 import MainScene from "./scenes/MainScene.js";
 import EndScene from "./scenes/EndScenes.js";
 import IntroScene from "./scenes/IntroScene.js";
@@ -25,11 +28,13 @@ var config = {
 
 };
 
-var game = new Phaser.Game(config) //instância o jogo com as configurações pré-definidas
-
 WebFont.load({
-    // Carrega a fonte "Press Start 2P" do Google Fonts
     google: {
         families: ['Press Start 2P']
+    },
+    // "...e SOMENTE QUANDO terminar, execute esta função."
+    active: function() {
+        // Agora, com tudo pronto, o jogo é criado com segurança.
+        const game = new Phaser.Game(config);
     }
 });

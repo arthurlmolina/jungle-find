@@ -4,8 +4,8 @@ export default class IntroScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.video('intro', 'src/assets/cutscenes/Intro.mp4');
-    this.load.audio('type', 'src/audios/type.mp3');
+    this.load.video('intro', '/assets/cutscenes/Intro.mp4');
+    this.load.audio('type', '/audios/type.mp3');
   }
 
   create() {

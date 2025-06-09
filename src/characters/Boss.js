@@ -80,7 +80,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         if (!this.scene.anims.exists('boss_death')) {
             this.scene.anims.create({
                 key: 'boss_death',
-                frames: this.scene.anims.generateFrameNumbers('boss_death', { start: 0, end: 7 }),
+                frames: this.scene.anims.generateFrameNumbers('boss_death', { start: 0, end: 6 }),
                 frameRate: 10,
                 repeat: 0
             });

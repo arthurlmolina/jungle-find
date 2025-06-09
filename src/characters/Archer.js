@@ -43,7 +43,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         if (!this.scene.anims.exists('archer_idle')) {
             this.scene.anims.create({
                 key: 'archer_idle',
-                frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 10 }),
+                frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 9 }),
                 frameRate: 9,
                 repeat: -1
             });
@@ -52,7 +52,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         if (!this.scene.anims.exists('archer_walk')) {
             this.scene.anims.create({
                 key: 'archer_walk',
-                frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 9 }),
+                frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 7 }),
                 frameRate: 10,
                 repeat: -1
             });

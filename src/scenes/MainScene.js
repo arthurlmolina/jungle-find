@@ -10,114 +10,114 @@ export default class MainScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('fundo', 'src/assets/fundo.png');
-        this.load.image('chao', 'src/assets/chao.png');
-        this.load.image('dupla', 'src/assets/plataforma-dupla.png');
-        this.load.image('unica', 'src/assets/plataforma-unica.png');
-        this.load.image('flechas', 'src/assets/flechas.png');
-        this.load.image('bau', 'src/assets/bau.png');
-        this.load.image('p-quatro', 'src/assets/plataforma-grande.png');
-        this.load.image('porta', 'src/assets/porta.png')
-        this.load.image('dica', 'src/assets/dica.png');
-        this.load.image('CoracaoCheio', 'src/assets/vida/CoracaoCheio.png');
-        this.load.image('hugo', 'src/assets/hugo.png');
-        this.load.image('flecha_apagada', 'src/assets/flecha_apagada.PNG')
-        this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
-        this.load.image('infinito', 'src/assets/infinito.png')
+        this.load.image('fundo', '/assets/Fundo.png');
+        this.load.image('chao', '/assets/chao.png');
+        this.load.image('dupla', '/assets/plataforma-dupla.png');
+        this.load.image('unica', '/assets/plataforma-unica.png');
+        this.load.image('flechas', '/assets/flechas.png');
+        this.load.image('bau', '/assets/bau.png');
+        this.load.image('p-quatro', '/assets/plataforma-grande.png');
+        this.load.image('porta', '/assets/porta.png')
+        this.load.image('dica', '/assets/dica.png');
+        this.load.image('CoracaoCheio', '/assets/vida/CoracaoCheio.png');
+        this.load.image('hugo', '/assets/hugo.png');
+        this.load.image('flecha_apagada', '/assets/flecha_apagada.PNG')
+        this.load.video('videoHugo', '/assets/cutscenes/final.mp4');
+        this.load.image('infinito', '/assets/infinito.png')
 
 
         //audios
-        this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
-        this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
-        this.load.audio('somBau', 'src/audios/som-bau.mp3');
-        this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
-        this.load.audio('somErro', 'src/audios/som-erro.mp3');
-        this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
-        this.load.audio('somFlecha', 'src/audios/flecha_saiu.mp3');
-        this.load.audio('somFlechaColisao', 'src/audios/flecha_bateu.mp3');
-        this.load.audio('somFireball', 'src/audios/audio_fireball.mp3');
-        this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
-        this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
-        this.load.audio('somGameOver', 'src/audios/game_over.mp3');
-        this.load.audio('somMorteBoss', 'src/audios/som_bossMorte.mp3');
+        this.load.audio('trilha-inicial', '/audios/trilha-jogo.mp3');
+        this.load.audio('trilha-final', '/audios/trilha-final.mp3');
+        this.load.audio('somBau', '/audios/som-bau.mp3');
+        this.load.audio('somAcerto', '/audios/som-acerto.mp3');
+        this.load.audio('somErro', '/audios/som-erro.mp3');
+        this.load.audio('somTeleporte', '/audios/som-teleporte.mp3');
+        this.load.audio('somFlecha', '/audios/flecha_saiu.mp3');
+        this.load.audio('somFlechaColisao', '/audios/flecha_bateu.mp3');
+        this.load.audio('somFireball', '/audios/audio_fireball.mp3');
+        this.load.audio('somHitArqueiro', '/audios/audio_hit.mp3');
+        this.load.audio('somPuloArqueiro', '/audios/som_pulo.mp3');
+        this.load.audio('somGameOver', '/audios/game_over.mp3');
+        this.load.audio('somMorteBoss', '/audios/som_bossMorte.mp3');
 
 
         //Adiciona o Arqueiro
-        this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
+        this.load.spritesheet('archer_idle', '/assets/arqueiro/Character/Idle.png', {
             frameWidth: 100,
             frameHeight: 100
         });
-        this.load.spritesheet('archer_walk', 'src/assets/arqueiro/Character/Run.png', {
+        this.load.spritesheet('archer_walk', '/assets/arqueiro/Character/Run.png', {
             frameWidth: 100,
             frameHeight: 100
         });
-        this.load.spritesheet('archer_shoot', 'src/assets/arqueiro/Character/Attack.png', {
-            frameWidth: 100,
-            frameHeight: 100
-        });
-
-        this.load.spritesheet('archer_jump', 'src/assets/arqueiro/Character/Jump.png', {
+        this.load.spritesheet('archer_shoot', '/assets/arqueiro/Character/Attack.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
+        this.load.spritesheet('archer_jump', '/assets/arqueiro/Character/Jump.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('archer_death', 'src/assets/arqueiro/Character/Death.png', {
+        this.load.spritesheet('archer_fall', '/assets/arqueiro/Character/Fall.png', {
             frameWidth: 100,
             frameHeight: 100
         });
 
-        this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
+        this.load.spritesheet('archer_death', '/assets/arqueiro/Character/Death.png', {
+            frameWidth: 100,
+            frameHeight: 100
+        });
+
+        this.load.spritesheet('arrow', '/assets/arqueiro/Arrow/Move.png', {
             frameWidth: 24,
             frameHeight: 5
         });
 
         //Adiciona a Cobra
-        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png', {
+        this.load.spritesheet('worm_idle', '/assets/mobs/Cobra/Worm/Idle.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png', {
+        this.load.spritesheet('worm_attack', '/assets/mobs/Cobra/Worm/Attack.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png', {
+        this.load.spritesheet('worm_death', '/assets/mobs/Cobra/Worm/Death.png', {
             frameWidth: 90,
             frameHeight: 80
         });
 
-        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png', {
+        this.load.spritesheet('fireball', '/assets/mobs/Cobra/Fire Ball/Move.png', {
             frameWidth: 46,
             frameHeight: 46
         });
 
-        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
+        this.load.spritesheet('fireball_explode', '/assets/mobs/Cobra/Fire Ball/Explosion.png', {
             frameWidth: 46,
             frameHeight: 46
         });
 
-        this.load.spritesheet('boss_run', 'src/assets/mobs/FinalBoss/Run.png', {
+        this.load.spritesheet('boss_run', '/assets/mobs/FinalBoss/Run.png', {
             frameWidth: 250,
             frameHeight: 250
         });
 
-        this.load.spritesheet('boss_attack', 'src/assets/mobs/FinalBoss/Attack1.png', {
+        this.load.spritesheet('boss_attack', '/assets/mobs/FinalBoss/Attack1.png', {
             frameWidth: 250,
             frameHeight: 250
         });
 
-        this.load.spritesheet('boss_death', 'src/assets/mobs/FinalBoss/Death.png', {
+        this.load.spritesheet('boss_death', '/assets/mobs/FinalBoss/Death.png', {
             frameWidth: 250,
             frameHeight: 250
         });
 
-        this.load.spritesheet('boss_idle', 'src/assets/mobs/FinalBoss/Idle.png', {
+        this.load.spritesheet('boss_idle', '/assets/mobs/FinalBoss/Idle.png', {
             frameWidth: 250,
             frameHeight: 250
         });

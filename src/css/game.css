@@ -78,7 +78,7 @@ body{
 #painel-senha{
     width: 640px;
     height: 554px;
-    background-image: url(../assets/painel.png);
+    background-image: url(/assets/painel.png);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

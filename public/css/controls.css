@@ -3,27 +3,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .button {
-        position: absolute;
-        font-family: "Press Start 2P", system-ui;
-        background-color: transparent;
-        color: white;
-        font-weight: 100;
-        font-size: 12px;
-        top: 90px;       /*Tela zoom 100% */
-        left: 380px;     /*Tela zoom 100% */
- 
-        /* top: 35px;      Tela zoom 110%
-        left: 320px;       Tela zoom 110% */   
-        padding: 8px 12px; 
-        cursor: pointer;        
-        border: none;        
-        outline: none;         
-        text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838);
-        font-size: 16px;
-        padding: 8px 12px;
-        cursor: pointer;
-        text-decoration: none;
-    }
+  position: absolute;
+  font-family: "Press Start 2P", system-ui;
+  background-color: transparent;
+  color: white;
+  font-weight: 100;
+  font-size: 12px;
+  top: 90px;
+  /*Tela zoom 100% */
+  left: 380px;
+  /*Tela zoom 100% */
+
+  /* top: 35px;      Tela zoom 110%
+        left: 320px;       Tela zoom 110% */
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-shadow: 7px 7px 7px rgba(0, 0, 0, 0.838);
+  font-size: 16px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
 
 :root {
   --verde-floresta: #042A2B;
@@ -40,7 +42,8 @@
   zoom: 100%;
 }
 
-html, body {
+html,
+body {
   overflow: hidden;
 }
 
@@ -57,9 +60,17 @@ body {
 }
 
 @keyframes animacaoFundo {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes fadeInUp {
@@ -67,6 +78,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -83,7 +95,7 @@ body {
 .imagem {
   width: 1920px;
   height: 670px;
-  background-image: url('../assets/menu.png');
+  background-image: url(/assets/menu.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -137,19 +149,23 @@ body {
   box-shadow: inset 0 0 2px #000;
 }
 
-.flecha-voltar{
-    font-size: 24px;
-    margin-right: 8px;
-    
+.flecha-voltar {
+  font-size: 24px;
+  margin-right: 8px;
+
 }
 
-div#dica{
-        position: absolute;
-        top: 95%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 600px;
-        text-align: center;
-        color: white;
-        font-family: "Press Start 2P", system-ui;
-    }
+div#dica {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  text-align: center;
+  color: white;
+  font-family: "Press Start 2P", system-ui;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}

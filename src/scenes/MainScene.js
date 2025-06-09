@@ -283,7 +283,7 @@ export default class MainScene extends Phaser.Scene {
         this.flechaApagadaHud = this.add.image(1250, 10, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         this.flechaColetadaHud = this.add.image(1250, 10, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
-        this.iconeInfinito = this.add.image(1220, 30, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
+        this.iconeInfinito = this.add.image(1281, 51, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
         this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6, this.CoracaoCheio7, this.CoracaoCheio8];
 

@@ -20,17 +20,18 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         this.setDragX(1);
 
         // Propriedades do arqueiro
-        this.speed = 650; //velocidade do arqueiro
-        this.jump = 650; //força do pulo
+        this.speed = 290; //velocidade do arqueiro
+        this.jump = 640; //força do pulo
         this.arrows = false; //começa sem flechas
         this.lastShot = 0;
         this.shootCooldown = 750; // 500ms entre tiros
         this.facing = 'right'; //começa virado para direita
-        this.health = 5; //vida
+        this.health = 8; //vida
         this.isHittable = true;
         this.isShooting = false; //controlar se estiver atirando
         this.isDead = false;
-
+        this.canDoubleJump = false; // Começa FALSO. Só a MainScene pode ativar.
+        this.jumpCount = 0;         // Contador de pulos.
         this.createAnimations();
 
         this.setScale(2.8); //alterar o tamanho do personagem 
@@ -97,65 +98,77 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
     }
 
     move(cursors) {
-        if (this.isDead) return;
+        if (this.isDead || !cursors) return;
 
-        if (!cursors) return;
-
-        // Verifica se deve atirar (tecla SPACE ou CTRL)
+        // ... (lógica de atirar e movimento horizontal continua a mesma)
         if (cursors.space && cursors.space.isDown && this.arrows && !this.isShooting) {
             this.shoot();
         }
-
-        // Se estiver atirando, não permite movimento
         if (this.isShooting) {
             this.setVelocityX(0);
             return;
         }
-
-        //se apertar a seta esquerda
         if (cursors.left.isDown) {
             this.setVelocityX(-this.speed);
-            this.anims.play('archer_walk', true);
-            this.setFlipX(true); // virar para a esquerda
+            this.setFlipX(true);
             this.facing = 'left';
-        }
-        //se apertar a seta esquerda
-        else if (cursors.right.isDown) {
+        } else if (cursors.right.isDown) {
             this.setVelocityX(this.speed);
-            this.anims.play('archer_walk', true);
-            this.setFlipX(false); // virar para a direita
+            this.setFlipX(false);
             this.facing = 'right';
-        }
-
-        //parado
-        else {
+        } else {
             this.setVelocityX(0);
-            this.anims.play('archer_idle', true);
         }
 
-        //se apertar seta para cima = pular (verifica se está no chão)
-        if (cursors.up.isDown && this.body.blocked.down) {
-            this.scene.somPuloArqueiro.play();
-            this.setVelocityY(-this.jump);
-            this.anims.play('archer_jump', true);
+        // Se o personagem está no chão, reseta o contador de pulos.
+        if (this.body.blocked.down) {
+            this.jumpCount = 0;
         }
 
-        // escolhe animação com base no estado
+        // Usamos JustDown para registrar o pulo apenas uma vez por aperto de tecla.
+        const isJumpJustPressed = Phaser.Input.Keyboard.JustDown(cursors.up);
+
+        // Lógica do Pulo
+        if (isJumpJustPressed) {
+            // Se está no chão, executa o primeiro pulo.
+            if (this.body.blocked.down) {
+                this.scene.somPuloArqueiro.play();
+                this.setVelocityY(-this.jump);
+                this.jumpCount = 1;
+            }
+            // Se NÃO está no chão, MAS PODE dar pulo duplo E ainda só pulou uma vez...
+            else if (this.canDoubleJump && this.jumpCount < 2) {
+                this.scene.somPuloArqueiro.play(); // Toca o som de novo
+                this.setVelocityY(-this.jump);   // Aplica a força do pulo novamente
+                this.jumpCount = 2;              // Contabiliza o segundo pulo
+            }
+        }
+
+        // Lógica de Animações (baseado no estado atual)
+        // Se o corpo NÃO está bloqueado embaixo (ou seja, está no ar)
         if (!this.body.blocked.down) {
+            // Se está subindo (velocidade Y negativa), toca a animação de pulo
             if (this.body.velocity.y < 0) {
                 this.anims.play('archer_jump', true);
             }
-            // Se está descendo (velocidade Y positiva) = caindo
-            else if (this.body.velocity.y > 0) {
+            // Se está descendo E a velocidade da queda é maior que um pequeno limiar...
+            // Este é o nosso "filtro de solavanco"!
+            else if (this.body.velocity.y > 50) { // <-- A MUDANÇA ESTÁ AQUI
                 this.anims.play('archer_fall', true);
             }
-        } else if (this.body.velocity.x !== 0) {
-            //se tiver andando
+        }
+        // Se o corpo ESTÁ bloqueado embaixo (no chão ou em um inimigo)
+        else if (this.body.velocity.x !== 0) {
+            // E está se movendo para os lados, toca a animação de andar
             this.anims.play('archer_walk', true);
         } else {
-            //se tiver parado
+            // E está parado, toca a animação de parado
             this.anims.play('archer_idle', true);
         }
+    }
+
+    enableDoubleJump() {
+        this.canDoubleJump = true;
     }
 
     shoot() {

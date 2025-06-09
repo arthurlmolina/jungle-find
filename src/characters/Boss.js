@@ -5,14 +5,14 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, target) {
         super(scene, x, y, 'boss_idle');
 
-        // --- ORDEM DE INICIALIZAÇÃO CORRETA ---
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setOrigin(0.5, 1);
-        this.setScale(2.6); // É bom definir a escala antes de calcular os offsets visuais
+        this.setScale(2.6);
 
         // --- ATRIBUTOS DO CHEFE ---
-        this.health = 5;
+        this.health = 20;
+        this.maxHealth = 20;
         this.speed = 120;
         this.visionRange = 800;
         this.attackRange = 180;
@@ -24,34 +24,30 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.isAttacking = false;
         this.isHittable = true;
 
-        // --- CONFIGURAÇÃO DA FÍSICA (CORRIGIDA) ---
         this.setCollideWorldBounds(true);
         this.body.setImmovable(true);
 
-        // Pega a largura e altura do frame original da animação 'idle' (218x250)
         const frameWidth = this.frame.width;
         const frameHeight = this.frame.height;
 
-        // 1. Defina o tamanho do corpo da física.
-        // Estes valores parecem razoáveis para o seu sprite.
+        // define o tamanho do corpo da física.
         const bodyWidth = 40;
         const bodyHeight = 100;
         this.body.setSize(bodyWidth, bodyHeight);
 
-        // 2. Calcule o deslocamento (offset) para posicionar a hitbox
+        // Calcule o deslocamento (offset) para posicionar a hitbox
         const offsetX = (frameWidth - bodyWidth) / 2; // Centraliza horizontalmente
 
-        // A fórmula para alinhar na base, mais um ajuste fino.
-        // ✅ É AQUI QUE VOCÊ VAI MEXER PARA O AJUSTE FINAL ✅
-        const ajusteVertical = 50; // Comece com este valor e ajuste.
+        const ajusteVertical = 50;
         const offsetY = frameHeight - bodyHeight - ajusteVertical;
 
         this.body.setOffset(offsetX, offsetY);
 
-        // --- FIM DA CONFIGURAÇÃO DA FÍSICA ---
-
         this.createAnimations();
         this.play('boss_idle');
+
+        this.healthBar = this.scene.add.graphics();
+        this.drawHealthBar(); // Desenha a barra pela primeira vez
     }
 
     createAnimations() {
@@ -93,8 +89,12 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
     // O Cérebro do Chefe (update) agora é mais simples
     update() {
+        if (!this.isDead && this.healthBar) {
+            const verticalOffset = 420;
+            this.healthBar.setPosition(this.x, this.y - verticalOffset);
+        }
+
         // Se estiver morto ou atacando, não faz nada.
-        // A checagem de '!this.isActive' foi removida.
         if (this.isDead || this.isAttacking || !this.target) {
             return;
         }
@@ -110,18 +110,32 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    // O método activate() foi removido pois não é mais necessário.
-
-    // Os métodos chase(), standBy(), meleeAttack(), takeDamage() e die()
-    // continuam exatamente os mesmos da resposta anterior.
     chase() {
-        this.anims.play('boss_run', true);
-        if (this.target.x < this.x) {
+        const deadZone = 10;
+        const distanceX = Math.abs(this.x - this.target.x);
+
+        // Se o jogador está na zona morta, o chefe para.
+        if (distanceX <= deadZone) {
+            this.setVelocityX(0);
+        }
+        // Se o jogador está à esquerda, move-se para a esquerda.
+        else if (this.target.x < this.x) {
             this.setVelocityX(-this.speed);
             this.setFlipX(true);
-        } else {
+        }
+        // Se o jogador está à direita, move-se para a direita.
+        else {
             this.setVelocityX(this.speed);
             this.setFlipX(false);
+        }
+
+        // Agora, com a velocidade já definida, escolhemos a animação correta.
+        if (this.body.velocity.x === 0) {
+            // Se está parado, toca a animação 'idle'.
+            this.anims.play('boss_idle', true);
+        } else {
+            // Se está se movendo, toca a animação 'run'.
+            this.anims.play('boss_run', true);
         }
     }
 
@@ -131,12 +145,11 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     meleeAttack() {
-                this.isAttacking = true;
+        this.isAttacking = true;
         this.setVelocityX(0);
         this.anims.play('boss_attack', true);
 
-        // Use o tempo de golpe que você achou ideal durante os testes
-        const tempoDoGolpe = 500; 
+        const tempoDoGolpe = 500;
 
         // Usamos um único timer para criar e destruir a hitbox
         this.scene.time.delayedCall(tempoDoGolpe, () => {
@@ -177,7 +190,10 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage(damage) {
         if (!this.isHittable) return;
+
         this.health -= damage;
+        this.drawHealthBar(); // Apenas chama a função para redesenhar a barra
+
         this.isHittable = false;
         this.setTint(0xff0000);
         if (this.isAttacking) {
@@ -200,9 +216,33 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     die() {
         this.isDead = true;
         this.body.enable = false;
+        if (this.healthBar) {
+            this.healthBar.destroy();
+        }
+        this.scene.somMorteBoss.play();
         this.anims.play('boss_death', true);
         this.once('animationcomplete-boss_death', () => {
             this.destroy();
         });
     }
+
+    drawHealthBar() {
+        this.healthBar.clear();
+
+        const barWidth = 150; // largura da barra
+        const barHeight = 2;  // Espessura da barra
+        const x = -barWidth / 2;
+        const y = 0;
+
+        // Fundo da barra
+        this.healthBar.fillStyle(0x540d0d);
+        this.healthBar.fillRect(x, y, barWidth, barHeight);
+
+        // Vida atual
+        const healthPercentage = this.health / this.maxHealth;
+        const currentHealthWidth = barWidth * healthPercentage;
+        this.healthBar.fillStyle(0x00ff00);
+        this.healthBar.fillRect(x, y, currentHealthWidth, barHeight);
+    }
+
 }

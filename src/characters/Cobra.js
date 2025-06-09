@@ -1,5 +1,3 @@
-import Fireball from "./Fireball";
-
 export default class Cobra extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'worm_idle');
@@ -12,7 +10,7 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
         const frameWidth = 80;    // Largura total do quadro (frame) da sua imagem 'Cobra'
         const frameHeight = 60;   // Altura total do quadro (frame) da sua imagem 'Cobra'
         const cobraVisualWidth = 30;  // A largura real SÓ da parte desenhada da cobra
-        const cobraVisualHeight = 30; // A altura real SÓ da parte desenhada da cobra
+        const cobraVisualHeight = 40; // A altura real SÓ da parte desenhada da cobra
 
         this.body.setSize(cobraVisualWidth, cobraVisualHeight);
 
@@ -110,8 +108,8 @@ export default class Cobra extends Phaser.Physics.Arcade.Sprite {
 
     createFireball() {
         // Posição de onde a fireball vai sair
-        const spawnX = this.body.center.x + (this.flipX ? -40 : 40);
-        const spawnY = this.body.center.y - 10;
+        const spawnX = this.body.center.x + (this.flipX ? -50 : 50);
+        const spawnY = this.body.center.y + 15;
 
         // 1. Pede uma fireball (nova ou reutilizada) para o grupo da cena
         const fireball = this.scene.fireballs.get();

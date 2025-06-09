@@ -39,6 +39,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
         this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
         this.load.audio('somGameOver', 'src/audios/game_over.mp3');
+        this.load.audio('somMorteBoss', 'src/audios/som_bossMorte.mp3');
 
 
         //Adiciona o Arqueiro
@@ -123,11 +124,6 @@ export default class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor(0x000000); // Ou qualquer cor de fundo que você tenha
-
-        // ADICIONE ESTA LINHA:
-        const mainCamera = this.cameras.main;
-        //criando os efeitos sonoros
         this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
         this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
         this.somErro = this.sound.add('somErro', { loop: false, volume: 1 });
@@ -138,6 +134,7 @@ export default class MainScene extends Phaser.Scene {
         this.somHitArqueiro = this.sound.add('somHitArqueiro', { loop: false, volume: 6 });
         this.somPuloArqueiro = this.sound.add('somPuloArqueiro', { loop: false, volume: 4.5 });
         this.somGameOver = this.sound.add('somGameOver', { loop: false, volume: 4.5 });
+        this.somMorteBoss = this.sound.add('somMorteBoss', { loop: false, volume: 1.5 });
 
         this.podeMover = true;
         this.dicaVisivel = false;
@@ -164,11 +161,10 @@ export default class MainScene extends Phaser.Scene {
 
         //Adicionando plataforma no final do jogo para combate com o Boss
 
-       // Primeira linha de base (nível do chão ou quase)
-        this.plataformas.create(3550, 413, 'unica').setScale(0.8).refreshBody();
-        this.plataformas.create(3550, 413, 'unica').setScale(0.8).refreshBody();
-        this.plataformas.create(3600, 413, 'unica').setScale(0.8).refreshBody();
-        this.plataformas.create(3650, 413, 'unica').setScale(0.8).refreshBody();
+        // Primeira linha de base (nível do chão ou quase)
+        this.plataformas.create(3350, 343, 'dupla').setScale(0.8).refreshBody();
+        this.plataformas.create(3650, 343, 'dupla').setScale(0.8).refreshBody();
+
 
         //adicionando as flechas
         this.flechasColetaveis = this.add.image(1394, 191, 'flechas');
@@ -274,19 +270,22 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
         this.flechasColetadas = false;
-       
+
 
         this.CoracaoCheio1 = this.add.image(50, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio2 = this.add.image(90, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio6 = this.add.image(250, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio7 = this.add.image(290, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+        this.CoracaoCheio8 = this.add.image(330, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.flechaApagadaHud = this.add.image(1250, 10, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         this.flechaColetadaHud = this.add.image(1250, 10, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
-       // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
+        // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
         this.iconeInfinito = this.add.image(1220, 30, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
-        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5];
+        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6, this.CoracaoCheio7, this.CoracaoCheio8];
 
         this.fireballs = this.physics.add.group({
             classType: Fireball, // O grupo criará objetos da classe Fireball
@@ -369,12 +368,21 @@ export default class MainScene extends Phaser.Scene {
 
 
         // Posição 3800 parece um bom lugar para a batalha final.
-        this.boss = new Boss(this, 4600, 533, this.arqueiro);
+        this.boss = new Boss(this, 3800, 733, this.arqueiro);
         // REMOVA a linha this.boss.setVisible(false);
 
         // Adiciona as colisões necessárias para o chefe
         this.physics.add.collider(this.boss, this.plataformas);
-        this.physics.add.collider(this.boss, this.arqueiro);
+        this.physics.add.collider(this.boss, this.arqueiro, (boss, arqueiro) => {
+            if (arqueiro.body.touching.down && arqueiro.isHittable) { //se o arqueiro ficar em cima do boss
+
+                // Causa 1 de dano no arqueiro.
+                arqueiro.takeDamage(1);
+                // dá um feedback visual imediato ao jogador e o ajuda a sair de cima do perigo.
+                arqueiro.setVelocityY(-550);
+            }
+
+        });
 
         // Permite que flechas acertem o chefe
         this.physics.add.overlap(this.boss, this.arrows, (boss, arrow) => {
@@ -382,6 +390,10 @@ export default class MainScene extends Phaser.Scene {
             boss.takeDamage(1);
             arrow.hitTarget();
         }, null, this);
+
+        this.mensagemInteracaoDoubleJump = this.add.text(683, 540, 'Pulo duplo habilitado', {
+            fontSize: '25px'
+        }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
     }
 
     update() {
@@ -476,7 +488,7 @@ export default class MainScene extends Phaser.Scene {
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
             this.flechaApagadaHud.setVisible(false);
             this.flechaColetadaHud.setVisible(true);
-             this.iconeInfinito.setVisible(true);
+            this.iconeInfinito.setVisible(true);
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
@@ -492,11 +504,11 @@ export default class MainScene extends Phaser.Scene {
         // --- Início da Interação com Hugo (Lógica Final do Jogo) ---
 
         // Mostra ou esconde a mensagem de interação
-        this.mensagemInteracaoHugo.setVisible(HugoSobreposto);
+        this.mensagemInteracaoHugo.setVisible(HugoSobreposto && this.boss.isDead);
 
         // Se o jogador estiver na área e pressionar 'E', inicia a cena final
         if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
-           this.cameras.main.shake(550, 0.025);
+            this.cameras.main.shake(550, 0.025);
 
             this.time.delayedCall(400, () => {
                 // Para a trilha sonora atual antes de mudar de cena
@@ -560,6 +572,16 @@ export default class MainScene extends Phaser.Scene {
                     this.painelConcluido = true;
                     this.arqueiro.setX(2970);
                     this.arqueiro.setY(533);
+
+                    this.arqueiro.enableDoubleJump();
+
+                    // avisa o jogador
+                    this.mensagemInteracaoDoubleJump.setVisible(true);
+
+                    // Faz a mensagem desaparecer após alguns segundos
+                    this.time.delayedCall(3000, () => {
+                        this.mensagemInteracaoDoubleJump.setVisible(false);
+                    });
                 }, 4000);
             }
         }) //fim evento click

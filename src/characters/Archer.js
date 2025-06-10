@@ -22,11 +22,11 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         // Propriedades do arqueiro
         this.speed = 290; //velocidade do arqueiro
         this.jump = 640; //força do pulo
-        this.arrows = false; //começa sem flechas
+        this.arrows = true; //começa sem flechas
         this.lastShot = 0;
         this.shootCooldown = 750; // 500ms entre tiros
         this.facing = 'right'; //começa virado para direita
-        this.health = 8; //vida
+        this.health = 6; //vida
         this.isHittable = true;
         this.isShooting = false; //controlar se estiver atirando
         this.isDead = false;
@@ -203,7 +203,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         const offsetY = 15; // No meio da altura do corpo de física
         const offsetX = this.facing === 'right' ? 30 : -30;
         const arrowX = this.x + offsetX;
-        const arrowY = this.body.y + offsetY; // Usar this.body.y como referência é mais preciso
+        const arrowY = this.body.y + offsetY; 
 
         // Pede uma flecha para o grupo da cena
         const arrow = this.scene.arrows.get();

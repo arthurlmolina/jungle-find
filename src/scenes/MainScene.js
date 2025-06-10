@@ -278,14 +278,12 @@ export default class MainScene extends Phaser.Scene {
         this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio6 = this.add.image(250, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio7 = this.add.image(290, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
-        this.CoracaoCheio8 = this.add.image(330, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.flechaApagadaHud = this.add.image(1250, 10, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         this.flechaColetadaHud = this.add.image(1250, 10, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
-        this.iconeInfinito = this.add.image(1220, 30, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
+        this.iconeInfinito = this.add.image(1281, 51, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
-        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6, this.CoracaoCheio7, this.CoracaoCheio8];
+        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6];
 
         this.fireballs = this.physics.add.group({
             classType: Fireball, // O grupo criará objetos da classe Fireball
@@ -315,11 +313,8 @@ export default class MainScene extends Phaser.Scene {
 
         this.physics.add.collider(this.arrows, this.plataformas, (arrow, plataforma) => {
             // Ao acertar uma plataforma, a flecha é desativada imediatamente.
-            this.somFlechaColisao.play(); // adiciona som da colisao da flecha
-            this.time.delayedCall(1000, () => {
+                this.somFlechaColisao.play();
                 arrow.hitTarget();
-            })
-
         });
 
         this.physics.add.overlap(
@@ -509,8 +504,8 @@ export default class MainScene extends Phaser.Scene {
         // Mostra ou esconde a mensagem de interação
         this.mensagemInteracaoHugo.setVisible(HugoSobreposto && this.boss.isDead);
 
-        // Se o jogador estiver na área e pressionar 'E', inicia a cena final
-        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)  && this.boss.isDead) {
+        // Se o jogador estiver na área e pressionar 'E' e tiver derrotado o boss, inicia a cena final
+        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE) && this.boss.isDead) {
             this.cameras.main.shake(550, 0.025);
 
             this.time.delayedCall(400, () => {

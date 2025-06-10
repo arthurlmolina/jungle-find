@@ -99,6 +99,7 @@ export default class GameOverScene extends Phaser.Scene {
             this.tweens.killTweensOf(button);
             this.tweens.add({
                 targets: button,
+                alpha: 1,
                 scale: 1.1,
                 duration: 200,
                 ease: 'Cubic.easeOut'
@@ -108,6 +109,7 @@ export default class GameOverScene extends Phaser.Scene {
             this.tweens.killTweensOf(button);
             this.tweens.add({
                 targets: button,
+                alpha: 1,
                 scale: 1.0,
                 duration: 200,
                 ease: 'Cubic.easeOut'

@@ -1,5 +1,3 @@
-// Em src/characters/Boss.js
-
 export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, x, y, target) {
@@ -14,6 +12,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.health = 20;
         this.maxHealth = 20;
         this.speed = 120;
+        this.modoFuriaSpeed = 160;
         this.visionRange = 800;
         this.attackRange = 180;
         this.damage = 1;
@@ -23,6 +22,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.isDead = false;
         this.isAttacking = false;
         this.isHittable = true;
+        this.modoFuria = false;
 
         this.setCollideWorldBounds(true);
         this.body.setImmovable(true);
@@ -189,37 +189,79 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     takeDamage(damage) {
-        if (!this.isHittable) return;
+        // Se não puder tomar dano ou já estiver morto, não faz nada
+        if (!this.isHittable || this.isDead) return;
 
         this.health -= damage;
-        this.drawHealthBar(); // Apenas chama a função para redesenhar a barra
-
+        this.drawHealthBar();
         this.isHittable = false;
-        this.setTint(0xff0000);
-        if (this.isAttacking) {
-            this.isAttacking = false;
-            this.clearTint();
-            this.play('boss_idle', true);
-        }
+        this.setTint(0xff0000); // Flash vermelho de dano
+
+        // Lógica para limpar o flash de dano
         this.scene.time.delayedCall(150, () => {
-            this.clearTint();
+            // Se o chefe já estiver em fúria, volta para o tint de fúria, senão, limpa.
+            if (this.modoFuria) {
+                this.setTint(0xff0000); // Mantém o tint avermelhado da fúria
+            } else {
+                this.clearTint();
+            }
         });
+
         if (this.health <= 0) {
-            this.die();
+            // 1. Marca como morto e "congela" o chefe na tela para o efeito
+            this.isDead = true;
+            this.setVelocity(0, 0);
+            this.anims.stop(); 
+
+            // 2. Ativa a câmera lenta
+            this.scene.physics.world.timeScale = 4; // Física 4x mais lenta (valor > 1)
+            this.scene.time.timeScale = 0.4;      // Animações e timers 2.5x mais lentos (valor < 1)
+
+            // 3. Agenda o FIM da câmera lenta e o INÍCIO da sequência de morte
+            const slowMoDuration = 500; // Duração do efeito em TEMPO DE JOGO LENTO
+
+            this.scene.time.delayedCall(slowMoDuration, () => {
+
+                // 4. Volta o tempo ao normal PRIMEIRO
+                this.scene.physics.world.timeScale = 1;
+                this.scene.time.timeScale = 1;
+
+                // 5. SÓ AGORA, com o tempo normalizado, chama a sequência de morte
+                this.die();
+
+            });
+
         } else {
+            // Se ele SOBREVIVEU ao golpe, checa se entra em modo fúria
+            if (!this.modoFuria && this.health <= this.maxHealth / 2) {
+                this.modoFuria = true;
+                this.ativarModoFuria();
+            }
+
+            // Fica invulnerável por um tempo e depois pode tomar dano de novo
             this.scene.time.delayedCall(500, () => {
                 this.isHittable = true;
             });
         }
     }
 
+    ativarModoFuria() {
+        this.speed = this.modoFuriaSpeed;
+
+        this.setTint(0xff0000);
+
+        this.scene.cameras.main.shake(550, 0.01);
+    }
+
     die() {
-        this.isDead = true;
         this.body.enable = false;
+
         if (this.healthBar) {
             this.healthBar.destroy();
         }
+
         this.scene.somMorteBoss.play();
+
         this.anims.play('boss_death', true);
         this.once('animationcomplete-boss_death', () => {
             this.destroy();
@@ -243,6 +285,6 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         const currentHealthWidth = barWidth * healthPercentage;
         this.healthBar.fillStyle(0x00ff00);
         this.healthBar.fillRect(x, y, currentHealthWidth, barHeight);
-    }
+    }
 
 }

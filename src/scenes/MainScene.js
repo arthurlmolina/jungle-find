@@ -505,8 +505,6 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.start('EndScene');
             })
         }
-
-
     } //fim update
 
 

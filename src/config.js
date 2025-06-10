@@ -32,9 +32,7 @@ WebFont.load({
     google: {
         families: ['Press Start 2P']
     },
-    // "...e SOMENTE QUANDO terminar, execute esta função."
     active: function() {
-        // Agora, com tudo pronto, o jogo é criado com segurança.
         const game = new Phaser.Game(config);
     }
 });

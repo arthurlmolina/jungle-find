@@ -9,7 +9,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0.5, 1); // posicionamento do personagem na colisao (inferior esquerdo)
 
-        //ajuste de tamanho do frame do personagem
+        //ajuste de tamanho da zona (hitbox) do personagem
         const bodyWidth = 20;
         const bodyHeight = 35;
         this.body.setSize(bodyWidth, bodyHeight);
@@ -145,15 +145,14 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Lógica de Animações (baseado no estado atual)
-        // Se o corpo NÃO está bloqueado embaixo (ou seja, está no ar)
+        // Se o corpo NÃO está bloqueado embaixo (está no ar)
         if (!this.body.blocked.down) {
             // Se está subindo (velocidade Y negativa), toca a animação de pulo
             if (this.body.velocity.y < 0) {
                 this.anims.play('archer_jump', true);
             }
-            // Se está descendo E a velocidade da queda é maior que um pequeno limiar...
-            // Este é o nosso "filtro de solavanco"!
-            else if (this.body.velocity.y > 50) { // <-- A MUDANÇA ESTÁ AQUI
+            // Se está descendo E a velocidade da queda é maior que um pequeno limiar
+            else if (this.body.velocity.y > 50) { 
                 this.anims.play('archer_fall', true);
             }
         }

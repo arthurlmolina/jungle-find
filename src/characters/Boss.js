@@ -18,7 +18,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.damage = 1;
 
         // --- CONTROLE DE ESTADO ---
-        this.target = target;
+        this.target = target; // recebera o arqueiro como target(personagem no qual o boss ira focar)
         this.isDead = false;
         this.isAttacking = false;
         this.isHittable = true;
@@ -30,13 +30,12 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         const frameWidth = this.frame.width;
         const frameHeight = this.frame.height;
 
-        // define o tamanho do corpo da física.
+        // define o tamanho da hitbox do corpo.
         const bodyWidth = 40;
         const bodyHeight = 100;
         this.body.setSize(bodyWidth, bodyHeight);
 
-        // Calcule o deslocamento (offset) para posicionar a hitbox
-        const offsetX = (frameWidth - bodyWidth) / 2; // Centraliza horizontalmente
+        const offsetX = (frameWidth - bodyWidth) / 2;
 
         const ajusteVertical = 50;
         const offsetY = frameHeight - bodyHeight - ajusteVertical;
@@ -51,8 +50,6 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     createAnimations() {
-        // As suas animações continuam aqui, sem alterações.
-        // Lembre-se de ajustar os valores de 'end' para o número correto de frames.
         if (!this.scene.anims.exists('boss_idle')) {
             this.scene.anims.create({
                 key: 'boss_idle',
@@ -87,7 +84,6 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    // O Cérebro do Chefe (update) agora é mais simples
     update() {
         if (!this.isDead && this.healthBar) {
             const verticalOffset = 420;
@@ -151,14 +147,14 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
         const tempoDoGolpe = 500;
 
-        // Usamos um único timer para criar e destruir a hitbox
+        // timer para criar e destruir a hitbox de ataque
         this.scene.time.delayedCall(tempoDoGolpe, () => {
-            // Checagem de segurança
+            // checagem de segurança
             if (this.isDead || !this.isAttacking) {
                 return;
             }
 
-            // Use os valores de posição e tamanho que você achou ideais nos testes
+            // hitbox do ataque do boss
             const offsetX = 130;
             const offsetY = 330;
             const hitboxWidth = 180;
@@ -167,29 +163,29 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
             const hitboxX = this.x + (this.flipX ? -offsetX : offsetX);
             const hitboxY = this.y - offsetY;
 
-            // 1. Cria a 'zone' invisível
+            // Cria a hitbox invisível
             const attackHitbox = this.scene.add.zone(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             this.scene.physics.world.enable(attackHitbox);
             attackHitbox.body.setAllowGravity(false);
 
-            // 2. Verifica se acertou o alvo e causa o dano
+            // Verifica se acertou o alvo e causa o dano
             if (this.scene.physics.overlap(this.target, attackHitbox)) {
                 this.target.takeDamage(this.damage);
             }
 
-            // 3. Destrói a hitbox IMEDIATAMENTE após a verificação.
-            //    Isso garante que o dano só possa ser aplicado uma vez por ataque.
+            // destrói a hitbox IMEDIATAMENTE após a verificação
+            //  garantindo que o dano só possa ser aplicado uma vez por ataque
             attackHitbox.destroy();
         });
 
-        // Quando a animação de ataque INTEIRA terminar, o chefe pode agir de novo
+        // quando a animação de ataque INTEIRA terminar, o boss pode agir de novo
         this.once('animationcomplete-boss_attack', () => {
             this.isAttacking = false;
         });
     }
 
     takeDamage(damage) {
-        // Se não puder tomar dano ou já estiver morto, não faz nada
+        // se não puder tomar dano ou já estiver morto, não faz nada
         if (!this.isHittable || this.isDead) return;
 
         this.health -= damage;
@@ -197,9 +193,9 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.isHittable = false;
         this.setTint(0xff0000); // Flash vermelho de dano
 
-        // Lógica para limpar o flash de dano
+        // lógica para limpar o flash de dano
         this.scene.time.delayedCall(150, () => {
-            // Se o chefe já estiver em fúria, volta para o tint de fúria, senão, limpa.
+            // se o chefe já estiver em fúria, volta para o tint de fúria, senão, limpa
             if (this.modoFuria) {
                 this.setTint(0xff0000); // Mantém o tint avermelhado da fúria
             } else {
@@ -208,37 +204,37 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         });
 
         if (this.health <= 0) {
-            // 1. Marca como morto e "congela" o chefe na tela para o efeito
+            // marca como morto e "congela" o chefe na tela para o efeito
             this.isDead = true;
             this.setVelocity(0, 0);
             this.anims.stop(); 
 
-            // 2. Ativa a câmera lenta
+            // ativa a câmera lenta
             this.scene.physics.world.timeScale = 4; // Física 4x mais lenta (valor > 1)
             this.scene.time.timeScale = 0.4;      // Animações e timers 2.5x mais lentos (valor < 1)
 
-            // 3. Agenda o FIM da câmera lenta e o INÍCIO da sequência de morte
+            // agenda o FIM da câmera lenta e o INÍCIO da sequência de morte
             const slowMoDuration = 500; // Duração do efeito em TEMPO DE JOGO LENTO
 
             this.scene.time.delayedCall(slowMoDuration, () => {
 
-                // 4. Volta o tempo ao normal PRIMEIRO
+                // volta o tempo ao normal PRIMEIRO
                 this.scene.physics.world.timeScale = 1;
                 this.scene.time.timeScale = 1;
 
-                // 5. SÓ AGORA, com o tempo normalizado, chama a sequência de morte
+                // só agora, com o tempo normalizado, chama a sequência de morte
                 this.die();
 
             });
 
         } else {
-            // Se ele SOBREVIVEU ao golpe, checa se entra em modo fúria
+            // se ele SOBREVIVEU ao golpe, checa se entra em modo fúria
             if (!this.modoFuria && this.health <= this.maxHealth / 2) {
                 this.modoFuria = true;
                 this.ativarModoFuria();
             }
 
-            // Fica invulnerável por um tempo e depois pode tomar dano de novo
+            // fica invulnerável por um tempo e depois pode tomar dano de novo
             this.scene.time.delayedCall(500, () => {
                 this.isHittable = true;
             });
@@ -285,6 +281,5 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         const currentHealthWidth = barWidth * healthPercentage;
         this.healthBar.fillStyle(0x00ff00);
         this.healthBar.fillRect(x, y, currentHealthWidth, barHeight);
-    }
-
+    }
 }

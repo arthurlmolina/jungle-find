@@ -6,7 +6,7 @@ import Boss from '../characters/Boss.js';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
-        super('MainScene') //nome da cena, utilizar caso o jogo tenha mais de uma cena 
+        super('MainScene')
     }
 
     preload() {
@@ -224,10 +224,10 @@ export default class MainScene extends Phaser.Scene {
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);
 
-        // Criar o arqueiro
+        // Cria o arqueiro
         this.arqueiro = new Archer(this, 50, 533);
 
-        this.arqueiro.on('died', () => {
+        this.arqueiro.on('died', () => { 
             // Para a trilha sonora atual
             this.trilhaAtual.stop();
 
@@ -244,7 +244,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
-        //Criar Cobra
+        //Criar Cobra / worm
         this.cobra = new Cobra(this, 1800, 614);
 
         this.physics.add.collider(this.cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
@@ -271,7 +271,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.flechasColetadas = false;
 
-
+        // imagens da vida do personagem
         this.CoracaoCheio1 = this.add.image(50, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio2 = this.add.image(90, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
@@ -283,7 +283,7 @@ export default class MainScene extends Phaser.Scene {
         // Cria o ícone de infinito, mas o deixa invisível no início do jogo.
         this.iconeInfinito = this.add.image(1281, 51, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
-        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6];
+        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6]; // array para controlar a logica de vidas
 
         this.fireballs = this.physics.add.group({
             classType: Fireball, // O grupo criará objetos da classe Fireball
@@ -362,9 +362,8 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
 
-        // Posição 3800 parece um bom lugar para a batalha final.
+        
         this.boss = new Boss(this, 3800, 733, this.arqueiro);
-        // REMOVA a linha this.boss.setVisible(false);
 
         // Adiciona as colisões necessárias para o chefe
         this.physics.add.collider(this.boss, this.plataformas);
@@ -373,7 +372,7 @@ export default class MainScene extends Phaser.Scene {
 
                 // Causa 1 de dano no arqueiro.
                 arqueiro.takeDamage(1);
-                // dá um feedback visual imediato ao jogador e o ajuda a sair de cima do perigo.
+                // dá um feedback visual imediato ao jogador e o ajuda a sair de cima
                 arqueiro.setVelocityY(-550);
             }
 
@@ -381,7 +380,6 @@ export default class MainScene extends Phaser.Scene {
 
         // Permite que flechas acertem o chefe
         this.physics.add.overlap(this.boss, this.arrows, (boss, arrow) => {
-            // REMOVA a checagem 'if (boss.isActive)' se ela existir
             boss.takeDamage(1);
             arrow.hitTarget();
         }, null, this);
@@ -484,9 +482,9 @@ export default class MainScene extends Phaser.Scene {
         if (estaSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
             this.arqueiro.collectArrows(); // Coleta flechas
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
-            this.flechaApagadaHud.setVisible(false);
-            this.flechaColetadaHud.setVisible(true);
-            this.iconeInfinito.setVisible(true);
+            this.flechaApagadaHud.setVisible(false); 
+            this.flechaColetadaHud.setVisible(true); //adiciona flecha no hud
+            this.iconeInfinito.setVisible(true); 
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
@@ -494,12 +492,6 @@ export default class MainScene extends Phaser.Scene {
 
         this.cobra.update(this.arqueiro);
         const HugoSobreposto = this.physics.world.overlap(this.arqueiro, this.areaInteracaoHugo);
-
-        // Mostra/esconde a mensagem baseado na sobreposição FÍSICA | Hugo
-        // Em MainScene.js, dentro da função update()
-        // SUBSTITUA a lógica de interação do Hugo por esta:
-
-        // --- Início da Interação com Hugo (Lógica Final do Jogo) ---
 
         // Mostra ou esconde a mensagem de interação
         this.mensagemInteracaoHugo.setVisible(HugoSobreposto && this.boss.isDead);
@@ -516,7 +508,6 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.start('EndScene');
             })
         }
-        // --- Fim da Interação com Hugo ---
 
 
     } //fim update
@@ -595,10 +586,11 @@ export default class MainScene extends Phaser.Scene {
         }) //fim evento click
     }
 
+    // funcao para atualizar a vida do arqueiro
     updateHeartsUI() {
-        // Itera por todos os corações da UI
+        // Itera por todos os corações da HUD
         for (let i = 0; i < this.heartsUI.length; i++) {
-            // Se o índice do coração (0 a 4) for menor que a vida atual do arqueiro (5, 4, 3...),
+            // Se o índice do coração (0 a 6) for menor que a vida atual do arqueiro (5, 4, 3...),
             // o coração fica visível. Senão, fica invisível.
             if (i < this.arqueiro.health) {
                 this.heartsUI[i].setVisible(true);
@@ -608,6 +600,7 @@ export default class MainScene extends Phaser.Scene {
         }
     }
 
+    // funcao para quando o arqueiro levar hit
     flashScreen() {
         this.cameras.main.flash(200, 255, 0, 0); // Duração de 200ms, cor vermelha (RGB 255, 0, 0)
         this.cameras.main.shake(150, 0.005);

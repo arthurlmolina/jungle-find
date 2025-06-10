@@ -116,9 +116,9 @@ export default class GameOverScene extends Phaser.Scene {
             });
         });
 
-        // Evento: Botão é clicado
+        // evento botão é clicado
         button.on('pointerdown', () => {
-            // Para outras animações e trava o botão
+            // para outras animações e trava o botão
             this.tweens.killTweensOf(button);
             button.disableInteractive();
 
@@ -127,16 +127,16 @@ export default class GameOverScene extends Phaser.Scene {
                 scale: 0.9,
                 duration: 100,
                 ease: 'Cubic.easeIn',
-                // Quando a animação 1 terminar, a função onComplete é chamada...
+                // Quando a animação 1 terminar, a função onComplete é chamada
                 onComplete: () => {
                     this.tweens.add({
                         targets: button,
                         scale: 1.0,
                         duration: 100,
                         ease: 'Cubic.easeOut',
-                        // Quando a animação 2 terminar...
+                        // Quando a animação 2 terminar
                         onComplete: () => {
-                            //...a ação final é executada com segurança.
+                            // o click é executado
                             onClick();
                         }
                     });

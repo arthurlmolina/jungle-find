@@ -457,9 +457,6 @@ export default class MainScene extends Phaser.Scene {
                     this.podeMover = false;
                     this.painelVisivel = true;
                     this.verificaSenha();
-                } else {
-                    this.podeMover = true;
-                    this.painelVisivel = false;
                 }
             }
         } else {

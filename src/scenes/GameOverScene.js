@@ -99,7 +99,10 @@ export default class GameOverScene extends Phaser.Scene {
             this.tweens.killTweensOf(button);
             this.tweens.add({
                 targets: button,
+<<<<<<< Updated upstream
                 alpha: 1,
+=======
+>>>>>>> Stashed changes
                 scale: 1.1,
                 duration: 200,
                 ease: 'Cubic.easeOut'
@@ -109,16 +112,25 @@ export default class GameOverScene extends Phaser.Scene {
             this.tweens.killTweensOf(button);
             this.tweens.add({
                 targets: button,
+<<<<<<< Updated upstream
                 alpha: 1,
+=======
+>>>>>>> Stashed changes
                 scale: 1.0,
                 duration: 200,
                 ease: 'Cubic.easeOut'
             });
         });
 
+<<<<<<< Updated upstream
         // evento botão é clicado
         button.on('pointerdown', () => {
             // para outras animações e trava o botão
+=======
+        // Evento: Botão é clicado
+        button.on('pointerdown', () => {
+            // Para outras animações e trava o botão
+>>>>>>> Stashed changes
             this.tweens.killTweensOf(button);
             button.disableInteractive();
 
@@ -127,16 +139,26 @@ export default class GameOverScene extends Phaser.Scene {
                 scale: 0.9,
                 duration: 100,
                 ease: 'Cubic.easeIn',
+<<<<<<< Updated upstream
                 // Quando a animação 1 terminar, a função onComplete é chamada
+=======
+                // Quando a animação 1 terminar, a função onComplete é chamada...
+>>>>>>> Stashed changes
                 onComplete: () => {
                     this.tweens.add({
                         targets: button,
                         scale: 1.0,
                         duration: 100,
                         ease: 'Cubic.easeOut',
+<<<<<<< Updated upstream
                         // Quando a animação 2 terminar
                         onComplete: () => {
                             // o click é executado
+=======
+                        // Quando a animação 2 terminar...
+                        onComplete: () => {
+                            //...a ação final é executada com segurança.
+>>>>>>> Stashed changes
                             onClick();
                         }
                     });

@@ -2,14 +2,20 @@ import Archer from '../characters/Archer.js'
 import Cobra from '../characters/Cobra.js'
 import Fireball from '../characters/Fireball.js';
 import Arrow from '../characters/Arrow.js';
+<<<<<<< Updated upstream
 import Boss from '../characters/Boss.js';
 
+=======
+
+
+>>>>>>> Stashed changes
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene')
     }
 
     preload() {
+<<<<<<< Updated upstream
         this.load.image('fundo', '/assets/Fundo.png');
         this.load.image('chao', '/assets/chao.png');
         this.load.image('dupla', '/assets/plataforma-dupla.png');
@@ -44,6 +50,40 @@ export default class MainScene extends Phaser.Scene {
 
         //Adiciona o Arqueiro
         this.load.spritesheet('archer_idle', '/assets/arqueiro/Character/Idle.png', {
+=======
+        this.load.image('fundo', 'src/assets/fundo.png');
+        this.load.image('chao', 'src/assets/chao.png');
+        this.load.image('dupla', 'src/assets/plataforma-dupla.png');
+        this.load.image('unica', 'src/assets/plataforma-unica.png');
+        this.load.image('flechas', 'src/assets/flechas.png');
+        this.load.image('bau', 'src/assets/bau.png');
+        this.load.image('p-quatro', 'src/assets/plataforma-grande.png');
+        this.load.image('porta', 'src/assets/porta.png')
+        this.load.image('dica', 'src/assets/dica.png');
+        this.load.image('CoracaoCheio', 'src/assets/vida/CoracaoCheio.png');
+        this.load.image('hugo', 'src/assets/hugo.png');
+        this.load.image('flecha_apagada', 'src/assets/flecha_apagada.PNG')
+        this.load.video('videoHugo', 'src/assets/cutscenes/final.mp4');
+
+
+        //audios
+        this.load.audio('trilha-inicial', 'src/audios/trilha-jogo.mp3');
+        this.load.audio('trilha-final', 'src/audios/trilha-final.mp3');
+        this.load.audio('somBau', 'src/audios/som-bau.mp3');
+        this.load.audio('somAcerto', 'src/audios/som-acerto.mp3');
+        this.load.audio('somErro', 'src/audios/som-erro.mp3');
+        this.load.audio('somTeleporte', 'src/audios/som-teleporte.mp3');
+        this.load.audio('somFlecha', 'src/audios/flecha_saiu.mp3');
+        this.load.audio('somFlechaColisao', 'src/audios/flecha_bateu.mp3');
+        this.load.audio('somFireball', 'src/audios/audio_fireball.mp3');
+        this.load.audio('somHitArqueiro', 'src/audios/audio_hit.mp3');
+        this.load.audio('somPuloArqueiro', 'src/audios/som_pulo.mp3');
+        this.load.audio('somGameOver', 'src/audios/game_over.mp3');
+
+
+        //Adiciona o Arqueiro
+        this.load.spritesheet('archer_idle', 'src/assets/arqueiro/Character/Idle.png', {
+>>>>>>> Stashed changes
             frameWidth: 100,
             frameHeight: 100
         });
@@ -61,42 +101,71 @@ export default class MainScene extends Phaser.Scene {
             frameHeight: 100
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('archer_fall', '/assets/arqueiro/Character/Fall.png', {
+=======
+        this.load.spritesheet('archer_fall', 'src/assets/arqueiro/Character/Fall.png', {
+>>>>>>> Stashed changes
             frameWidth: 100,
             frameHeight: 100
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('archer_death', '/assets/arqueiro/Character/Death.png', {
+=======
+        this.load.spritesheet('archer_death', 'src/assets/arqueiro/Character/Death.png', {
+>>>>>>> Stashed changes
             frameWidth: 100,
             frameHeight: 100
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('arrow', '/assets/arqueiro/Arrow/Move.png', {
+=======
+        this.load.spritesheet('arrow', 'src/assets/arqueiro/Arrow/Move.png', {
+>>>>>>> Stashed changes
             frameWidth: 24,
             frameHeight: 5
         });
 
         //Adiciona a Cobra
+<<<<<<< Updated upstream
         this.load.spritesheet('worm_idle', '/assets/mobs/Cobra/Worm/Idle.png', {
+=======
+        this.load.spritesheet('worm_idle', 'src/assets/mobs/Cobra/Worm/Idle.png', {
+>>>>>>> Stashed changes
             frameWidth: 90,
             frameHeight: 80
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('worm_attack', '/assets/mobs/Cobra/Worm/Attack.png', {
+=======
+        this.load.spritesheet('worm_attack', 'src/assets/mobs/Cobra/Worm/Attack.png', {
+>>>>>>> Stashed changes
             frameWidth: 90,
             frameHeight: 80
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('worm_death', '/assets/mobs/Cobra/Worm/Death.png', {
+=======
+        this.load.spritesheet('worm_death', 'src/assets/mobs/Cobra/Worm/Death.png', {
+>>>>>>> Stashed changes
             frameWidth: 90,
             frameHeight: 80
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('fireball', '/assets/mobs/Cobra/Fire Ball/Move.png', {
+=======
+        this.load.spritesheet('fireball', 'src/assets/mobs/Cobra/Fire Ball/Move.png', {
+>>>>>>> Stashed changes
             frameWidth: 46,
             frameHeight: 46
         });
 
+<<<<<<< Updated upstream
         this.load.spritesheet('fireball_explode', '/assets/mobs/Cobra/Fire Ball/Explosion.png', {
             frameWidth: 46,
             frameHeight: 46
@@ -124,6 +193,20 @@ export default class MainScene extends Phaser.Scene {
     }
 
     create() {
+=======
+        this.load.spritesheet('fireball_explode', 'src/assets/mobs/Cobra/Fire Ball/Explosion.png', {
+            frameWidth: 46,
+            frameHeight: 46
+        });
+    }
+
+    create() {
+        this.cameras.main.setBackgroundColor(0x000000); // Ou qualquer cor de fundo que você tenha
+
+        // ADICIONE ESTA LINHA:
+        const mainCamera = this.cameras.main;
+        //criando os efeitos sonoros
+>>>>>>> Stashed changes
         this.somBau = this.sound.add('somBau', { loop: false, volume: 7 });
         this.somAcerto = this.sound.add('somAcerto', { loop: false, volume: 7 });
         this.somErro = this.sound.add('somErro', { loop: false, volume: 1 });
@@ -134,7 +217,10 @@ export default class MainScene extends Phaser.Scene {
         this.somHitArqueiro = this.sound.add('somHitArqueiro', { loop: false, volume: 6 });
         this.somPuloArqueiro = this.sound.add('somPuloArqueiro', { loop: false, volume: 4.5 });
         this.somGameOver = this.sound.add('somGameOver', { loop: false, volume: 4.5 });
+<<<<<<< Updated upstream
         this.somMorteBoss = this.sound.add('somMorteBoss', { loop: false, volume: 1.5 });
+=======
+>>>>>>> Stashed changes
 
         this.podeMover = true;
         this.dicaVisivel = false;
@@ -159,6 +245,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.plataformas.create(1394, 239, 'unica').setScale(0.8).refreshBody();
 
+<<<<<<< Updated upstream
         //Adicionando plataforma no final do jogo para combate com o Boss
 
         // Primeira linha de base (nível do chão ou quase)
@@ -166,6 +253,8 @@ export default class MainScene extends Phaser.Scene {
         this.plataformas.create(3650, 343, 'dupla').setScale(0.8).refreshBody();
 
 
+=======
+>>>>>>> Stashed changes
         //adicionando as flechas
         this.flechasColetaveis = this.add.image(1394, 191, 'flechas');
 
@@ -224,6 +313,7 @@ export default class MainScene extends Phaser.Scene {
         //configurando a câmera que seguirá o personagem 
         this.cameras.main.setBounds(0, 0, 4063, 600);
 
+<<<<<<< Updated upstream
         // Cria o arqueiro
         this.arqueiro = new Archer(this, 50, 533);
 
@@ -231,6 +321,15 @@ export default class MainScene extends Phaser.Scene {
             // Para a trilha sonora atual
             this.trilhaAtual.stop();
 
+=======
+        // Criar o arqueiro
+        this.arqueiro = new Archer(this, 50, 533);
+
+        this.arqueiro.on('died', () => {
+            // Para a trilha sonora atual
+            this.trilhaAtual.stop();
+            
+>>>>>>> Stashed changes
             // Adiciona um efeito de fade out na câmera para uma transição suave
             this.cameras.main.fadeOut(1000, 0, 0, 0, (camera, progress) => {
                 // Quando o fade out estiver completo (progress === 1), inicia a cena de Game Over
@@ -244,7 +343,11 @@ export default class MainScene extends Phaser.Scene {
 
         this.physics.add.collider(this.arqueiro, this.plataformas); //adiciona colisao entre o arqueiro e plataformas
 
+<<<<<<< Updated upstream
         //Criar Cobra / worm
+=======
+        //Criar Cobra
+>>>>>>> Stashed changes
         this.cobra = new Cobra(this, 1800, 614);
 
         this.physics.add.collider(this.cobra, this.plataformas); //adiciona colisao entre a cobra e plataformas
@@ -271,12 +374,16 @@ export default class MainScene extends Phaser.Scene {
 
         this.flechasColetadas = false;
 
+<<<<<<< Updated upstream
         // imagens da vida do personagem
+=======
+>>>>>>> Stashed changes
         this.CoracaoCheio1 = this.add.image(50, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio2 = this.add.image(90, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio3 = this.add.image(130, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio4 = this.add.image(170, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.CoracaoCheio5 = this.add.image(210, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
+<<<<<<< Updated upstream
         this.CoracaoCheio6 = this.add.image(250, 40, 'CoracaoCheio').setVisible(true).setScrollFactor(0).setScale(0.1).setOrigin(0.0).setDepth(10);
         this.flechaApagadaHud = this.add.image(1250, 10, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
         this.flechaColetadaHud = this.add.image(1250, 10, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
@@ -284,6 +391,12 @@ export default class MainScene extends Phaser.Scene {
         this.iconeInfinito = this.add.image(1281, 51, 'infinito').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10).setScale(0.06);
 
         this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5, this.CoracaoCheio6]; // array para controlar a logica de vidas
+=======
+        this.flechaApagadaHud = this.add.image(30, 60, 'flecha_apagada').setVisible(true).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+        this.flechaColetadaHud = this.add.image(30, 60, 'flechas').setVisible(false).setScrollFactor(0).setOrigin(0.0).setDepth(10);
+
+        this.heartsUI = [this.CoracaoCheio1, this.CoracaoCheio2, this.CoracaoCheio3, this.CoracaoCheio4, this.CoracaoCheio5];
+>>>>>>> Stashed changes
 
         this.fireballs = this.physics.add.group({
             classType: Fireball, // O grupo criará objetos da classe Fireball
@@ -313,8 +426,16 @@ export default class MainScene extends Phaser.Scene {
 
         this.physics.add.collider(this.arrows, this.plataformas, (arrow, plataforma) => {
             // Ao acertar uma plataforma, a flecha é desativada imediatamente.
+<<<<<<< Updated upstream
                 this.somFlechaColisao.play();
                 arrow.hitTarget();
+=======
+            this.somFlechaColisao.play(); // adiciona som da colisao da flecha
+            this.time.delayedCall(1000, () =>{
+                arrow.hitTarget();
+            })
+            
+>>>>>>> Stashed changes
         });
 
         this.physics.add.overlap(
@@ -362,6 +483,7 @@ export default class MainScene extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false).setScrollFactor(0).setDepth(3);
 
 
+<<<<<<< Updated upstream
         
         this.boss = new Boss(this, 3800, 733, this.arqueiro);
 
@@ -392,6 +514,12 @@ export default class MainScene extends Phaser.Scene {
     update() {
         this.boss.update();
 
+=======
+
+    }
+
+    update() {
+>>>>>>> Stashed changes
         if (this.podeMover) {
             this.arqueiro.move(this.cursors);
         }
@@ -442,7 +570,10 @@ export default class MainScene extends Phaser.Scene {
             if (this.estaAreaPorta && this.painelVisivel) {
                 this.mensagemSairInteracaoPorta.setVisible(true);
                 if (Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+<<<<<<< Updated upstream
                     //sair do painel
+=======
+>>>>>>> Stashed changes
                     this.painelSenha.style.display = "none";
                     this.podeMover = true;
                     this.painelVisivel = false;
@@ -452,7 +583,10 @@ export default class MainScene extends Phaser.Scene {
 
             if (this.estaAreaPorta && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
                 if (!this.painelVisivel) {
+<<<<<<< Updated upstream
                     //acessar painel
+=======
+>>>>>>> Stashed changes
                     this.arqueiro.setVelocity(0);
                     this.podeMover = false;
                     this.painelVisivel = true;
@@ -463,7 +597,10 @@ export default class MainScene extends Phaser.Scene {
                 }
             }
         } else {
+<<<<<<< Updated upstream
             //desabilitar acesso ao painel após ser teletransportado
+=======
+>>>>>>> Stashed changes
             this.areaInteracaoPorta.destroy()
             this.mensagemSairInteracaoPorta.setVisible(false);
         }
@@ -482,9 +619,14 @@ export default class MainScene extends Phaser.Scene {
         if (estaSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE) && !this.flechasColetadas) {
             this.arqueiro.collectArrows(); // Coleta flechas
             this.flechasColetaveis.setVisible(false); // Remove a imagem das flechas do mapa
+<<<<<<< Updated upstream
             this.flechaApagadaHud.setVisible(false); 
             this.flechaColetadaHud.setVisible(true); //adiciona flecha no hud
             this.iconeInfinito.setVisible(true); 
+=======
+            this.flechaApagadaHud.setVisible(false);
+            this.flechaColetadaHud.setVisible(true);
+>>>>>>> Stashed changes
             this.flechasColetadas = true; // Marca como coletadas
             this.mensagemInteracaoFlechas.setVisible(false); // Garante que a mensagem suma após coletar
         }
@@ -493,6 +635,7 @@ export default class MainScene extends Phaser.Scene {
         this.cobra.update(this.arqueiro);
         const HugoSobreposto = this.physics.world.overlap(this.arqueiro, this.areaInteracaoHugo);
 
+<<<<<<< Updated upstream
         // Mostra ou esconde a mensagem de interação
         this.mensagemInteracaoHugo.setVisible(HugoSobreposto && this.boss.isDead);
 
@@ -508,6 +651,28 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.start('EndScene');
             })
         }
+=======
+        // Mostra/esconde a mensagem baseado na sobreposição FÍSICA | Hugo
+        // Em MainScene.js, dentro da função update()
+        // SUBSTITUA a lógica de interação do Hugo por esta:
+
+        // --- Início da Interação com Hugo (Lógica Final do Jogo) ---
+
+        // Mostra ou esconde a mensagem de interação
+        this.mensagemInteracaoHugo.setVisible(HugoSobreposto);
+
+        // Se o jogador estiver na área e pressionar 'E', inicia a cena final
+        if (HugoSobreposto && Phaser.Input.Keyboard.JustDown(this.teclaE)) {
+            // Para a trilha sonora atual antes de mudar de cena
+            this.trilhaAtual.stop();
+
+            // Inicia a cena final que criamos
+            this.scene.start('EndScene');
+        }
+        // --- Fim da Interação com Hugo ---
+
+
+>>>>>>> Stashed changes
     } //fim update
 
 
@@ -528,6 +693,7 @@ export default class MainScene extends Phaser.Scene {
         const mensagem = document.getElementById('mensagem');
         const efeito = document.getElementById('idEfeito');
 
+<<<<<<< Updated upstream
         // remove os eventos antigos (evitando erro qunado o usuário joga novamente)
         btn.replaceWith(btn.cloneNode(true));
         const novoBtn = document.getElementById('btn-porta');
@@ -537,23 +703,38 @@ export default class MainScene extends Phaser.Scene {
 
             if (resposta !== 'cidão') {
                 //apresentar mensagem e efeitos de erro
+=======
+        btn.addEventListener('click', () => {
+            const resposta = senha.value.toLowerCase();
+
+            if (resposta !== 'cidão') {
+>>>>>>> Stashed changes
                 efeito.classList.add('erro');
                 mensagem.classList.add('erroMensagem')
                 mensagem.textContent = "ERRO@R% ERROR2032!."
                 senha.value = "";
                 this.somErro.play();
                 setTimeout(() => {
+<<<<<<< Updated upstream
                     //removendo efeitos e mensagem de erro
+=======
+>>>>>>> Stashed changes
                     efeito.classList.remove('erro');
                     mensagem.classList.remove('erroMensagem')
                     mensagem.textContent = ""
                 }, 3000);
+<<<<<<< Updated upstream
             } else {
                 //apresentar mensagem e efeitos de acerto
+=======
+
+            } else {
+>>>>>>> Stashed changes
                 this.somAcerto.play();
                 efeito.classList.add('acerto');
                 mensagem.classList.add('acertoMensagem')
                 mensagem.textContent = "Chave autenticada com sucesso!"
+<<<<<<< Updated upstream
                 senha.value = "";
 
                 setTimeout(() => {
@@ -561,12 +742,17 @@ export default class MainScene extends Phaser.Scene {
                     mensagem.textContent = "";
                     efeito.classList.remove('acerto');
                     mensagem.classList.remove('acertoMensagem')
+=======
+
+                setTimeout(() => {
+>>>>>>> Stashed changes
                     //teletransportando o jogador
                     this.somTeleporte.play();
                     this.podeMover = true;
                     this.painelSenha.style.display = "none";
                     this.painelVisivel = false;
                     this.painelConcluido = true;
+<<<<<<< Updated upstream
                     this.arqueiro.setX(2995);
                     this.arqueiro.setY(533);
 
@@ -579,16 +765,27 @@ export default class MainScene extends Phaser.Scene {
                     this.time.delayedCall(3000, () => {
                         this.mensagemInteracaoDoubleJump.setVisible(false);
                     });
+=======
+                    this.arqueiro.setX(2970);
+                    this.arqueiro.setY(533);
+>>>>>>> Stashed changes
                 }, 4000);
             }
         }) //fim evento click
     }
 
+<<<<<<< Updated upstream
     // funcao para atualizar a vida do arqueiro
     updateHeartsUI() {
         // Itera por todos os corações da HUD
         for (let i = 0; i < this.heartsUI.length; i++) {
             // Se o índice do coração (0 a 6) for menor que a vida atual do arqueiro (5, 4, 3...),
+=======
+    updateHeartsUI() {
+        // Itera por todos os corações da UI
+        for (let i = 0; i < this.heartsUI.length; i++) {
+            // Se o índice do coração (0 a 4) for menor que a vida atual do arqueiro (5, 4, 3...),
+>>>>>>> Stashed changes
             // o coração fica visível. Senão, fica invisível.
             if (i < this.arqueiro.health) {
                 this.heartsUI[i].setVisible(true);
@@ -598,7 +795,10 @@ export default class MainScene extends Phaser.Scene {
         }
     }
 
+<<<<<<< Updated upstream
     // funcao para quando o arqueiro levar hit
+=======
+>>>>>>> Stashed changes
     flashScreen() {
         this.cameras.main.flash(200, 255, 0, 0); // Duração de 200ms, cor vermelha (RGB 255, 0, 0)
         this.cameras.main.shake(150, 0.005);

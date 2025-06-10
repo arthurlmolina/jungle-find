@@ -78,7 +78,11 @@ body{
 #painel-senha{
     width: 640px;
     height: 554px;
+<<<<<<< Updated upstream
     background-image: url(/assets/painel.png);
+=======
+    background-image: url(../assets/painel.png);
+>>>>>>> Stashed changes
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -195,7 +199,10 @@ p#mensagem{
     animation: piscar-btn-vermelho 1s infinite;
 }
 
+<<<<<<< Updated upstream
 canvas{
     margin: 0 !important;
     padding: 0 !important;
 }
+=======
+>>>>>>> Stashed changes

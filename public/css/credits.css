@@ -42,7 +42,11 @@
     .imagem{
         width: 1920px;
         height: 670px;
+<<<<<<< Updated upstream:public/css/credits.css
         background-image: url(/assets/menu.png);
+=======
+        background-image: url(../assets/menu.png);
+>>>>>>> Stashed changes:src/css/credits.css
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -194,7 +198,10 @@
 }
 
 
+<<<<<<< Updated upstream:public/css/credits.css
 .flecha-voltar {
   font-size: 24px;
   margin-right: 8px;
 }
+=======
+>>>>>>> Stashed changes:src/css/credits.css

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
@@ -16,4 +17,10 @@ export default defineConfig({
       },
     },
   },
+=======
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  base: '/jungle-find/',
+>>>>>>> Stashed changes
 });

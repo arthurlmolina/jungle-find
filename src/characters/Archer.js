@@ -9,7 +9,11 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0.5, 1); // posicionamento do personagem na colisao (inferior esquerdo)
 
+<<<<<<< Updated upstream
         //ajuste de tamanho da zona (hitbox) do personagem
+=======
+        //ajuste de tamanho do frame do personagem
+>>>>>>> Stashed changes
         const bodyWidth = 20;
         const bodyHeight = 35;
         this.body.setSize(bodyWidth, bodyHeight);
@@ -20,6 +24,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         this.setDragX(1);
 
         // Propriedades do arqueiro
+<<<<<<< Updated upstream
         this.speed = 290; //velocidade do arqueiro
         this.jump = 640; //força do pulo
         this.arrows = true; //começa sem flechas
@@ -32,6 +37,19 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         this.isDead = false;
         this.canDoubleJump = false; // Começa FALSO. Só a MainScene pode ativar.
         this.jumpCount = 0;         // Contador de pulos.
+=======
+        this.speed = 650; //velocidade do arqueiro
+        this.jump = 650; //força do pulo
+        this.arrows = false; //começa sem flechas
+        this.lastShot = 0;
+        this.shootCooldown = 750; // 500ms entre tiros
+        this.facing = 'right'; //começa virado para direita
+        this.health = 5; //vida
+        this.isHittable = true;
+        this.isShooting = false; //controlar se estiver atirando
+        this.isDead = false;
+
+>>>>>>> Stashed changes
         this.createAnimations();
 
         this.setScale(2.8); //alterar o tamanho do personagem 
@@ -43,7 +61,11 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         if (!this.scene.anims.exists('archer_idle')) {
             this.scene.anims.create({
                 key: 'archer_idle',
+<<<<<<< Updated upstream
                 frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 9 }),
+=======
+                frames: this.scene.anims.generateFrameNumbers('archer_idle', { start: 0, end: 10 }),
+>>>>>>> Stashed changes
                 frameRate: 9,
                 repeat: -1
             });
@@ -52,7 +74,11 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         if (!this.scene.anims.exists('archer_walk')) {
             this.scene.anims.create({
                 key: 'archer_walk',
+<<<<<<< Updated upstream
                 frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 7 }),
+=======
+                frames: this.scene.anims.generateFrameNumbers('archer_walk', { start: 0, end: 9 }),
+>>>>>>> Stashed changes
                 frameRate: 10,
                 repeat: -1
             });
@@ -98,16 +124,34 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
     }
 
     move(cursors) {
+<<<<<<< Updated upstream
         if (this.isDead || !cursors) return;
 
         // ... (lógica de atirar e movimento horizontal continua a mesma)
         if (cursors.space && cursors.space.isDown && this.arrows && !this.isShooting) {
             this.shoot();
         }
+=======
+        if (this.isDead) return;
+
+        if (!cursors) return;
+
+        // Verifica se deve atirar (tecla SPACE ou CTRL)
+        if (cursors.space && cursors.space.isDown && this.arrows && !this.isShooting) {
+            this.shoot();
+        }
+
+        // Se estiver atirando, não permite movimento
+>>>>>>> Stashed changes
         if (this.isShooting) {
             this.setVelocityX(0);
             return;
         }
+<<<<<<< Updated upstream
+=======
+
+        //se apertar a seta esquerda
+>>>>>>> Stashed changes
         if (cursors.left.isDown) {
             this.setVelocityX(-this.speed);
             this.setFlipX(true);
@@ -120,9 +164,17 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0);
         }
 
+<<<<<<< Updated upstream
         // Se o personagem está no chão, reseta o contador de pulos.
         if (this.body.blocked.down) {
             this.jumpCount = 0;
+=======
+        //se apertar seta para cima = pular (verifica se está no chão)
+        if (cursors.up.isDown && this.body.blocked.down) {
+            this.scene.somPuloArqueiro.play();
+            this.setVelocityY(-this.jump);
+            this.anims.play('archer_jump', true);
+>>>>>>> Stashed changes
         }
 
         // Usamos JustDown para registrar o pulo apenas uma vez por aperto de tecla.
@@ -147,6 +199,7 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         // Lógica de Animações (baseado no estado atual)
         // Se o corpo NÃO está bloqueado embaixo (está no ar)
         if (!this.body.blocked.down) {
+<<<<<<< Updated upstream
             // Se está subindo (velocidade Y negativa), toca a animação de pulo
             if (this.body.velocity.y < 0) {
                 this.anims.play('archer_jump', true);
@@ -159,6 +212,17 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         // Se o corpo ESTÁ bloqueado embaixo (no chão ou em um inimigo)
         else if (this.body.velocity.x !== 0) {
             // E está se movendo para os lados, toca a animação de andar
+=======
+            if (this.body.velocity.y < 0) {
+                this.anims.play('archer_jump', true);
+            }
+            // Se está descendo (velocidade Y positiva) = caindo
+            else if (this.body.velocity.y > 0) {
+                this.anims.play('archer_fall', true);
+            }
+        } else if (this.body.velocity.x !== 0) {
+            //se tiver andando
+>>>>>>> Stashed changes
             this.anims.play('archer_walk', true);
         } else {
             // E está parado, toca a animação de parado
@@ -166,10 +230,13 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+<<<<<<< Updated upstream
     enableDoubleJump() {
         this.canDoubleJump = true;
     }
 
+=======
+>>>>>>> Stashed changes
     shoot() {
         const currentTime = this.scene.time.now; // pega o tempo que atirou
 
@@ -202,7 +269,11 @@ export default class Archer extends Phaser.Physics.Arcade.Sprite {
         const offsetY = 15; // No meio da altura do corpo de física
         const offsetX = this.facing === 'right' ? 30 : -30;
         const arrowX = this.x + offsetX;
+<<<<<<< Updated upstream
         const arrowY = this.body.y + offsetY; 
+=======
+        const arrowY = this.body.y + offsetY; // Usar this.body.y como referência é mais preciso
+>>>>>>> Stashed changes
 
         // Pede uma flecha para o grupo da cena
         const arrow = this.scene.arrows.get();

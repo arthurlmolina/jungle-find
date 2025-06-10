@@ -567,7 +567,7 @@ export default class MainScene extends Phaser.Scene {
                     this.painelSenha.style.display = "none";
                     this.painelVisivel = false;
                     this.painelConcluido = true;
-                    this.arqueiro.setX(2970);
+                    this.arqueiro.setX(2995);
                     this.arqueiro.setY(533);
 
                     this.arqueiro.enableDoubleJump();

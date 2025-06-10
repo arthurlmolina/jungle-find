@@ -1,20 +1,38 @@
+import './css/game.css';
+import Phaser from 'phaser';
+
 import MainScene from "./scenes/MainScene.js";
+import EndScene from "./scenes/EndScenes.js";
+import IntroScene from "./scenes/IntroScene.js";
+import GameOverScene from "./scenes/GameOverScene.js";
 
 var config = {
     //configurações gerais do phaser
     type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
-    width: 800,
-    height: 600,
+    pixelArt: true,
+    roundPixels: true,
+    width: 1366,
+    height: 600,  //650
     physics:{ //definindo a gravidade do jogo (tipo: arcade / simples e rapido)
         default: 'arcade',
         arcade:{ 
-            gravity: {y:300},
-            debug: true 
+            gravity: {y:1500},
+            debug: false 
         }
     },
-    scene: [MainScene]
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    scene: [IntroScene, MainScene, EndScene, GameOverScene]
 
 };
 
-var game = new Phaser.Game(config) //instância o jogo com as configurações pré-definidas
-
+WebFont.load({
+    google: {
+        families: ['Press Start 2P']
+    },
+    active: function() {
+        const game = new Phaser.Game(config);
+    }
+});

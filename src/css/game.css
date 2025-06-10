@@ -1,4 +1,50 @@
-@charset "UTF-8";
+ @charset "UTF-8";
+
+@keyframes animacaoFundo{
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes piscar-texto {
+    0%   { transform: translate(-51%, -51%); }
+    20%  { transform: translate(-49%, -49%); }
+    40%  { transform: translate(-52%, -52%); }
+    60%  { display: none; }
+    80%  { transform: translate(-47%, -47%); color: rgb(185, 232, 185); }
+    90%  { color: white; }
+    100% { display: none; }
+}
+
+@keyframes piscar-mensagem{
+    0%   { transform: translate(-51%, -51%); }
+    20%  { transform: translate(-49%, -49%); }
+    40%  { transform: translate(-52%, -52%); }
+    60%  { display: none; }
+    80%  { transform: translate(-47%, -47%); color: rgb(0, 255, 0); }
+    100% { display: none; }
+}
+
+
+@keyframes piscar-btn {
+    0%   { opacity: 1; }
+    50%  { opacity: 0; }
+    70%  { background-color: white; color: #1f2f1d; }
+    80%  { opacity: 0.4; color: rgb(35, 92, 17); font-family: Arial, Helvetica, sans-serif; text-align: center; }
+    100% { opacity: 1; }
+}
+
+@keyframes piscar-input {
+    0%   { opacity: 1; }
+    50%  { opacity: 0; }
+    70%  { background-color: white; }
+    100% { opacity: 1; }
+} 
+@keyframes piscar-btn-vermelho {
+    0%   {opacity: 1;}
+    50%  {opacity: 0;}
+    100%  {opacity: 1;}
+}  
 
 :root{
     --verde-floresta: #042A2B; /*fundo principal*/
@@ -19,18 +65,137 @@ html, body{
 body{
     background: linear-gradient(45deg, var(--verde-floresta), var(--verde-musgo));
     background-size: 400% 400%;
-    animation: gradientShift 4s ease infinite;
+    animation: animacaoFundo 3s ease infinite;
     width: 100vw;
     height: 100vh;
     
     /*centralizar a tela do jogo*/
     display: flex;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center;   
 }
-@keyframes gradientShift{
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+
+#painel-senha{
+    width: 640px;
+    height: 554px;
+    background-image: url(/assets/painel.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+#texto-senha{
+    font-family: monospace;
+    font-size: 1.2em;
+    width: 400px;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    text-shadow: 4px 4px 3px #2c3b2a;
+    animation: piscar-texto 0.4s infinite;
+    text-align: center;
+}
+
+#campo-senha{
+    background-color: #3d4a3a;
+    color: white;
+    width: 400px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: piscar-input 1s infinite;
+}
+
+.form-control:focus {
+    box-shadow: 0px 0px 15px #1f2f1d;
+    border: 2px solid #203e27; 
+}
+
+#btn-porta{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    background-color: #1f2f1d;
+    color: white;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.593);
+    animation: piscar-btn 1s infinite; 
+}
+
+#btn-porta:hover{
+    width: 110px;
+    height: 45px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p#mensagem{
+    font-family: monospace !important;
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: monospace;
+    font-size: 1.4em;
+    text-shadow: 4px 4px 3px #000000;
+    width: 370px;
+    text-align: center;
+    animation: piscar-mensagem 0.4s infinite;
+}
+
+.acertoMensagem{
+    color: green;
+}
+
+.erroMensagem{
+    color: red;
+}
+
+.efeito{
+    width: 635px;
+    height: 445px;
+    position: absolute;
+    top: 41%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 25px;
+    z-index: -1;
+}
+
+.erro{
+    box-shadow: 0px 0px 40px rgb(126, 2, 2) !important;
+    outline: 5px solid rgba(180, 5, 5, 0.895) !important;
+}
+
+.acerto{
+    box-shadow: 0px 0px 40px rgb(22, 109, 14) !important;
+    outline: 5px solid rgba(32, 125, 24, 0.895) !important;
+}
+
+.btn-vermelho{
+    position: absolute;
+    top: 88%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: piscar-btn-vermelho 1s infinite;
+}
+
+canvas{
+    margin: 0 !important;
+    padding: 0 !important;
 }

@@ -8,7 +8,7 @@
 
 **[➡️ Jogue Agora! Clique aqui para acessar a versão ao vivo na Netlify](https://junglefind.netlify.app/)**
 
-> **Nota sobre o Gameplay:** O jogo contém um quebra-cabeça com uma senha para progredir. A resposta é uma homenagem a um dos nossos professores do curso de Engenharia de Software. A pista para a solução pode ser encontrada dentro de um baú no jogo, mas para fins de avaliação, a senha é `cidão`.
+> **Nota sobre o Gameplay:** O jogo contém um quebra-cabeça com uma senha para progredir. A resposta é uma referencia a um dos nossos professores do curso de Engenharia de Software. A pista para a solução pode ser encontrada dentro de um baú no jogo, mas para fins de avaliação, a senha é `cidão`.
 
 ---
 

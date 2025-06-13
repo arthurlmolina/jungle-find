@@ -47,10 +47,10 @@
 }  
 
 :root{
-    --verde-floresta: #042A2B; /*fundo principal*/
+    --verde-floresta: #042A2B; 
     --verde-musgo: #283c25;    
     --verde-folha: rgb(51, 99, 64);
-    --cor-destaque: #eefaee;   /*textos*/
+    --cor-destaque: #eefaee;   
 }
 
 *{
@@ -69,7 +69,6 @@ body{
     width: 100vw;
     height: 100vh;
     
-    /*centralizar a tela do jogo*/
     display: flex;
     justify-content: center;
     align-items: center;   

@@ -60,7 +60,7 @@ export default class IntroScene extends Phaser.Scene {
     const lines = this.texto.text.split('\n');
     const lastLine = lines[lines.length - 1];
 
-    const charWidth = 7; // ajuste fino da largura da fonte monospace
+    const charWidth = 7;
     const fontSize = parseInt(this.texto.style.fontSize) || 12;
     const lineSpacing = 2;
 

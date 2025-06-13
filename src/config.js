@@ -7,13 +7,12 @@ import IntroScene from "./scenes/IntroScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 
 var config = {
-    //configurações gerais do phaser
-    type: Phaser.AUTO, //tipo adaptavel (WebGL ou Canvas)
+    type: Phaser.AUTO,
     pixelArt: true,
     roundPixels: true,
     width: 1366,
-    height: 600,  //650
-    physics:{ //definindo a gravidade do jogo (tipo: arcade / simples e rapido)
+    height: 600,  
+    physics:{ 
         default: 'arcade',
         arcade:{ 
             gravity: {y:1500},

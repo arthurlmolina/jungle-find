@@ -9,7 +9,6 @@ export default class EndScene extends Phaser.Scene {
         finalVideo.setDisplaySize(650, 252);
         finalVideo.play(false);
 
-        // Quando o vídeo terminar, redireciona o navegador para a página de créditos.
         finalVideo.on('complete', () => {
             window.location.href = 'credits.html';
         });

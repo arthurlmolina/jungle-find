@@ -40,7 +40,6 @@ export default class GameOverScene extends Phaser.Scene {
             duration: 500,
             ease: 'Cubic.easeOut',
             onComplete: () => {
-                // Animação de piscar em loop
                 this.tweens.add({
                     targets: gameOverText,
                     alpha: 0.2,
@@ -52,8 +51,6 @@ export default class GameOverScene extends Phaser.Scene {
             }
         });
 
-
-        // botões com um delay para que um apareça depois do outro
         this.time.delayedCall(300, () => {
             this.createAnimatedButton('Tentar Novamente', this.cameras.main.centerY + 50, () => {
                 this.scene.start('MainScene');
@@ -67,8 +64,7 @@ export default class GameOverScene extends Phaser.Scene {
         });
     }
 
-    /**
-         * Cria um botão de texto com animações profissionais de entrada, hover e clique.
+        /**
          * @param {string} text O texto a ser exibido no botão.
          * @param {number} y A posição vertical (Y) do botão.
          * @param {Function} onClick A função a ser executada quando o botão for clicado.
@@ -86,7 +82,6 @@ export default class GameOverScene extends Phaser.Scene {
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true });
 
-        // Animações de entrada e hover 
         button.setAlpha(0).setScale(0.8);
         this.tweens.add({
             targets: button,
@@ -116,9 +111,7 @@ export default class GameOverScene extends Phaser.Scene {
             });
         });
 
-        // evento botão é clicado
         button.on('pointerdown', () => {
-            // para outras animações e trava o botão
             this.tweens.killTweensOf(button);
             button.disableInteractive();
 
@@ -127,16 +120,13 @@ export default class GameOverScene extends Phaser.Scene {
                 scale: 0.9,
                 duration: 100,
                 ease: 'Cubic.easeIn',
-                // Quando a animação 1 terminar, a função onComplete é chamada
                 onComplete: () => {
                     this.tweens.add({
                         targets: button,
                         scale: 1.0,
                         duration: 100,
                         ease: 'Cubic.easeOut',
-                        // Quando a animação 2 terminar
                         onComplete: () => {
-                            // o click é executado
                             onClick();
                         }
                     });
